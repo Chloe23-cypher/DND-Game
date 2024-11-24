@@ -118,48 +118,6 @@ public class DnDParty {
         purple_dice();
         StdDraw.setPenColor(StdDraw.WHITE);
     }
-    /***********************************************************
-     * METHOD: drawD20()                                       *
-     * DESCRIPTION: draws the d20 dice                         *
-     * PARAMETERS: none                                        *
-     * RETURN VALUE: none                                      *
-     **********************************************************/
-    public void drawD20(){
-        StdDraw.setPenColor(StdDraw.DICE_PURPLE);
-        double[] d20x = {0.9, 0.8472649731, 0.8472649731, 0.9, 0.9527350269, 0.9527350269};
-        double[] d20y = {0.01, 0.041, 0.086, 0.13, 0.086, 0.041};
-        StdDraw.filledPolygon(d20x, d20y);
-        StdDraw.setPenColor(StdDraw.DEEP_PURPLE);
-        double[] shadow1d20x = {0.9, 0.8472649731, 0.8693589911};
-        double[] shadow1d20y = {0.01, 0.041, 0.041};
-        StdDraw.filledPolygon(shadow1d20x, shadow1d20y);
-        double[] shadow2d20x = {0.9, 0.9527350269, 0.9306410089};
-        double[] shadow2d20y = {0.01, 0.041, 0.041};
-        StdDraw.filledPolygon(shadow2d20x, shadow2d20y);
-        StdDraw.setPenColor(StdDraw.MID_PURPLE);
-        double[] shadow3d20x = {0.8472649731, 0.8693589911, 0.8472649731};
-        double[] shadow3d20y = {0.041, 0.041, 0.086};
-        StdDraw.filledPolygon(shadow3d20x, shadow3d20y);
-        double[] shadow4d20x = {0.9527350269, 0.9306410089, 0.9527350269};
-        double[] shadow4d20y = {0.041, 0.041, 0.086};
-        StdDraw.filledPolygon(shadow4d20x, shadow4d20y);
-        double[] shadow5d20x = {0.9, 0.8693589911, 0.9306410089};
-        double[] shadow5d20y = {0.01, 0.041, 0.041};
-        StdDraw.filledPolygon(shadow5d20x, shadow5d20y);
-        StdDraw.setPenColor(StdDraw.NEW_PURPLE);
-        double[] shadow6d20x = {0.8693589911, 0.8472649731, 0.9};
-        double[] shadow6d20y = {0.041, 0.086, 0.086};
-        StdDraw.filledPolygon(shadow6d20x, shadow6d20y);
-        double[] shadow7d20x = {0.9306410089, 0.9527350269, 0.9};
-        double[] shadow7d20y = {0.041, 0.086, 0.086};
-        StdDraw.filledPolygon(shadow7d20x, shadow7d20y);
-        StdDraw.setPenColor(StdDraw.MID_PURPLE);
-        double[] shadow8d20x = {0.8472649731, 0.9, 0.9527350269};
-        double[] shadow8d20y = {0.086, 0.13, 0.086};
-        StdDraw.filledPolygon(shadow8d20x, shadow8d20y);
-
-
-    }
 
     /***********************************************************
      * METHOD: text()                                          *
@@ -175,7 +133,30 @@ public class DnDParty {
      }
 
 
-    /***********************************************************
+    /**********************************************************
+     * METHOD: background()                                    *
+     * DESCRIPTION: draws the background                       *
+     * PARAMETERS: none                                        *
+     * RETURN VALUE: none                                      *
+     **********************************************************/
+    public void background(){
+        StdDraw.picture(0.50,0.5, "C:/Users/bella/Downloads/DnDbackground/encounter1bg.png", 1.00, 1.00);
+        StdDraw.show();
+        StdDraw.setPenColor(StdDraw.LIGHT_GRAY);
+        StdDraw.filledRectangle(0.5, 0, 0.5, 0.14);
+        this.drawD4();
+        this.drawD6();
+        this.drawD8();
+        this.drawD10();
+        this.drawD12();
+        this.drawD20();
+        StdDraw.setPenColor(StdDraw.WHITE);
+    }
+
+
+
+
+    /**********************************************************
      * METHOD: rollD20()                                       *
      * DESCRIPTION: roll a d20 die                             *
      * PARAMETERS: none                                        *
@@ -184,6 +165,47 @@ public class DnDParty {
     private int rollD20() {
         int d20 = (int) (Math.random() * 20) + 1;
         return d20;
+    }
+
+     /**********************************************************
+     * METHOD: drawD20()                                       *
+     * DESCRIPTION: draw a d20 die                             *
+     * PARAMETERS: none                                        *
+     * RETURN VALUE: none                                      *
+     **********************************************************/
+    private void drawD20(){
+        StdDraw.setPenColor(StdDraw.DICE_PURPLE);
+        double d20x[] = {0.9, 0.8472649731, 0.8472649731, 0.9, 0.9527350269, 0.9527350269};
+        double d20y[] = {0.01, 0.041, 0.086, 0.13, 0.086, 0.041};
+        StdDraw.filledPolygon(d20x, d20y);
+        StdDraw.setPenColor(StdDraw.DEEP_PURPLE);
+        double shadow1d20x[] = {0.9, 0.8472649731, 0.8693589911};
+        double shadow1d20y[] = {0.01, 0.041, 0.041};
+        StdDraw.filledPolygon(shadow1d20x, shadow1d20y);
+        double shadow2d20x[] = {0.9, 0.9527350269, 0.9306410089};
+        double shadow2d20y[] = {0.01, 0.041, 0.041};
+        StdDraw.filledPolygon(shadow2d20x, shadow2d20y);
+        StdDraw.setPenColor(StdDraw.MID_PURPLE);
+        double shadow3d20x[] = {0.8472649731, 0.8693589911, 0.8472649731};
+        double shadow3d20y[] = {0.041, 0.041, 0.086};
+        StdDraw.filledPolygon(shadow3d20x, shadow3d20y);
+        double shadow4d20x[] = {0.9527350269, 0.9306410089, 0.9527350269};
+        double shadow4d20y[] = {0.041, 0.041, 0.086};
+        StdDraw.filledPolygon(shadow4d20x, shadow4d20y);
+        double shadow5d20x[] = {0.9, 0.8693589911, 0.9306410089};
+        double shadow5d20y[] = {0.01, 0.041, 0.041};
+        StdDraw.filledPolygon(shadow5d20x, shadow5d20y);
+        StdDraw.setPenColor(StdDraw.NEW_PURPLE);
+        double shadow6d20x[] = {0.8693589911, 0.8472649731, 0.9};
+        double shadow6d20y[] = {0.041, 0.086, 0.086};
+        StdDraw.filledPolygon(shadow6d20x, shadow6d20y);
+        double shadow7d20x[] = {0.9306410089, 0.9527350269, 0.9};
+        double shadow7d20y[] = {0.041, 0.086, 0.086};
+        StdDraw.filledPolygon(shadow7d20x, shadow7d20y);
+        StdDraw.setPenColor(StdDraw.MID_PURPLE);
+        double shadow8d20x[] = {0.8472649731, 0.9, 0.9527350269};
+        double shadow8d20y[] = {0.086, 0.13, 0.086};
+        StdDraw.filledPolygon(shadow8d20x, shadow8d20y);
     }
 
     /**********************************************************
@@ -198,6 +220,17 @@ public class DnDParty {
     }
 
     /**********************************************************
+     * METHOD: drawD12()                                       *
+     * DESCRIPTION: draw a d12 die                             *
+     * PARAMETERS: none                                        *
+     * RETURN VALUE: none                                      *
+     **********************************************************/
+    private void drawD12(){
+        StdDraw.setPenColor(StdDraw.BOOK_LIGHT_BLUE);
+        StdDraw.filledSquare(0.73, 0.07, 0.06);
+    }
+
+    /**********************************************************
      * METHOD: rollD10()                                       *
      * DESCRIPTION: roll a d10 die                             *
      * PARAMETERS: none                                        *
@@ -206,6 +239,30 @@ public class DnDParty {
     private int rollD10() {
         int d10 = (int) (Math.random() * 10) + 1;
         return d10;
+    }
+
+     /**********************************************************
+     * METHOD: drawD10()                                       *
+     * DESCRIPTION: draw a d10 die                             *
+     * PARAMETERS: none                                        *
+     * RETURN VALUE: none                                      *
+     **********************************************************/
+    private void drawD10(){
+        StdDraw.setPenColor(StdDraw.DICE_GREEN);
+        double d10x[] = {0.585, 0.5355, 0.5292649731, 0.585, 0.6407350269, 0.6345};
+        double d10y[] = {0.01, 0.045, 0.07, 0.13, 0.07, 0.045};
+        StdDraw.filledPolygon(d10x, d10y);
+        StdDraw.setPenColor(StdDraw.GREEN);
+        double shadow1d10x[] = {0.585, 0.5355, 0.56025, 0.585, 0.60975, 0.6345};
+        double shadow1d10y[] = {0.01, 0.045, 0.045, 0.03, 0.045, 0.045};
+        StdDraw.filledPolygon(shadow1d10x, shadow1d10y);
+        StdDraw.setPenColor(StdDraw.GREEN_SHADOW);
+        double shadow2d10x[] = {0.5355, 0.56025, 0.585, 0.5292649731};
+        double shadow2d10y[] = {0.045, 0.045, 0.13, 0.07};
+        StdDraw.filledPolygon(shadow2d10x, shadow2d10y);
+        double shadow3d10x[] = {0.6345, 0.60975, 0.585, 0.6407350269};
+        double shadow3d10y[] = {0.045, 0.045, 0.13, 0.07};
+        StdDraw.filledPolygon(shadow3d10x, shadow3d10y);
     }
 
     /**********************************************************
@@ -219,6 +276,30 @@ public class DnDParty {
         return d8;
     }
 
+     /**********************************************************
+     * METHOD: drawD8()                                        *
+     * DESCRIPTION: draw a d8  die                             *
+     * PARAMETERS: none                                        *
+     * RETURN VALUE: none                                      *
+     **********************************************************/
+    private void drawD8(){
+        StdDraw.setPenColor(StdDraw.ORANGE);
+        double d8x[] = {0.43, 0.3722649731, 0.3742649731, 0.43, 0.4857350269, 0.4877350269};
+        double d8y[] = {0.01, 0.035, 0.0945, 0.13, 0.0945, 0.035};
+        StdDraw.filledPolygon(d8x, d8y);
+        StdDraw.setPenColor(StdDraw.DEEP_ORANGE);
+        double shadow1d8x[] = {0.43, 0.3722649731, 0.4877350269};
+        double shadow1d8y[] = {0.01, 0.035, 0.035};
+        StdDraw.filledPolygon(shadow1d8x, shadow1d8y);
+        StdDraw.setPenColor(StdDraw.ORANGE_SHADOW);
+        double shadow2d8x[] = {0.3722649731, 0.3742649731, 0.43};
+        double shadow2d8y[] = {0.035, 0.0945, 0.13};
+        StdDraw.filledPolygon(shadow2d8x, shadow2d8y);
+        double shadow3d8x[] = {0.43, 0.4857350269, 0.4877350269};
+        double shadow3d8y[] = {0.13, 0.0945, 0.035};
+        StdDraw.filledPolygon(shadow3d8x, shadow3d8y);
+    }
+
     /**********************************************************
      * METHOD: rollD6()                                        *
      * DESCRIPTION: roll a d6 die                              *
@@ -230,6 +311,17 @@ public class DnDParty {
         return d6;
     }
 
+     /**********************************************************
+     * METHOD: drawD6()                                        *
+     * DESCRIPTION: draw a d6 die                              *
+     * PARAMETERS: none                                        *
+     * RETURN VALUE: none                                      *
+     **********************************************************/
+    private void drawD6(){
+        StdDraw.setPenColor(StdDraw.PRINCETON_ORANGE);
+        StdDraw.filledSquare(0.27, 0.065, 0.05);
+    }
+
     /**********************************************************
      * METHOD: rollD4()                                        *
      * DESCRIPTION: roll a d4 die                              *
@@ -239,6 +331,19 @@ public class DnDParty {
     private int rollD4() {
         int d4 = (int) (Math.random() * 4) + 1;
         return d4;
+    }
+
+     /**********************************************************
+     * METHOD: drawD4()                                        *
+     * DESCRIPTION: draw a d4 die                              *
+     * PARAMETERS: none                                        *
+     * RETURN VALUE: none                                      *
+     **********************************************************/
+    private void drawD4(){
+        StdDraw.setPenColor(StdDraw.RED);
+        double d4x[] = {0.04419147039, 0.1077, 0.1712085296};
+        double d4y[] = {0.015, 0.125, 0.015};
+        StdDraw.filledPolygon(d4x, d4y);
     }
 
     //constructor
