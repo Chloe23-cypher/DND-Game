@@ -172,6 +172,8 @@ public class DnDParty {
         StdDraw.text(0.27, 0.065, "d6");
         StdDraw.text(0.43, 0.065, "d8");
         StdDraw.text(0.585, 0.055, "d10");
+         StdDraw.text(0.73, 0.061, "d12");
+         StdDraw.text(0.90, 0.060, "d20");
      }
 
 
@@ -285,16 +287,15 @@ public class DnDParty {
 
 
 
-        Character c1 = new Character("Barbarian", "Dragon Born", 1, 14, 14, 15, barbarian, barbarianA, drinkPotion,
-        "Flintstrike Rasbor", "Hunting, Combat Training, and Playing Poker", "General of the Army for the Kingdom Witchitieer", "Loyal to his unit and not afraid to get some blood on his hands.");
-        Character c2 = new Character("Cleric", "Halfling", 1, 10, 10, 12, cleric, clericA, healParty,
-        "Anzira Heartbrige", "Pulling pranks, praying in the meadows, and playing the harp.", "A healer at the Medbay", "Joyful and Humorous. Enjoying making her party members laugh with a joke. Fierce in combat." );
-        Character c3 = new Character("Rogue", "Gnome", 1, 9, 9, 13, rogue, rogueA, drinkPotion,
-        "Brixton Shadowcloak", "Reading, sharpening his rapier, and exploring the terrain.", "An assassin", "Reserved, Quiet, and Stealthy. If promoted tells spooky stories around the fire.");
-        Character c4 = new Character("Wizard", "Elf", 1, 6, 6, 11, wizard, wizardA, drinkPotion,
-        "Venira Duskhold", "Star reading, practicing her magic, and knife throwing" , "A princess of the kingdom Lothlórien", "Gorgeous, Kind Hearted, and Intelligent. Helpful around camp gathering supplies.");
-        Character e1 = new Character("Imp", "Imp", 1, 10, 10, 13, imp, impA, drinkPotion, "", "", "", "");
-
+        Character c1 = new Character("Barbarian", "Dragon Born", 1, 14, 14, 15, barbarian, barbarianA, drinkPotion, 0, 0,
+                "Flintstrike Rasbor", "Hunting, Combat Training, and Playing Poker", "General of the Army for the Kingdom Witchitieer", "Loyal to his unit and not afraid to get some blood on his hands.");
+        Character c2 = new Character("Cleric", "Halfling", 1, 10, 10, 12, cleric, clericA, healParty, 0, 0,
+                "Anzira Heartbrige", "Pulling pranks, praying in the meadows, and playing the harp.", "A healer at the Medbay", "Joyful and Humorous. Enjoying making her party members laugh with a joke. Fierce in combat." );
+        Character c3 = new Character("Rogue", "Gnome", 1, 9, 9, 13, rogue, rogueA, drinkPotion, 0, 0,
+                "Brixton Shadowcloak", "Reading, sharpening his rapier, and exploring the terrain.", "An assassin", "Reserved, Quiet, and Stealthy. If promoted tells spooky stories around the fire.");
+        Character c4 = new Character("Wizard", "Elf", 1, 6, 6, 11, wizard, wizardA, drinkPotion, 0, 0,
+                "Venira Duskhold", "Star reading, practicing her magic, and knife throwing" , "A princess of the kingdom Lothlórien", "Gorgeous, Kind Hearted, and Intelligent. Helpful around camp gathering supplies.");
+        Character e1 = new Character("Imp", "Imp", 0, 10, 10, 13, imp, impA, drinkPotion, 0, 0, "", "", "", "");
         this.party.add(c1);
         this.party.add(c2);
         this.party.add(c3);
@@ -310,16 +311,16 @@ public class DnDParty {
      ************************************************************/
     private void drawCharLeft(Character left){
         if (left.getType().equals("Barbarian") && left.getImage() == 0){
-            StdDraw.picture(0.25,0.45, "C:/Users/bella/Downloads/DnDbackground/Barbarian_Greataxe.png", 0.6, 0.6);
+            StdDraw.picture(0.25,0.48, "C:/Users/chloe/OneDrive/Desktop/DND photo/Barbarian_Greataxe.png", 0.6, 0.6);
         } else if (left.getType().equals("Barbarian") && left.getImage() == 1){
-            StdDraw.picture(0.25,0.45, "C:/Users/bella/Downloads/DnDbackground/Barbarian_Breath_Weapon.png", 0.6, 0.6);
+            StdDraw.picture(0.25,0.48, "C:/Users/chloe/OneDrive/Desktop/DND photo/Barbarian_Breath_Weapon.png", 0.6, 0.6);
         }
     }
 
 
     private void drawCharRight(Character right){
         if(right.getType().equals("Imp")){
-            StdDraw.picture(0.77,0.5, "C:/Users/bella/Downloads/DnDbackground/Imp.png", 0.4, 0.4);
+            StdDraw.picture(0.77,0.5, "C:/Users/chloe/OneDrive/Desktop/DND photo/Imp.png", 0.4, 0.4);
         }
     }
 
@@ -332,8 +333,9 @@ public class DnDParty {
      *********************************************************/
     public void hp_bar(Character left, Character right){
         StdDraw.enableDoubleBuffering();
-//        StdDraw.clear();
         this.background();
+        this.drawCharLeft(left);
+        this.drawCharRight(right);
         StdDraw.setPenRadius(0.01);
         StdDraw.setPenColor(StdDraw.BOOK_RED);
         double x_char = 0.255;
@@ -348,6 +350,7 @@ public class DnDParty {
         StdDraw.setPenColor(StdDraw.WHITE);
         StdDraw.text(x_char, 0.84, left.getType());
         StdDraw.text(x_enemy,0.84, right.getType());
+
         for(int i = 0; i <= left.getHP(); i++){
             if (left.getHP() == 0){
                 StdDraw.enableDoubleBuffering();
@@ -389,7 +392,7 @@ public class DnDParty {
      * RETURN VALUE: none                                     *
      *********************************************************/
     public void Rolling_Dice(int roll, int damage_roll, int dice){
-        int times = (int)(Math.random() *(6-1 +1) + 1 );
+        int times = (int)(Math.random() *(5-1 +1) + 1 );
         text();
         StdDraw.setPenColor(StdDraw.WHITE);
 
@@ -420,11 +423,6 @@ public class DnDParty {
                     break;
                 case 6:
                     rand = d6_random;
-                    StdDraw.text(0.1077, 0.06, "d4");
-                    StdDraw.text(0.43, 0.065, "d8");
-                    StdDraw.text(0.585, 0.055, "d10");
-                    StdDraw.text(0.73, 0.061, "d12");
-                    StdDraw.text(0.90, 0.060, "d20");
                     //d6
                     StdDraw.setPenColor(StdDraw.PRINCETON_ORANGE);
                     StdDraw.filledSquare(0.27, 0.065, 0.05);
@@ -435,11 +433,6 @@ public class DnDParty {
                     break;
                 case 8:
                     rand = d8_random;
-                    StdDraw.text(0.1077, 0.06, "d4");
-                    StdDraw.text(0.27, 0.065, "d6");
-                    StdDraw.text(0.585, 0.055, "d10");
-                    StdDraw.text(0.73, 0.061, "d12");
-                    StdDraw.text(0.90, 0.060, "d20");
                     //d8
                     StdDraw.setPenColor(StdDraw.ORANGE);
                     double[] d8x = {0.43, 0.3722649731, 0.3742649731, 0.43, 0.4857350269, 0.4877350269};
@@ -464,11 +457,7 @@ public class DnDParty {
                     break;
                 case 10:
                     rand = d10_random;
-                    StdDraw.text(0.1077, 0.06, "d4");
-                    StdDraw.text(0.27, 0.065, "d6");
-                    StdDraw.text(0.43, 0.065, "d8");
-                    StdDraw.text(0.73, 0.061, "d12");
-                    StdDraw.text(0.90, 0.060, "d20");
+                    StdDraw.setPenColor(Color.WHITE);
                     //d10
                     StdDraw.setPenColor(StdDraw.DICE_GREEN);
                     double[] d10x = {0.585, 0.5355, 0.5292649731, 0.585, 0.6407350269, 0.6345};
@@ -493,11 +482,6 @@ public class DnDParty {
                     break;
                 case 12:
                     rand = d12_random;
-                    StdDraw.text(0.1077, 0.06, "d4");
-                    StdDraw.text(0.27, 0.065, "d6");
-                    StdDraw.text(0.43, 0.065, "d8");
-                    StdDraw.text(0.585, 0.055, "d10");
-                    StdDraw.text(0.90, 0.060, "d20");
                     //d12
                     StdDraw.setPenColor(StdDraw.BOOK_LIGHT_BLUE);
                     StdDraw.filledSquare(0.73, 0.07, 0.06);
@@ -703,7 +687,7 @@ public class DnDParty {
         int choice = scan.nextInt();
         System.out.println();
         if (choice == 1){
-            attacker.setImage(1);
+            attacker.setImage(0);
             System.out.println("The " + attacker.getType() + " will attack using " + attacker.getAction().getAttack1().getWeapon());
             System.out.println("Roll to hit.");
             int attackRoll = this.rollD20();
