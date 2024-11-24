@@ -3,9 +3,8 @@ public class DnDGame {
         System.out.println("Welcome to your DnD Campaign!");
         DnDParty party = new DnDParty();
         party.meet_party();
-        System.out.print("Having meet your members, ");
+        System.out.print("Having met your members, ");
         party.interfaceLoop();
 
     }
 }
-
