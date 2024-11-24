@@ -603,9 +603,10 @@ public final class StdDraw implements ActionListener, MouseListener, MouseMotion
      * The RGB values are approximately (192, 91, 236).
      */
     public static final Color PURPLE = new Color(192, 91, 236);
-    public static final Color MID_PURPLE = new Color(192, 91, 236);
-    public static final Color NEW_PURPLE = new Color(255, 255, 255);
-    public static final Color DEEP_PURPLE = new Color(255, 255, 255);
+    public static final Color DICE_PURPLE = new Color(198, 80, 235);
+    public static final Color MID_PURPLE = new Color(136, 40, 166);
+    public static final Color NEW_PURPLE = new Color(171, 71, 201);
+    public static final Color DEEP_PURPLE = new Color(98, 26, 120);
 
 
     // default colors
