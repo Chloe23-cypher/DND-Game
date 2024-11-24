@@ -382,7 +382,7 @@ public class DnDParty {
      *************************************************************/
     private void drawCharRight(Character right){
         if(right.getType().equals("Imp")){
-            StdDraw.picture(0.77,0.5, "C:/Users/bella/Downloads/DnDbackground/Imp.png", 0.4, 0.4);
+            StdDraw.picture(0.77, 0.5, "C:/Users/bella/Downloads/DnDbackground/Imp.png", 0.4, 0.4);
         }
     }
 
@@ -440,6 +440,7 @@ public class DnDParty {
         attack = left;
         defense = right;
     }
+    
     private Character attack;
     private Character defense;
     private double x_postion = 0.0;
@@ -544,11 +545,9 @@ public class DnDParty {
                     StdDraw.setPenColor(StdDraw.BLACK);
                     StdDraw.text(0.90, 0.060, String.valueOf(rand));
                     break;
-
             }
             StdDraw.show();
             StdDraw.pause(500);
-
         }
         StdDraw.clear();
         this.background();
@@ -556,7 +555,6 @@ public class DnDParty {
         StdDraw.setPenColor(StdDraw.BLACK);
         if(damage_roll != 0 ) {
             StdDraw.text(x_postion, y_postion, String.valueOf(damage_roll));
-
         }
         else{
             StdDraw.text(0.90, 0.060, String.valueOf(roll));
@@ -565,7 +563,7 @@ public class DnDParty {
         StdDraw.pause(2000);
     }
     
-    /**********************************************************
+     /**********************************************************
      * METHOD: players_turn()                                 *
      * DESCRIPTION: displays which character's turn it is     *
      * party member                                           *
