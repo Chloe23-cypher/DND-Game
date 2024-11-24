@@ -734,7 +734,7 @@ public class DnDParty {
             System.out.println("The " + attacker.getType() + " will attack using " + attacker.getAction().getAttack1().getWeapon());
             System.out.println("Roll to hit.");
             int attackRoll = this.rollD20();
-            Rolling_Dice(attackRoll, 0,20);
+            Rolling_Dice(attackRoll, 0, 20);
             int attackBonus = attacker.getAction().getAttack1().getAttackBonus();
             int attackTotal = attackRoll + attackBonus;
             System.out.println("The " + attacker.getType() + " rolled a " + attackRoll + " with an attack bonus of " + attackBonus + " to total " + attackTotal + ".");
@@ -810,7 +810,7 @@ public class DnDParty {
             } else if (attacker.getAction().getAttack2().getUseDC().equals("N")){
                 System.out.println("Roll to hit.");
                 int attackRoll = this.rollD20();
-                Rolling_Dice(attackRoll,0,20);
+                Rolling_Dice(attackRoll, 0, 20);
                 int attackBonus = attacker.getAction().getAttack2().getAttackBonus();
                 int attackTotal = attackRoll + attackBonus;
                 System.out.println("The " + attacker.getType() + " rolled a " + attackRoll + " with an attack bonus of " + attackBonus + " to total " + attackTotal + ".");
@@ -825,11 +825,10 @@ public class DnDParty {
             }
         }
         else{
-            System.out.println("Invalid choose!");
+            System.out.println("Invalid choice!");
             System.out.println("What Action would you like to take?");
             System.out.print("(choose 1 or 2) " + attacker.getAction().getAttack1().getWeapon() + "\t" + attacker.getAction().getAttack2().getWeapon() + " => ");
             choice = scan.nextInt();
-
         }
         return damage;
     }
