@@ -19,9 +19,10 @@ public class Character {
     private String hobbies;
     private String profession;
     private String personality;
-    private static int turn = 0;
+    private int turn;
+    private int image;
 
-    public Character(String type, String race, int level, int hp, int maxHP, int ac, Stats stats, Action action, Action bonusAction, String name, String hobbies, String profession, String personality) {
+    public Character(String type, String race, int level, int hp, int maxHP, int ac, Stats stats, Action action, Action bonusAction, int turn, int image, String name, String hobbies, String profession, String personality) {
         this.type = type;
         this.race = race;
         this.level = level;
@@ -31,6 +32,8 @@ public class Character {
         this.stats = stats;
         this.action = action;
         this.bonusAction = bonusAction;
+        this.turn = turn;
+        this.image = image;
         this.name = name;
         this.hobbies = hobbies;
         this.profession = profession;
@@ -73,6 +76,15 @@ public class Character {
     public Action getBonusAction() {
         return this.bonusAction;
     }
+
+    public int getTurn(){
+        return this.turn;
+    }
+
+    public int getImage(){
+        return this.image;
+    }
+    
     public String getName() {
         return this.name;
     }
@@ -99,7 +111,6 @@ public class Character {
         if (this.hp < 0) {
             this.hp = 0;
         }
-
     }
 
     public void healSetHP(int health) {
@@ -107,6 +118,16 @@ public class Character {
         if (this.hp > this.maxHP) {
             this.hp = this.maxHP;
         }
-
     }
+
+    public void setTurn(int turn){
+        this.turn = turn;
+    }
+
+    public void setImage(int image){
+        this.image = image;
+    }
+
+    
+    
 }
