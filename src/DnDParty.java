@@ -293,13 +293,6 @@ public class DnDParty {
     public DnDParty() {
         this.party = new ArrayList<Character>();
         this.enemies = new ArrayList<Character>();
-        System.out.println("Menu commands:");
-        System.out.println("\tS – Check Party Members' Stats");
-        System.out.println("\tD – Detailed information about a character ");
-        System.out.println("\tI – Character's Inventory");
-        System.out.println("\tE – Start Encounter");
-        System.out.println("\t? – Display this menu");
-        System.out.print("\n");
 
         Stats barbarian = new Stats(17, 13, 14, 8, 12, 11);
         Stats cleric = new Stats(12, 10, 14, 10, 15, 13);
@@ -307,6 +300,8 @@ public class DnDParty {
         Stats wizard = new Stats(8, 14, 10, 15, 14, 13);
         Stats imp = new Stats(6, 17, 13, 11, 12, 14);
         Stats troll = new Stats(18, 13, 20, 7, 9, 7);
+        Stats gnoll = new Stats(14, 12, 11, 6, 10, 7);
+        Stats orc = new Stats(16, 12, 16, 7, 11, 10);
 
         //Actions
         Attack greataxe = new Attack("Greataxe Melee Attack", "N", 5, 0, "1d12");
@@ -317,7 +312,12 @@ public class DnDParty {
         Attack sneak = new Attack("Sneak Attack", "N", 8, 0, "1d8 + 1d6");
         Attack witch = new Attack("Witch Bolt", "N", 4, 0, "1d12");
         Attack ice = new Attack("Ice Knife", "Y", 4, 12, "1d10");
-        Attack sting = new Attack("Sting", "Y", 5, 11, "1d4 + 3");
+        Attack sting = new Attack("Sting", "Y", 5, 11, "1d4");
+        Attack biteTr = new Attack("Bite", "N", 7, 0, "1d6");
+        Attack claw = new Attack("Claw", "N", 7, 0, "2d6 + 4");
+        Attack spear = new Attack("Spear", "N", 4, 0, "1d6");
+        Attack biteGn = new Attack("Bite", "N", 4, 0, "1d4");
+        Attack javelin = new Attack("Javelin", "N", 5, 0, "1d6");
 
         //Bonus actions
         Attack potion = new Attack("Potion of Healing", "N", 0, 0, "2d4 + 2");
@@ -330,27 +330,36 @@ public class DnDParty {
         Action healParty = new Action(heal, heal);
         Action drinkPotion = new Action(potion, potion);
         Action impA = new Action(sting, sting);
+        Action trollA = new Action(biteTr, claw);
+        Action gnollA = new Action(spear, biteGn);
+        Action orcA = new Action(greataxe, javelin);
 
 
 
-        Character c1 = new Character("Barbarian", "Dragon Born", 1, 14, 14, 15, barbarian, barbarianA, drinkPotion,
-        "Flintstrike Rasbor", "Hunting, Combat Training, and Playing Poker", "General of the Army for the Kingdom Witchitieer", "Loyal to his unit and not afraid to get some blood on his hands.");
-        Character c2 = new Character("Cleric", "Halfling", 1, 10, 10, 12, cleric, clericA, healParty,
-        "Anzira Heartbrige", "Pulling pranks, praying in the meadows, and playing the harp.", "A healer at the Medbay", "Joyful and Humorous. Enjoying making her party members laugh with a joke. Fierce in combat." );
-        Character c3 = new Character("Rogue", "Gnome", 1, 9, 9, 13, rogue, rogueA, drinkPotion,
-        "Brixton Shadowcloak", "Reading, sharpening his rapier, and exploring the terrain.", "An assassin", "Reserved, Quiet, and Stealthy. If promoted tells spooky stories around the fire.");
-        Character c4 = new Character("Wizard", "Elf", 1, 6, 6, 11, wizard, wizardA, drinkPotion,
-        "Venira Duskhold", "Star reading, practicing her magic, and knife throwing" , "A princess of the kingdom Lothlórien", "Gorgeous, Kind Hearted, and Intelligent. Helpful around camp gathering supplies.");
-        Character e1 = new Character("Imp", "Imp", 1, 10, 10, 13, imp, impA, drinkPotion, "", "", "", "");
+        Character c1 = new Character("Barbarian", "Dragon Born", 1, 14, 14, 15, barbarian, barbarianA, drinkPotion, 0, 0,
+                "Flintstrike Rasbor", "Hunting, Combat Training, and Playing Poker", "General of the Army for the Kingdom Witchitieer", "Loyal to his unit and not afraid to get some blood on his hands.");
+        Character c2 = new Character("Cleric", "Halfling", 1, 10, 10, 12, cleric, clericA, healParty, 0, 0,
+                "Anzira Heartbrige", "Pulling pranks, praying in the meadows, and playing the harp.", "A healer at the Medbay", "Joyful and Humorous. Enjoying making her party members laugh with a joke. Fierce in combat." );
+        Character c3 = new Character("Rogue", "Gnome", 1, 9, 9, 13, rogue, rogueA, drinkPotion, 0, 0,
+                "Brixton Shadowcloak", "Reading, sharpening his rapier, and exploring the terrain.", "An assassin", "Reserved, Quiet, and Stealthy. If promoted tells spooky stories around the fire.");
+        Character c4 = new Character("Wizard", "Elf", 1, 6, 6, 11, wizard, wizardA, drinkPotion, 0, 0,
+                "Venira Duskhold", "Star reading, practicing her magic, and knife throwing" , "A princess of the kingdom Lothlórien", "Gorgeous, Kind Hearted, and Intelligent. Helpful around camp gathering supplies.");
+        Character e1 = new Character("Imp", "Imp", 0, 10, 10, 13, imp, impA, drinkPotion, 0, 0, "", "", "", "");
+        Character e2 = new Character("Troll", "Troll", 0, 70, 84, 15, troll, trollA, drinkPotion, 0, 0, "", "", "", "");
+        Character e3 = new Character("Gnoll", "Gnoll", 0, 22, 22, 15, gnoll, gnollA, drinkPotion, 0, 0, "", "", "", "");
+        Character e4 = new Character("Orc", "Orc", 0, 15, 15, 13, orc, orcA, drinkPotion, 0, 0, "", "", "", "");
 
         this.party.add(c1);
         this.party.add(c2);
         this.party.add(c3);
         this.party.add(c4);
         this.enemies.add(e1);
+        this.enemies.add(e2);
+        this.enemies.add(e3);
+        this.enemies.add(e4);
     }
     
-   /************************************************************
+     /************************************************************
      * METHOD: drawCharLeft()                                    *
      * DESCRIPTION: draws the character on the left of the screen*
      * party member                                              *
@@ -554,8 +563,8 @@ public class DnDParty {
         }
         StdDraw.show();
         StdDraw.pause(2000);
-
     }
+    
     /**********************************************************
      * METHOD: players_turn()                                 *
      * DESCRIPTION: displays which character's turn it is     *
