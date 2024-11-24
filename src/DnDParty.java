@@ -404,17 +404,18 @@ public class DnDParty {
         this.enemies.add(e1);
     }
     
-    /************************************************************
+   /************************************************************
      * METHOD: drawCharLeft()                                    *
      * DESCRIPTION: draws the character on the left of the screen*
-     * PARAMETERS: Character left                                *
+     * party member                                              *
+     * PARAMETERS: current                                       *
      * RETURN VALUE: none                                        *
      ************************************************************/
     private void drawCharLeft(Character left){
         if (left.getType().equals("Barbarian") && left.getImage() == 0){
-            StdDraw.picture(0.25,0.45, "C:/Users/bella/Downloads/DnDbackground/Barbarian_Greataxe.png", 0.6, 0.6);
+            StdDraw.picture(0.25,0.45, "C:/Users/chloe/OneDrive/Desktop/DND photo/Barbarian_Greataxe.png", 0.6, 0.6);
         } else if (left.getType().equals("Barbarian") && left.getImage() == 1){
-            StdDraw.picture(0.25,0.45, "C:/Users/bella/Downloads/DnDbackground/Barbarian_Breath_Weapon.png", 0.6, 0.6);
+            StdDraw.picture(0.25,0.45, "C:/Users/chloe/OneDrive/Desktop/DND photo/Barbarian_Breath_Weapon.png", 0.6, 0.6);
         }
     }
 
