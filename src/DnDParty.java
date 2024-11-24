@@ -72,50 +72,17 @@ public class DnDParty {
         StdDraw.setPenColor(StdDraw.LIGHT_GRAY);
         StdDraw.filledRectangle(0.5, 0, 0.5, 0.14);
         //d4
-        StdDraw.setPenColor(StdDraw.RED);
-        double d4x[] = {0.04419147039, 0.1077, 0.1712085296};
-        double d4y[] = {0.015, 0.125, 0.015};
-        StdDraw.filledPolygon(d4x, d4y);
+        this.drawD4();
         //d6
-        StdDraw.setPenColor(StdDraw.PRINCETON_ORANGE);
-        StdDraw.filledSquare(0.27, 0.065, 0.05);
+        this.drawD6();
         //d8
-        StdDraw.setPenColor(StdDraw.ORANGE);
-        double[] d8x = {0.43, 0.3722649731, 0.3742649731, 0.43, 0.4857350269, 0.4877350269};
-        double[] d8y = {0.01, 0.035, 0.0945, 0.13, 0.0945, 0.035};
-        StdDraw.filledPolygon(d8x, d8y);
-        StdDraw.setPenColor(StdDraw.DEEP_ORANGE);
-        double[] shadow1d8x = {0.43, 0.3722649731, 0.4877350269};
-        double[] shadow1d8y = {0.01, 0.035, 0.035};
-        StdDraw.filledPolygon(shadow1d8x, shadow1d8y);
-        StdDraw.setPenColor(StdDraw.ORANGE_SHADOW);
-        double[] shadow2d8x = {0.3722649731, 0.3742649731, 0.43};
-        double[] shadow2d8y = {0.035, 0.0945, 0.13};
-        StdDraw.filledPolygon(shadow2d8x, shadow2d8y);
-        double[] shadow3d8x = {0.43, 0.4857350269, 0.4877350269};
-        double[] shadow3d8y = {0.13, 0.0945, 0.035};
-        StdDraw.filledPolygon(shadow3d8x, shadow3d8y);
+        this.drawD8();
         //d10
-        StdDraw.setPenColor(StdDraw.DICE_GREEN);
-        double[] d10x = {0.585, 0.5355, 0.5292649731, 0.585, 0.6407350269, 0.6345};
-        double[] d10y = {0.01, 0.045, 0.07, 0.13, 0.07, 0.045};
-        StdDraw.filledPolygon(d10x, d10y);
-        StdDraw.setPenColor(StdDraw.GREEN);
-        double[] shadow1d10x = {0.585, 0.5355, 0.56025, 0.585, 0.60975, 0.6345};
-        double[] shadow1d10y = {0.01, 0.045, 0.045, 0.03, 0.045, 0.045};
-        StdDraw.filledPolygon(shadow1d10x, shadow1d10y);
-        StdDraw.setPenColor(StdDraw.GREEN_SHADOW);
-        double[] shadow2d10x = {0.5355, 0.56025, 0.585, 0.5292649731};
-        double[] shadow2d10y = {0.045, 0.045, 0.13, 0.07};
-        StdDraw.filledPolygon(shadow2d10x, shadow2d10y);
-        double[] shadow3d10x = {0.6345, 0.60975, 0.585, 0.6407350269};
-        double[] shadow3d10y = {0.045, 0.045, 0.13, 0.07};
-        StdDraw.filledPolygon(shadow3d10x, shadow3d10y);
+        this.drawD10();
         //d12
-        StdDraw.setPenColor(StdDraw.BOOK_LIGHT_BLUE);
-        StdDraw.filledSquare(0.73, 0.07, 0.06);
-        //d20
-        purple_dice();
+        this.drawD12();
+        d20
+        this.drawD20();
         StdDraw.setPenColor(StdDraw.WHITE);
     }
 
@@ -131,27 +98,6 @@ public class DnDParty {
         StdDraw.text(0.43, 0.065, "d8");
         StdDraw.text(0.585, 0.055, "d10");
      }
-
-
-    /**********************************************************
-     * METHOD: background()                                    *
-     * DESCRIPTION: draws the background                       *
-     * PARAMETERS: none                                        *
-     * RETURN VALUE: none                                      *
-     **********************************************************/
-    public void background(){
-        StdDraw.picture(0.50,0.5, "C:/Users/bella/Downloads/DnDbackground/encounter1bg.png", 1.00, 1.00);
-        StdDraw.show();
-        StdDraw.setPenColor(StdDraw.LIGHT_GRAY);
-        StdDraw.filledRectangle(0.5, 0, 0.5, 0.14);
-        this.drawD4();
-        this.drawD6();
-        this.drawD8();
-        this.drawD10();
-        this.drawD12();
-        this.drawD20();
-        StdDraw.setPenColor(StdDraw.WHITE);
-    }
 
     /**********************************************************
      * METHOD: rollD20()                                       *
