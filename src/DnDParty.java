@@ -119,12 +119,12 @@ public class DnDParty {
         StdDraw.setPenColor(StdDraw.WHITE);
     }
     /***********************************************************
-     * METHOD: purple_dice()                                   *
+     * METHOD: drawD20()                                       *
      * DESCRIPTION: draws the d20 dice                         *
      * PARAMETERS: none                                        *
      * RETURN VALUE: none                                      *
      **********************************************************/
-    public void purple_dice(){
+    public void drawD20(){
         StdDraw.setPenColor(StdDraw.DICE_PURPLE);
         double[] d20x = {0.9, 0.8472649731, 0.8472649731, 0.9, 0.9527350269, 0.9527350269};
         double[] d20y = {0.01, 0.041, 0.086, 0.13, 0.086, 0.041};
@@ -511,7 +511,7 @@ public class DnDParty {
                     rand = d20_random;
                     //d20
                     StdDraw.setPenColor(StdDraw.PURPLE);
-                    purple_dice();
+                    this.drawD20();
                     StdDraw.setPenColor(StdDraw.BLACK);
                     StdDraw.text(0.90, 0.060, String.valueOf(rand));
                     break;
