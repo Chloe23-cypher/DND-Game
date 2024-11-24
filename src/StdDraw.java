@@ -521,6 +521,8 @@ public final class StdDraw implements ActionListener, MouseListener, MouseMotion
      *  The color green.
      */
     public static final Color GREEN  = Color.GREEN;
+    public static final Color DICE_GREEN = new Color(24, 196, 24);
+    public static final Color GREEN_SHADOW = new Color(13, 163, 13);
 
     /**
      *  The color light gray.
@@ -586,10 +588,6 @@ public final class StdDraw implements ActionListener, MouseListener, MouseMotion
      */
     public static final Color ORANGE_SHADOW = new Color(255,179,0);
     public static final Color DEEP_ORANGE = new Color(235, 140, 39);
-    public static final Color DICE_PURPLE = new Color(198, 80, 235);
-    public static final Color GREEN_SHADOW = new Color(13, 163, 13);
-    public static final Color DICE_GREEN = new Color(24, 196, 24);
-
 
     public static final Color BROWN = new Color(150, 75, 0);
     public static final Color GOLD = new Color(198, 135, 27);
