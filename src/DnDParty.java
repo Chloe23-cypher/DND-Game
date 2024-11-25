@@ -43,7 +43,7 @@ public class DnDParty {
         }
     }
 
-    /**********************************************************
+     /*********************************************************
      * METHOD: displayMenu()                                  *
      * DESCRIPTION: displays the menu commands                *
      * PARAMETERS: none                                       *
