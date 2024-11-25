@@ -118,6 +118,7 @@ public class DnDParty {
      **********************************************************/
     private void drawD20(){
         StdDraw.setPenColor(StdDraw.DICE_PURPLE);
+        StdDraw.setPenColor(StdDraw.DICE_PURPLE);
         double d20x[] = {0.9, 0.8472649731, 0.8472649731, 0.9, 0.9527350269, 0.9527350269};
         double d20y[] = {0.01, 0.041, 0.086, 0.13, 0.086, 0.041};
         StdDraw.filledPolygon(d20x, d20y);
@@ -169,8 +170,29 @@ public class DnDParty {
      * RETURN VALUE: none                                      *
      **********************************************************/
     private void drawD12(){
+        StdDraw.setPenColor(StdDraw.BOOK_BLUE);
+        double d12x[] = {0.7871, 0.7653, 0.73, 0.6947, 0.6729, 0.6729, 0.6947, 0.73, 0.7653, 0.7871};
+        double d12y[] = {0.0885, 0.1185, 0.13, 0.1185, 0.0885, 0.0515, 0.0215, 0.01, 0.0215, 0.0515};
+        StdDraw.filledPolygon(d12x, d12y);
         StdDraw.setPenColor(StdDraw.BOOK_LIGHT_BLUE);
-        StdDraw.filledSquare(0.73, 0.07, 0.06);
+        double pentd12x[] = {0.73, 0.6967130219, 0.7094275162, 0.7505724838, 0.7632869781};
+        double pentd12y[] = {0.105, 0.0808155948, 0.0416844052, 0.0416844052, 0.0808155948};
+        StdDraw.filledPolygon(pentd12x, pentd12y);
+        StdDraw.setPenColor(StdDraw.BLUE_DARK);
+        double shadow1d12x[] = {0.6947, 0.7094275162, 0.7505724838, 0.7653, 0.73,};
+        double shadow1d12y[] = {0.0215, 0.0416844052, 0.0416844052, 0.0215, 0.01};
+        StdDraw.filledPolygon(shadow1d12x, shadow1d12y);
+        StdDraw.setPenColor(StdDraw.BLUE_MID);
+        double shadow2d12x[] = {0.6729, 0.6947, 0.73, 0.7653, 0.7871, 0.7632869781, 0.73, 0.6967130219};
+        double shadow2d12y[] = {0.0885, 0.1185, 0.13, 0.1185, 0.0885, 0.0808155948, 0.105, 0.0808155948};
+        StdDraw.filledPolygon(shadow2d12x, shadow2d12y);
+        StdDraw.setPenColor(StdDraw.BLUE_SHADE);
+        double shadow3d12x[] = {0.6947, 0.6729, 0.6729, 0.6967130219, 0.7094275162};
+        double shadow3d12y[] = {0.0215, 0.0515, 0.0885, 0.0808155948, 0.0416844052};
+        StdDraw.filledPolygon(shadow3d12x, shadow3d12y);
+        double shadow4d12x[] = {0.7653, 0.7871, 0.7871, 0.7632869781, 0.7505724838};
+        double shadow4d12y[] = {0.0215, 0.0515, 0.0885, 0.0808155948, 0.0416844052};
+        StdDraw.filledPolygon(shadow4d12x, shadow4d12y);
     }
 
     /**********************************************************
