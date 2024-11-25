@@ -22,6 +22,7 @@ public class DnDParty {
                 this.printStats();
             }
             else if(input.equals("D")){
+                StdDraw.clear();
                 this.displayCharacter();
 
             }
@@ -32,12 +33,14 @@ public class DnDParty {
                 if(accomplishment == 1){
                     System.out.println("It seems like you ready for you next Quest...");
                     System.out.println("Best of Luck you're going to need it");
+                    this.encounter2();
 
                 }
-                else {
+                else if (accomplishment == 0){
                     System.out.println("Best of Luck on your Quest!");
+                    this.encounter1();
                 }
-                this.encounter1();
+
             }
             else if(input.equals("?")){
                 this.displayMenu();
@@ -301,13 +304,13 @@ public class DnDParty {
         Character c4 = new Character("Wizard", "Elf", 1, 6, 6, 11, wizard, wizardA, drinkPotion, 0, 0,
                 "Venira Duskhold", "Star reading, practicing her magic, and knife throwing" , "A princess of the kingdom Lothlórien", "Gorgeous, Kind Hearted, and Intelligent. Helpful around camp gathering supplies.");
         Character e1 = new Character("Imp", "Imp", 0, 10, 10, 13, imp, impA, drinkPotion, 0, 0, "", "", "", "");
-       // Character e2 = new Character("Troll", "Troll", 0, 70, 84, 15, troll, trollA , drinkPotion, 0, 0, "", "", "", "");
+        //Character e2 = new Character("Troll", "Troll", 0, 70, 84, 15, troll, trollA , drinkPotion, 0, 0, "", "", "", "");
         this.party.add(c1);
         this.party.add(c2);
         this.party.add(c3);
         this.party.add(c4);
         this.enemies.add(e1);
-//        this.enemies.add(e2);
+        //this.enemies.add(e2);
     }
 
     /**********************************************************
@@ -335,6 +338,7 @@ public class DnDParty {
             System.out.println("Displaying member " + (mem + 1));
             System.out.println(this.party.get(mem).getName());
             System.out.println(this.party.get(mem).getType());
+            System.out.println(this.party.get(mem).getRace());
             System.out.println(this.party.get(mem).getProfession());
             System.out.print("\n");
 
@@ -478,6 +482,7 @@ public class DnDParty {
         Scanner scr = new Scanner(System.in);
         double set_xl = 0.55; // Label X-coordinate
         double set_xv = 0.70;
+        StdDraw.picture(0.50 , 0.50,"C:/Users/chloe/OneDrive/Desktop/DND photo/DND Forest Background.jpg", 1.0 , 1.0 );
         System.out.println("1) Barbarian 2) Cleric 3) Rogue 4) Wizard");
         System.out.print("What character do you want to see more information about? => ");
         int select = scr.nextInt();
@@ -495,9 +500,9 @@ public class DnDParty {
             details += "\tBonus Action:  " + this.party.get(index).getBonusAction().getAttack1().getWeapon() + "\n";
             System.out.println(details);
             // StdDraw
-            StdDraw.picture(0.50 , 0.50,"C:/Users/chloe/OneDrive/Desktop/DND photo/DND Forest Background.jpg", 1.0 , 1.0  );
+            StdDraw.picture(0.50 , 0.50,"C:/Users/chloe/OneDrive/Desktop/DND photo/DND Forest Background.jpg", 1.0 , 1.0 );
             StdDraw.setPenColor(Color.WHITE);
-            StdDraw.filledSquare(0.80, 0.50, 0.28);
+            StdDraw.filledSquare(0.80, 0.53, 0.265);
 
             StdDraw.setPenColor(StdDraw.BLACK);
             double y = 0.70; // Reset y for each member
@@ -511,20 +516,21 @@ public class DnDParty {
                     {"Armor Class:", String.valueOf(party.get(index).getAC())},
                     {"Race", party.get(index).getRace()},
                     {"Class:", String.valueOf(party.get(index).getType())},
-                    {"Action:", party.get(index).getAction().getAttack1().getWeapon() + " and " + this.party.get(index).getAction().getAttack2().getWeapon()},
+                    {"Action:",splitString(party.get(index).getAction().getAttack1().getWeapon() + " and " + this.party.get(index).getAction().getAttack2().getWeapon())},
                     {"Bonus Action:", String.valueOf(this.party.get(index).getBonusAction().getAttack1().getWeapon())}
             };
 
-            //Draw for the selected index
-                for (int i = 0; i < memeber.length; i++) {
-                    String label = memeber[i][0];
-                    String value = memeber[i][1];
-                    StdDraw.textLeft(set_xl, y, label);
-                    StdDraw.textLeft(set_xv, y, value);
-                    drawCharLeft(this.party.get(index));
+            for (String[] strings : memeber) {
+                String label = strings[0];
+                String[] value = strings[1].split("\n");
 
+                StdDraw.textLeft(set_xl, y, label);
+                for (String line : value) {
+                    drawCharLeft(this.party.get(index));
+                    StdDraw.textLeft(set_xv, y, line);
                     y -= 0.05; // Move to the next line
                 }
+            }
             StdDraw.show(); // Update canvas to show the drawing
         }
         else {
@@ -919,7 +925,6 @@ public class DnDParty {
         hp_bar(giver, receiver);
         if(giver.getBonusAction().getAttack1().getDamage().equals("2d4 + 2") || giver.getBonusAction().getAttack2().getDamage().equals("2d4 + 2")){
             HP = this.rollD4() + this.rollD4() + 2;
-            Rolling_Dice(rollD20() ,HP, 4);
         } else if(giver.getBonusAction().getAttack1().getDamage().equals("1d4 + 2") || giver.getBonusAction().getAttack2().getDamage().equals("1d4 + 2")){
             HP = this.rollD4() + 2;
         }
@@ -950,8 +955,15 @@ public class DnDParty {
      * PARAMETERS: none                                        *
      * RETURN VALUE: a number of the party index to be attacked*
      **********************************************************/
-    private void enemyAttack() {
-        System.out.println("Now it's the imp's turn.");
+    private void enemyAttack(int opponent) {
+        String enemy = "";
+        if(opponent == 0){
+            enemy  = "imp";
+        }
+        else if(opponent == 1){
+            enemy = "troll";
+        }
+        System.out.println("Now it's the " + enemy+"'s turn.");
         int select = 5;
         while(select == 5) {
             int index = (int) (Math.random() * this.party.size());
@@ -959,15 +971,15 @@ public class DnDParty {
                 select = index;
             }
         }
-        System.out.println("The imp attempts to attack the " + this.party.get(select).getType() + ".");
+        System.out.println("The " + enemy+ " attempts to attack the " + this.party.get(select).getType() + ".");
         this.hp_bar(this.party.get(select), this.enemies.get(0));
         int attackRoll_enemy = this.rollD20();
         Rolling_Dice(attackRoll_enemy, 0, 20);
         if ((attackRoll_enemy) >= this.party.get(select).getAC()) {
-            System.out.println("The imp rolled a " + attackRoll_enemy + " and now it rolls for damage it deals! ");
+            System.out.println("The " + enemy+ " rolled a " + attackRoll_enemy + " and now it rolls for damage it deals! ");
             int damageRoll = this.rollD12();
             Rolling_Dice(attackRoll_enemy ,damageRoll,12);
-            System.out.println("The imp dealt " + damageRoll + " damage!");
+            System.out.println("The " + enemy + " dealt " + damageRoll + " damage!");
             this.party.get(select).damageSetHP(damageRoll);
             this.hp_bar(this.party.get(select), this.enemies.get(0));
             System.out.println("The " + this.party.get(select).getType() + " now has " + this.party.get(select).getHP() + " hit points left.");
@@ -977,10 +989,11 @@ public class DnDParty {
             }
         }
         else{
-            System.out.print("The imp missed its attack");
+            System.out.print("The "+ enemy+ " missed its attack");
             System.out.print("\n");
         }
     }
+    int imp = 0;
     /***********************************************************
      * METHOD: encounter1()                                    *
      * DESCRIPTION: the party fighting the imp                 *
@@ -994,30 +1007,43 @@ public class DnDParty {
         System.out.println("The party is walking through the forest when they come across an abandon castle.");
         System.out.println("Curious they enter and come in combat with an Imp!\n");
         for (int i = 3; i > 0; i--) {
-            if (this.enemies.get(0).getHP() <= 0) {
-                this.enemies.get(0).healSetHP(10);
+            if (this.enemies.get(imp).getHP() <= 0) {
+                this.enemies.get(imp).healSetHP(10);
             }
-            while (this.enemies.get(0).getHP() != 0) {
+            while (this.enemies.get(imp).getHP() != 0) {
                 for (int j = 0; j < this.party.size(); j++) {
                     //this.players_turn(j);
                     if (this.party.get(j).getHP() > 0) {
-                        this.hp_bar(this.party.get(j), this.enemies.get(0));
-                        int damageRoll = this.combat(this.party.get(j), this.enemies.get(0));
-                        this.enemies.get(0).damageSetHP(damageRoll);
-                        this.hp_bar(this.party.get(j), this.enemies.get(0));
-                        System.out.println("The imp has " + this.enemies.get(0).getHP() + " hit points left." + "\n");
-                        if (this.enemies.get(0).getHP() == 0) {
+                        this.hp_bar(this.party.get(j), this.enemies.get(imp));
+                        int damageRoll = this.combat(this.party.get(j), this.enemies.get(imp));
+                        this.enemies.get(imp).damageSetHP(damageRoll);
+                        this.hp_bar(this.party.get(j), this.enemies.get(imp));
+                        System.out.println("The imp has " + this.enemies.get(imp).getHP() + " hit points left." + "\n");
+                        if (this.enemies.get(imp).getHP() == 0) {
                             System.out.println("You killed the imp! Good job!");
+                            System.out.print("Would you like to make a bonus action? (Y/N) => ");
+                            String bonus = scan.next();
+                            if (bonus.equalsIgnoreCase("Y")) {
+                                if(this.party.get(j).getType().equals("Cleric")){
+                                    System.out.println("Which party member do you want to heal?");
+                                    System.out.print("Barbarian 1., Cleric 2., Rogue 3., Wizard 4. ) => ");
+                                    int heal = scan.nextInt();
+                                    this.healBA(this.party.get(j), this.party.get(heal - 1));
+                                } else {
+                                    this.healBA(this.party.get(j), this.party.get(j));
+                                }
+                            }
                             //Ask the user if they would like to see the states of the characters before continue on
                             // If a character died count the deaths and print them out
                             // System.out.println("There were " + death_count + " deaths");
-
                             if (i == 3) {
+                                System.out.print("\n");
                                 System.out.println("But, wait you though there was only one?!?!");
                                 System.out.println("Two more imps appear!" + "\n");
                             }
                             j = 5;
                         }
+
                         else{
                             System.out.print("Would you like to make a bonus action? (Y/N) => ");
                             String bonus = scan.next();
@@ -1033,9 +1059,10 @@ public class DnDParty {
                             }
                             System.out.println("The " + this.party.get(j).getType() + "'s turn is over.\n");
                             //players_turn(i);
-                            this.enemyAttack();
+                            this.enemyAttack(imp);
                             System.out.println();
                         }
+
                     }
                 }
             }
@@ -1044,10 +1071,89 @@ public class DnDParty {
         System.exit(0);
         accomplishment++;
     }
+    /*********************************************************
+     * METHOD: levelUp()                                      *
+     * DESCRIPTION: increases the levels of all party members *
+     * and rolls to increase their maximum hit points         *
+     * PARAMETERS: none                                       *
+     * RETURN VALUE: none                                     *
+     *********************************************************/
+    public void levelUp() {
+        int hitDice;
+        System.out.println("\nThe party is ready to level up!");
+        for (int i = 0; i < this.party.size(); i++) {
+            this.party.get(i).setLevel(this.party.get(i).getLevel() + 1);
+            hitDice = this.party.get(i).getStats().getCONmod();
+            if(this.party.get(i).getType().equals("Barbarian")){
+                hitDice += this.rollD12();
+            } else if (this.party.get(i).getType().equals("Cleric") || this.party.get(i).getType().equals("Rogue")){
+                hitDice += this.rollD8();
+            } else if (this.party.get(i).getType().equals("Wizard")){
+                hitDice += this.rollD6();
+            }
+            if (this.party.get(i).getHP() <= 0){
+                System.out.println("The " + this.party.get(i).getType() + " has been revived!");
+            }
+            this.party.get(i).setMaxHP(hitDice);
+            this.party.get(i).healSetHP(this.party.get(i).getMaxHP());
+            System.out.println("The " + this.party.get(i).getType() + " has increased to level " + this.party.get(i).getLevel() + " and has a new hit point maximum of " + this.party.get(i).getMaxHP());
+        }
+    }
 
-
+    int troll = 1;
+    /*********************************************************
+     * METHOD: encounter2()                                   *
+     * DESCRIPTION: runs through the party's encounter with a *
+     * troll.                                                 *
+     * PARAMETERS: none                                       *
+     * RETURN VALUE: none                                     *
+     *********************************************************/
+    public void encounter2(){
+        // for loop within a for loop (number of imps fought)
+        System.out.println("The party finds their way out of the castle and into the wilderness behind it.");
+        System.out.println("While on their walk, they come across a large mountain cave.");
+        System.out.println("The enter in search of treasure, but instead encounter a Troll!\n");
+        while (this.enemies.get(troll).getHP() != 0) {
+            for (int j = 0; j < this.party.size(); j++) {
+                if (this.party.get(j).getHP() > 0) {
+                    this.hp_bar(this.party.get(j), this.enemies.get(troll));
+                    int damageRoll = this.combat(this.party.get(j), this.enemies.get(troll));
+                    this.enemies.get(troll).damageSetHP(damageRoll);
+                    this.hp_bar(this.party.get(j), this.enemies.get(troll));
+                    System.out.println("The Troll has " + this.enemies.get(troll).getHP() + " hit points left." + "\n");
+                    if (this.enemies.get(troll).getHP() == 0) {
+                        System.out.println("You killed the Troll! Good job!");
+                        //Ask the user if they would like to see the states of the characters before continue on
+                        // If a character died count the deaths and print them out
+                        // System.out.println("There were " + death_count + " deaths");
+                        j = 5;
+                    }
+                    else{
+                        System.out.print("Would you like to make a bonus action? (Y/N) => ");
+                        String bonus = scan.next();
+                        if (bonus.equalsIgnoreCase("Y")) {
+                            if(this.party.get(j).getType().equals("Cleric")){
+                                System.out.print("Which party member do you want to heal? ( 1) Barbarian. 2) Cleric, 3) Rogue, 4) Wizard ) => ");
+                                int heal = scan.nextInt();
+                                this.healBA(this.party.get(j), this.party.get(heal - 1));
+                            } else {
+                                this.healBA(this.party.get(j), this.party.get(j));
+                            }
+                        }
+                        System.out.println("The " + this.party.get(j).getType() + "'s turn is over.");
+                        System.out.println();
+                    }
+                }
+            }
+            if(this.enemies.get(troll).getHP() != 0){
+                this.enemyAttack(troll);
+            }
+        }
+        System.out.println("The party defeated the Troll! Good job!");
+    }
 
 
 }
+
 
 
