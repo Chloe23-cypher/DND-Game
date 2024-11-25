@@ -520,9 +520,9 @@ public final class StdDraw implements ActionListener, MouseListener, MouseMotion
     /**
      *  The color green.
      */
-    public static final Color GREEN  = new Color(0, 128, 0);
-    public static final Color DICE_GREEN = new Color(24, 196, 24);
+    public static final Color GREEN = new Color(0, 128, 0);
     public static final Color GREEN_SHADOW = new Color(13, 163, 13);
+    public static final Color DICE_GREEN = new Color(24, 196, 24);
 
     /**
      *  The color light gray.
@@ -538,7 +538,8 @@ public final class StdDraw implements ActionListener, MouseListener, MouseMotion
      *  The color orange.
      */
     public static final Color ORANGE = Color.ORANGE;
-
+    public static final Color ORANGE_SHADOW = new Color(255, 179, 0);
+    public static final Color DEEP_ORANGE = new Color(235, 140, 39);
     /**
      *  The color pink.
      */
@@ -569,11 +570,10 @@ public final class StdDraw implements ActionListener, MouseListener, MouseMotion
      * Shade of light blue used in <em>Introduction to Programming in Java</em>.
      * The RGB values are approximately (188, 245, 255).
      */
-    public static final Color BOOK_LIGHT_BLUE = new Color(188, 245, 255);
+    public static final Color BOOK_LIGHT_BLUE = new Color(103, 198, 243);
     public static final Color BLUE_DARK = new Color(42, 156, 212);
     public static final Color BLUE_MID = new Color(73, 162, 204);
     public static final Color BLUE_SHADE = new Color(85, 180, 224);
-
     /**
      * Shade of red used in <em>Algorithms, 4th edition</em>.
      * It is Pantone 1805U. The RGB values are approximately (150, 35, 31).
@@ -589,8 +589,6 @@ public final class StdDraw implements ActionListener, MouseListener, MouseMotion
      * Shade of brown used in to color bears and tree trunks.
      * The RGB values are approximately (150, 75, 0).
      */
-    public static final Color ORANGE_SHADOW = new Color(255,179,0);
-    public static final Color DEEP_ORANGE = new Color(235, 140, 39);
 
     public static final Color BROWN = new Color(150, 75, 0);
     public static final Color GOLD = new Color(198, 135, 27);
@@ -603,7 +601,7 @@ public final class StdDraw implements ActionListener, MouseListener, MouseMotion
      * Shade of purple used in <em>Introduction to Programming in Java</em>.
      * The RGB values are approximately (192, 91, 236).
      */
-    public static final Color PURPLE = new Color(192, 91, 236);
+    public static final Color PURPLE = new Color(128, 0, 128);
     public static final Color DICE_PURPLE = new Color(198, 80, 235);
     public static final Color DEEP_PURPLE = new Color(98, 26, 120);
     public static final Color MID_PURPLE = new Color(136, 40, 166);
