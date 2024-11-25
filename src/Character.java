@@ -22,7 +22,7 @@ public class Character {
     private int turn;
     private int image;
 
-    public Character(String type, String race, int level, int hp, int maxHP, int ac, Stats stats, Action action, Action bonusAction, int turn, int image, String name, String hobbies, String profession, String personality) {
+    public Character(String  type, String race, int level, int hp, int maxHP, int ac, Stats stats, Action action, Action bonusAction, int turn, int image, String name, String hobbies, String profession, String personality) {
         this.type = type;
         this.race = race;
         this.level = level;

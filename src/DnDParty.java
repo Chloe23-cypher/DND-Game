@@ -2,7 +2,9 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
-import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.*;
 import javax.sound.midi.*;
 public class DnDParty {
     private ArrayList<Character> party;
@@ -68,9 +70,9 @@ public class DnDParty {
      **********************************************************/
     public void background() {
         StdDraw.picture(0.50, 0.5, "/C:/Users/chloe/OneDrive/Desktop/DND photo/DND background1.jpg", 1.00, 1.0);
-        //StdDraw.show();
         StdDraw.setPenColor(StdDraw.LIGHT_GRAY);
-        StdDraw.filledRectangle(0.5, 0, 0.5, 0.14);
+        StdDraw.filledRectangle(0.5, 0, 0.5, 0.18);
+        text();
         //d4
         StdDraw.setPenColor(StdDraw.RED);
         double d4x[] = {0.04419147039, 0.1077, 0.1712085296};
@@ -167,14 +169,17 @@ public class DnDParty {
      * PARAMETERS: none                                        *
      * RETURN VALUE: none                                      *
      **********************************************************/
-     public void text() {
-        StdDraw.text(0.1077, 0.06, "d4");
-        StdDraw.text(0.27, 0.065, "d6");
-        StdDraw.text(0.43, 0.065, "d8");
-        StdDraw.text(0.585, 0.055, "d10");
-         StdDraw.text(0.73, 0.061, "d12");
-         StdDraw.text(0.90, 0.060, "d20");
-     }
+    public void text() {
+        Font font = new Font("Righteous", Font.BOLD, 16);
+        StdDraw.setFont(font);
+        StdDraw.setPenColor(Color.white);
+        StdDraw.text(0.1077, 0.15, "d4");
+        StdDraw.text(0.27, 0.15, "d6");
+        StdDraw.text(0.43, 0.15, "d8");
+        StdDraw.text(0.585, 0.15, "d10");
+        StdDraw.text(0.73, 0.15, "d12");
+        StdDraw.text(0.90, 0.15, "d20");
+    }
 
 
     /***********************************************************
@@ -296,13 +301,111 @@ public class DnDParty {
         Character c4 = new Character("Wizard", "Elf", 1, 6, 6, 11, wizard, wizardA, drinkPotion, 0, 0,
                 "Venira Duskhold", "Star reading, practicing her magic, and knife throwing" , "A princess of the kingdom Lothlórien", "Gorgeous, Kind Hearted, and Intelligent. Helpful around camp gathering supplies.");
         Character e1 = new Character("Imp", "Imp", 0, 10, 10, 13, imp, impA, drinkPotion, 0, 0, "", "", "", "");
+       // Character e2 = new Character("Troll", "Troll", 0, 70, 84, 15, troll, trollA , drinkPotion, 0, 0, "", "", "", "");
         this.party.add(c1);
         this.party.add(c2);
         this.party.add(c3);
         this.party.add(c4);
         this.enemies.add(e1);
+//        this.enemies.add(e2);
     }
-    /************************************************************
+
+    /**********************************************************
+     * METHOD: meet_party()                                   *
+     * DESCRIPTION: displays the party members                *
+     * party member                                           *
+     * PARAMETERS: none                                       *
+     * RETURN VALUE: none                                     *
+     *********************************************************/
+    public void meet_party() {
+        int mem = 0; // Current member index
+        double set_xl = 0.55; // Label X-coordinate
+        double set_xv = 0.70; // Value X-coordinate
+        var mousePressed = StdDraw.isMousePressed();
+        StdDraw.picture(0.50 , 0.50,"C:/Users/chloe/OneDrive/Desktop/DND photo/DND Forest Background.jpg", 1.0 , 1.0  );
+        while (mem < this.party.size()) {
+            StdDraw.enableDoubleBuffering();
+            // Clear the canvas for each member
+//            StdDraw.filledSquare(1.0, 1.0, 1.0); // Clear the canvas
+            StdDraw.picture(0.50 , 0.50,"C:/Users/chloe/OneDrive/Desktop/DND photo/DND Forest Background.jpg", 1.0 , 1.0  );
+            StdDraw.setPenColor(Color.WHITE);
+            StdDraw.filledSquare(0.80, 0.50, 0.28);
+
+            StdDraw.setPenColor(StdDraw.BLACK);
+            System.out.println("Displaying member " + (mem + 1));
+            System.out.println(this.party.get(mem).getName());
+            System.out.println(this.party.get(mem).getType());
+            System.out.println(this.party.get(mem).getProfession());
+            System.out.print("\n");
+
+
+            double y = 0.70; // Reset y for each member
+            Font font3 = new Font("Aptos", Font.BOLD, 13);
+            StdDraw.setFont(font3);
+
+            // Create details for the current member
+            String[][] memeber = {
+                    {"Name: ", this.party.get(mem).getName()},
+                    {"Class: ", this.party.get(mem).getType()},
+                    {"Race: ", this.party.get(mem).getRace()},
+                    {"Hobbies:", splitString(party.get(mem).getHobbies())},
+                    {"Profession:", splitString(party.get(mem).getProfession())},
+                    {"Personality:", splitString(party.get(mem).getPersonality())}
+            };
+
+
+            // Draw each detail on the canvas
+            for (String[] strings : memeber) {
+                String label = strings[0];
+                String[] value = strings[1].split("\n");
+
+                StdDraw.textLeft(set_xl, y, label);
+                for (String line : value) {
+                    drawCharLeft(this.party.get(mem));
+                    StdDraw.textLeft(set_xv, y, line);
+                    y -= 0.05; // Move to the next line
+                }
+            }
+
+            StdDraw.show(); // Update canvas to show the drawing
+            StdDraw.pause(3000);
+
+//            // Wait for the user to press a key to continue
+            System.out.println("Right click to see the next member...");
+
+
+
+//
+            mem++;
+        }
+
+    }
+    /**********************************************************
+     * METHOD: splitString()                                  *
+     * DESCRIPTION: splits the String of the hobbies,         *
+     * profession, and personality of the members             *
+     * party member                                           *
+     * PARAMETERS: String str                                 *
+     * RETURN VALUE: result.toString().trim()                 *
+     *********************************************************/
+    private String splitString(String str) {
+        StringBuilder result = new StringBuilder();
+        int start = 0;
+        int periodIndex = 0;
+        int end = 0;
+        while (start < str.length()) {
+            end = Math.min(start + 30, str.length());
+            periodIndex = str.lastIndexOf(" ", end);
+
+            if (periodIndex > start && end < str.length()) {
+                end = periodIndex + 1;
+            }
+            result.append(str, start, end).append("\n");
+            start = end;
+        }
+        return result.toString().trim();
+    }
+    /*************************************************************
      * METHOD: drawCharLeft()                                    *
      * DESCRIPTION: draws the character on the left of the screen*
      * party member                                              *
@@ -311,9 +414,9 @@ public class DnDParty {
      ************************************************************/
     private void drawCharLeft(Character left){
         if (left.getType().equals("Barbarian") && left.getImage() == 0){
-            StdDraw.picture(0.25,0.48, "C:/Users/chloe/OneDrive/Desktop/DND photo/Barbarian_Greataxe.png", 0.6, 0.6);
+            StdDraw.picture(0.23,0.53, "C:/Users/chloe/OneDrive/Desktop/DND photo/Barbarian_Greataxe.png", 0.6, 0.6);
         } else if (left.getType().equals("Barbarian") && left.getImage() == 1){
-            StdDraw.picture(0.25,0.48, "C:/Users/chloe/OneDrive/Desktop/DND photo/Barbarian_Breath_Weapon.png", 0.6, 0.6);
+            StdDraw.picture(0.23,0.53, "C:/Users/chloe/OneDrive/Desktop/DND photo/Barbarian_Breath_Weapon.png", 0.6, 0.6);
         }
     }
 
@@ -321,6 +424,111 @@ public class DnDParty {
     private void drawCharRight(Character right){
         if(right.getType().equals("Imp")){
             StdDraw.picture(0.77,0.5, "C:/Users/chloe/OneDrive/Desktop/DND photo/Imp.png", 0.4, 0.4);
+        }
+    }
+    /*********************************************************
+     * METHOD: printStats()                                   *
+     * DESCRIPTION: displays members stats                    *
+     * PARAMETERS: none                                       *
+     * RETURN VALUE: none                                     *
+     *********************************************************/
+    public void printStats () {
+        System.out.printf("%-12s %-16s %-14s %-14s %-15s", "\t", "Barbarian", "Cleric", "Rogue", "Wizard");
+        System.out.print("\n");
+        System.out.print("Strength:           ");
+        for (int i = 0; i< this.party.size(); i++){
+            System.out.printf("%-15s", this.party.get(i).getStats().getSTR());
+        }
+        System.out.print("\n");
+        System.out.print("Dexterity:          ");
+        for (int i = 0; i< this.party.size(); i++){
+            System.out.printf("%-15s", this.party.get(i).getStats().getDEX());
+        }
+        System.out.print("\n");
+        System.out.print("Constitution:       ");
+        for (int i = 0; i< this.party.size(); i++){
+            System.out.printf("%-15s", this.party.get(i).getStats().getCON());
+        }
+        System.out.print("\n");
+        System.out.print("Intelligence:       ");
+        for (int i = 0; i< this.party.size(); i++){
+            System.out.printf("%-15s", this.party.get(i).getStats().getINT());
+        }
+        System.out.print("\n");
+        System.out.print("Wisdom:             ");
+        for (int i = 0; i< this.party.size(); i++){
+            System.out.printf("%-15s", this.party.get(i).getStats().getWIS());
+        }
+        System.out.print("\n");
+        System.out.print("Charisma:           ");
+        for (int i = 0; i< this.party.size(); i++){
+            System.out.printf("%-15s", this.party.get(i).getStats().getCHA());
+        }
+        System.out.print("\n");
+
+    }
+    /*********************************************************
+     * METHOD: displayCharacter()                             *
+     * DESCRIPTION: displays addition information on the      *
+     * party member                                           *
+     * PARAMETERS: none                                       *
+     * RETURN VALUE: none                                     *
+     *********************************************************/
+    public void displayCharacter(){
+        Scanner scr = new Scanner(System.in);
+        double set_xl = 0.55; // Label X-coordinate
+        double set_xv = 0.70;
+        System.out.println("1) Barbarian 2) Cleric 3) Rogue 4) Wizard");
+        System.out.print("What character do you want to see more information about? => ");
+        int select = scr.nextInt();
+        scr.nextLine();
+        int index = select-1;
+        if (index >= 0 && index < this.party.size()) {
+            System.out.println("You selected the " + this.party.get(index).getType());
+            String details = " ";
+            details += "\tLevel:         " + this.party.get(index).getLevel() + "\n";
+            details += "\tHP:            " + this.party.get(index).getHP() + "\n";
+            details += "\tAC:            " + this.party.get(index).getAC() + "\n";
+            details += "\tRace:          " + this.party.get(index).getRace() + "\n";
+            details += "\tClass:         " + this.party.get(index).getType() + "\n";
+            details += "\tActions:       " + this.party.get(index).getAction().getAttack1().getWeapon() + " and " + this.party.get(index).getAction().getAttack2().getWeapon() + "\n";
+            details += "\tBonus Action:  " + this.party.get(index).getBonusAction().getAttack1().getWeapon() + "\n";
+            System.out.println(details);
+            // StdDraw
+            StdDraw.picture(0.50 , 0.50,"C:/Users/chloe/OneDrive/Desktop/DND photo/DND Forest Background.jpg", 1.0 , 1.0  );
+            StdDraw.setPenColor(Color.WHITE);
+            StdDraw.filledSquare(0.80, 0.50, 0.28);
+
+            StdDraw.setPenColor(StdDraw.BLACK);
+            double y = 0.70; // Reset y for each member
+            Font font3 = new Font("Aptos", Font.BOLD, 13);
+            StdDraw.setFont(font3);
+
+            // Create details for the current member
+            String[][] memeber = {
+                    {"\tLevel: ", String.valueOf(this.party.get(index).getLevel())},
+                    {"HP: ", String.valueOf(this.party.get(index).getHP())},
+                    {"Armor Class:", String.valueOf(party.get(index).getAC())},
+                    {"Race", party.get(index).getRace()},
+                    {"Class:", String.valueOf(party.get(index).getType())},
+                    {"Action:", party.get(index).getAction().getAttack1().getWeapon() + " and " + this.party.get(index).getAction().getAttack2().getWeapon()},
+                    {"Bonus Action:", String.valueOf(this.party.get(index).getBonusAction().getAttack1().getWeapon())}
+            };
+
+            //Draw for the selected index
+                for (int i = 0; i < memeber.length; i++) {
+                    String label = memeber[i][0];
+                    String value = memeber[i][1];
+                    StdDraw.textLeft(set_xl, y, label);
+                    StdDraw.textLeft(set_xv, y, value);
+                    drawCharLeft(this.party.get(index));
+
+                    y -= 0.05; // Move to the next line
+                }
+            StdDraw.show(); // Update canvas to show the drawing
+        }
+        else {
+            System.out.println("Invalid choice. Please try again.");
         }
     }
 
@@ -553,91 +761,6 @@ public class DnDParty {
         }
     }
 
-    /**********************************************************
-     * METHOD: meet_party()                                   *
-     * DESCRIPTION: displays the party members                *
-     * party member                                           *
-     * PARAMETERS: none                                       *
-     * RETURN VALUE: none                                     *
-     *********************************************************/
-    public void meet_party() {
-        int mem = 0; // Current member index
-        double set_xl = 0.55; // Label X-coordinate
-        double set_xv = 0.70; // Value X-coordinate
-        StdDraw.picture(0.50 , 0.50,"C:/Users/chloe/OneDrive/Desktop/DND photo/DND Forest Background.jpg", 1.0 , 1.0  );
-        while (mem < this.party.size()) {
-            StdDraw.enableDoubleBuffering();
-            // Clear the canvas for each member
-//            StdDraw.filledSquare(1.0, 1.0, 1.0); // Clear the canvas
-            StdDraw.picture(0.50 , 0.50,"C:/Users/chloe/OneDrive/Desktop/DND photo/DND Forest Background.jpg", 1.0 , 1.0  );
-            StdDraw.setPenColor(Color.WHITE);
-            StdDraw.filledSquare(0.80, 0.58, 0.28);
-
-            StdDraw.setPenColor(StdDraw.BLACK);
-            System.out.println("Displaying member " + (mem + 1));
-            System.out.println(this.party.get(mem).getName());
-            System.out.println(this.party.get(mem).getType());
-            System.out.println(this.party.get(mem).getProfession());
-            System.out.print("\n");
-
-
-            double y = 0.80; // Reset y for each member
-            Font font3 = new Font("Aptos", Font.BOLD, 13);
-            StdDraw.setFont(font3);
-
-            // Create details for the current member
-            String[][] memeber = {
-                    {"Name: ", this.party.get(mem).getName()},
-                    {"Type: ", this.party.get(mem).getType()},
-                    {"Hobbies:", spliteString(party.get(mem).getHobbies())},
-                    {"Profession:", spliteString(party.get(mem).getProfession())},
-                    {"Personality:", spliteString(party.get(mem).getPersonality())}
-            };
-
-
-            // Draw each detail on the canvas
-            for (String[] strings : memeber) {
-                String label = strings[0];
-                String[] value = strings[1].split("\n");
-
-                StdDraw.textLeft(set_xl, y, label);
-                for (String line : value) {
-                    StdDraw.textLeft(set_xv, y, line);
-                    y -= 0.05; // Move to the next line
-                }
-            }
-
-            StdDraw.show(); // Update canvas to show the drawing
-            StdDraw.pause(3000);
-
-//            // Wait for the user to press a key to continue
-//            System.out.println("Press any key to see the next member...");
-//            while (!StdDraw.hasNextKeyTyped()) {
-//                StdDraw.pause(100); // Pause briefly to avoid busy-waiting
-//            }
-            // Consume the keypress and move to the next member
-            //StdDraw.nextKeyTyped();
-            mem++;
-        }
-
-    }
-    private String spliteString(String str) {
-        StringBuilder result = new StringBuilder();
-        int start = 0;
-        int periodIndex = 0;
-        int end = 0;
-        while (start < str.length()) {
-            end = Math.min(start + 30, str.length());
-            periodIndex = str.lastIndexOf(" ", end);
-
-            if (periodIndex > start && end < str.length()) {
-                end = periodIndex + 1;
-            }
-            result.append(str, start, end).append("\n");
-            start = end;
-        }
-        return result.toString().trim();
-    }
 
     /**********************************************************
      * METHOD: combat()                                       *
@@ -793,6 +916,7 @@ public class DnDParty {
 
     private void healBA(Character giver, Character receiver){
         int HP = 0;
+        hp_bar(giver, receiver);
         if(giver.getBonusAction().getAttack1().getDamage().equals("2d4 + 2") || giver.getBonusAction().getAttack2().getDamage().equals("2d4 + 2")){
             HP = this.rollD4() + this.rollD4() + 2;
             Rolling_Dice(rollD20() ,HP, 4);
@@ -819,7 +943,7 @@ public class DnDParty {
     }
 
     private int death_count = 0;
-    /**********************************************************
+    /***********************************************************
      * METHOD: soloAttack()                                    *
      * DESCRIPTION: randomly select a single party member that *
      * gets attacked by an enemy                               *
@@ -857,80 +981,12 @@ public class DnDParty {
             System.out.print("\n");
         }
     }
-
-    /*********************************************************
-     * METHOD: printStats()                                   *
-     * DESCRIPTION: displays members stats                    *
-     * PARAMETERS: none                                       *
-     * RETURN VALUE: none                                     *
-     *********************************************************/
-    public void printStats () {
-        System.out.printf("%-12s %-16s %-14s %-14s %-15s", "\t", "Barbarian", "Cleric", "Rogue", "Wizard");
-        System.out.print("\n");
-        System.out.print("Strength:           ");
-        for (int i = 0; i< this.party.size(); i++){
-            System.out.printf("%-15s", this.party.get(i).getStats().getSTR());
-        }
-        System.out.print("\n");
-        System.out.print("Dexterity:          ");
-        for (int i = 0; i< this.party.size(); i++){
-            System.out.printf("%-15s", this.party.get(i).getStats().getDEX());
-        }
-        System.out.print("\n");
-        System.out.print("Constitution:       ");
-        for (int i = 0; i< this.party.size(); i++){
-            System.out.printf("%-15s", this.party.get(i).getStats().getCON());
-        }
-        System.out.print("\n");
-        System.out.print("Intelligence:       ");
-        for (int i = 0; i< this.party.size(); i++){
-            System.out.printf("%-15s", this.party.get(i).getStats().getINT());
-        }
-        System.out.print("\n");
-        System.out.print("Wisdom:             ");
-        for (int i = 0; i< this.party.size(); i++){
-            System.out.printf("%-15s", this.party.get(i).getStats().getWIS());
-        }
-        System.out.print("\n");
-        System.out.print("Charisma:           ");
-        for (int i = 0; i< this.party.size(); i++){
-            System.out.printf("%-15s", this.party.get(i).getStats().getCHA());
-        }
-        System.out.print("\n");
-
-    }
-    /*********************************************************
-     * METHOD: displayCharacter()                             *
-     * DESCRIPTION: displays addition information on the      *
-     * party member                                           *
-     * PARAMETERS: none                                       *
-     * RETURN VALUE: none                                     *
-     *********************************************************/
-    public void displayCharacter(){
-        Scanner scr = new Scanner(System.in);
-        System.out.println("1) Barbarian 2) Cleric 3) Rogue 4) Wizard");
-        System.out.print("What character do you want to see more information about? => ");
-        int select = scr.nextInt();
-        scr.nextLine();
-        int index = select-1;
-        if (index >= 0 && index < this.party.size()) {
-            System.out.println("You selected the " + this.party.get(index).getType());
-            String details = " ";
-            details += "\tLevel:         " + this.party.get(index).getLevel() + "\n";
-            details += "\tHP:            " + this.party.get(index).getHP() + "\n";
-            details += "\tAC:            " + this.party.get(index).getAC() + "\n";
-            details += "\tRace:          " + this.party.get(index).getRace() + "\n";
-            details += "\tClass:         " + this.party.get(index).getType() + "\n";
-            details += "\tActions:       " + this.party.get(index).getAction().getAttack1().getWeapon() + " and " + this.party.get(index).getAction().getAttack2().getWeapon() + "\n";
-            details += "\tBonus Action:  " + this.party.get(index).getBonusAction().getAttack1().getWeapon() + "\n";
-            System.out.println(details);
-        }
-        else {
-            System.out.println("Invalid choice. Please try again.");
-        }
-    }
-
-
+    /***********************************************************
+     * METHOD: encounter1()                                    *
+     * DESCRIPTION: the party fighting the imp                 *
+     * PARAMETERS: none                                        *
+     * RETURN VALUE: none                                      *
+     **********************************************************/
     public void encounter1() {
         int proficiency = 2;
         // modifier will be different have to add a parameter (modifier and HP change with level)
@@ -955,6 +1011,7 @@ public class DnDParty {
                             //Ask the user if they would like to see the states of the characters before continue on
                             // If a character died count the deaths and print them out
                             // System.out.println("There were " + death_count + " deaths");
+
                             if (i == 3) {
                                 System.out.println("But, wait you though there was only one?!?!");
                                 System.out.println("Two more imps appear!" + "\n");
