@@ -39,6 +39,7 @@ public class DnDParty {
                 else if (accomplishment == 0){
                     System.out.println("Best of Luck on your Quest!");
                     this.encounter1();
+                    this.levelUp();
                 }
 
             }
@@ -279,7 +280,9 @@ public class DnDParty {
         Attack sneak = new Attack("Sneak Attack", "N", 8, 0, "1d8 + 1d6");
         Attack witch = new Attack("Witch Bolt", "N", 4, 0, "1d12");
         Attack ice = new Attack("Ice Knife", "Y", 4, 12, "1d10");
-        Attack sting = new Attack("Sting", "Y", 5, 11, "1d4 + 3");
+        Attack sting = new Attack("Sting", "Y", 5, 11, "1d4");
+        Attack biteTr = new Attack("Bite", "N", 7, 0, "1d6");
+        Attack claw = new Attack("Claw", "N", 7, 0, "2d6 + 4");
 
         //Bonus actions
         Attack potion = new Attack("Potion of Healing", "N", 0, 0, "2d4 + 2");
@@ -292,6 +295,7 @@ public class DnDParty {
         Action healParty = new Action(heal, heal);
         Action drinkPotion = new Action(potion, potion);
         Action impA = new Action(sting, sting);
+        Action trollA = new Action(biteTr, claw);
 
 
 
@@ -304,13 +308,13 @@ public class DnDParty {
         Character c4 = new Character("Wizard", "Elf", 1, 6, 6, 11, wizard, wizardA, drinkPotion, 0, 0,
                 "Venira Duskhold", "Star reading, practicing her magic, and knife throwing" , "A princess of the kingdom Lothlórien", "Gorgeous, Kind Hearted, and Intelligent. Helpful around camp gathering supplies.");
         Character e1 = new Character("Imp", "Imp", 0, 10, 10, 13, imp, impA, drinkPotion, 0, 0, "", "", "", "");
-        //Character e2 = new Character("Troll", "Troll", 0, 70, 84, 15, troll, trollA , drinkPotion, 0, 0, "", "", "", "");
+        Character e2 = new Character("Troll", "Troll", 0, 70, 84, 15, troll, trollA , drinkPotion, 0, 0, "", "", "", "");
         this.party.add(c1);
         this.party.add(c2);
         this.party.add(c3);
         this.party.add(c4);
         this.enemies.add(e1);
-        //this.enemies.add(e2);
+        this.enemies.add(e2);
     }
 
     /**********************************************************
@@ -342,7 +346,6 @@ public class DnDParty {
             System.out.println(this.party.get(mem).getProfession());
             System.out.print("\n");
 
-
             double y = 0.70; // Reset y for each member
             Font font3 = new Font("Aptos", Font.BOLD, 13);
             StdDraw.setFont(font3);
@@ -362,17 +365,16 @@ public class DnDParty {
             for (String[] strings : memeber) {
                 String label = strings[0];
                 String[] value = strings[1].split("\n");
+                    StdDraw.textLeft(set_xl, y, label);
+                    for (String line : value) {
+                        drawCharLeft(this.party.get(mem));
+                        StdDraw.textLeft(set_xv, y, line);
+                        y -= 0.05; // Move to the next line
+                    }
 
-                StdDraw.textLeft(set_xl, y, label);
-                for (String line : value) {
-                    drawCharLeft(this.party.get(mem));
-                    StdDraw.textLeft(set_xv, y, line);
-                    y -= 0.05; // Move to the next line
-                }
             }
-
             StdDraw.show(); // Update canvas to show the drawing
-            StdDraw.pause(3000);
+            StdDraw.pause(2500);
 
 //            // Wait for the user to press a key to continue
             System.out.println("Right click to see the next member...");
@@ -482,6 +484,7 @@ public class DnDParty {
         Scanner scr = new Scanner(System.in);
         double set_xl = 0.55; // Label X-coordinate
         double set_xv = 0.70;
+        StdDraw.clear();
         StdDraw.picture(0.50 , 0.50,"C:/Users/chloe/OneDrive/Desktop/DND photo/DND Forest Background.jpg", 1.0 , 1.0 );
         System.out.println("1) Barbarian 2) Cleric 3) Rogue 4) Wizard");
         System.out.print("What character do you want to see more information about? => ");
@@ -716,7 +719,7 @@ public class DnDParty {
 
             }
             StdDraw.show();
-            StdDraw.pause(500);
+            StdDraw.pause(250);
 
         }
         StdDraw.clear();
@@ -1021,6 +1024,7 @@ public class DnDParty {
                         System.out.println("The imp has " + this.enemies.get(imp).getHP() + " hit points left." + "\n");
                         if (this.enemies.get(imp).getHP() == 0) {
                             System.out.println("You killed the imp! Good job!");
+                            System.out.println("There were " + death_count + " deaths");
                             System.out.print("Would you like to make a bonus action? (Y/N) => ");
                             String bonus = scan.next();
                             if (bonus.equalsIgnoreCase("Y")) {
@@ -1033,9 +1037,7 @@ public class DnDParty {
                                     this.healBA(this.party.get(j), this.party.get(j));
                                 }
                             }
-                            //Ask the user if they would like to see the states of the characters before continue on
-                            // If a character died count the deaths and print them out
-                            // System.out.println("There were " + death_count + " deaths");
+
                             if (i == 3) {
                                 System.out.print("\n");
                                 System.out.println("But, wait you though there was only one?!?!");
@@ -1086,10 +1088,13 @@ public class DnDParty {
             hitDice = this.party.get(i).getStats().getCONmod();
             if(this.party.get(i).getType().equals("Barbarian")){
                 hitDice += this.rollD12();
+                Rolling_Dice(hitDice,0,12);
             } else if (this.party.get(i).getType().equals("Cleric") || this.party.get(i).getType().equals("Rogue")){
                 hitDice += this.rollD8();
+                Rolling_Dice(hitDice,0,8);
             } else if (this.party.get(i).getType().equals("Wizard")){
                 hitDice += this.rollD6();
+                Rolling_Dice(hitDice,0,6);
             }
             if (this.party.get(i).getHP() <= 0){
                 System.out.println("The " + this.party.get(i).getType() + " has been revived!");
@@ -1121,14 +1126,6 @@ public class DnDParty {
                     this.enemies.get(troll).damageSetHP(damageRoll);
                     this.hp_bar(this.party.get(j), this.enemies.get(troll));
                     System.out.println("The Troll has " + this.enemies.get(troll).getHP() + " hit points left." + "\n");
-                    if (this.enemies.get(troll).getHP() == 0) {
-                        System.out.println("You killed the Troll! Good job!");
-                        //Ask the user if they would like to see the states of the characters before continue on
-                        // If a character died count the deaths and print them out
-                        // System.out.println("There were " + death_count + " deaths");
-                        j = 5;
-                    }
-                    else{
                         System.out.print("Would you like to make a bonus action? (Y/N) => ");
                         String bonus = scan.next();
                         if (bonus.equalsIgnoreCase("Y")) {
@@ -1142,7 +1139,6 @@ public class DnDParty {
                         }
                         System.out.println("The " + this.party.get(j).getType() + "'s turn is over.");
                         System.out.println();
-                    }
                 }
             }
             if(this.enemies.get(troll).getHP() != 0){
@@ -1150,6 +1146,7 @@ public class DnDParty {
             }
         }
         System.out.println("The party defeated the Troll! Good job!");
+        System.out.println("There were " + death_count + " deaths");
     }
 
 
