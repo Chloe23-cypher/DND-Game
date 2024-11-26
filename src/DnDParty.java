@@ -2,14 +2,14 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.*;
 import javax.sound.midi.*;
 public class DnDParty {
     private ArrayList<Character> party;
     private ArrayList<Character> enemies;
-    int accomplishment = 0;
+    int accomplishment = 1;
 //    DnDParty minimusic = new DnDParty();
     Scanner scan = new Scanner(System.in);
     public void interfaceLoop()
@@ -22,7 +22,6 @@ public class DnDParty {
                 this.printStats();
             }
             else if(input.equals("D")){
-                StdDraw.clear();
                 this.displayCharacter();
 
             }
@@ -78,59 +77,57 @@ public class DnDParty {
         StdDraw.filledRectangle(0.5, 0, 0.5, 0.18);
         text();
         //d4
-        StdDraw.setPenColor(StdDraw.RED);
-        double d4x[] = {0.04419147039, 0.1077, 0.1712085296};
-        double d4y[] = {0.015, 0.125, 0.015};
-        StdDraw.filledPolygon(d4x, d4y);
+        drawD4();
         //d6
-        StdDraw.setPenColor(StdDraw.PRINCETON_ORANGE);
-        StdDraw.filledSquare(0.27, 0.065, 0.05);
+        drawD6();
         //d8
-        StdDraw.setPenColor(StdDraw.ORANGE);
-        double[] d8x = {0.43, 0.3722649731, 0.3742649731, 0.43, 0.4857350269, 0.4877350269};
-        double[] d8y = {0.01, 0.035, 0.0945, 0.13, 0.0945, 0.035};
-        StdDraw.filledPolygon(d8x, d8y);
-        StdDraw.setPenColor(StdDraw.DEEP_ORANGE);
-        double[] shadow1d8x = {0.43, 0.3722649731, 0.4877350269};
-        double[] shadow1d8y = {0.01, 0.035, 0.035};
-        StdDraw.filledPolygon(shadow1d8x, shadow1d8y);
-        StdDraw.setPenColor(StdDraw.ORANGE_SHADOW);
-        double[] shadow2d8x = {0.3722649731, 0.3742649731, 0.43};
-        double[] shadow2d8y = {0.035, 0.0945, 0.13};
-        StdDraw.filledPolygon(shadow2d8x, shadow2d8y);
-        double[] shadow3d8x = {0.43, 0.4857350269, 0.4877350269};
-        double[] shadow3d8y = {0.13, 0.0945, 0.035};
-        StdDraw.filledPolygon(shadow3d8x, shadow3d8y);
-        //d10
-        StdDraw.setPenColor(StdDraw.DICE_GREEN);
-        double[] d10x = {0.585, 0.5355, 0.5292649731, 0.585, 0.6407350269, 0.6345};
-        double[] d10y = {0.01, 0.045, 0.07, 0.13, 0.07, 0.045};
-        StdDraw.filledPolygon(d10x, d10y);
-        StdDraw.setPenColor(StdDraw.GREEN);
-        double[] shadow1d10x = {0.585, 0.5355, 0.56025, 0.585, 0.60975, 0.6345};
-        double[] shadow1d10y = {0.01, 0.045, 0.045, 0.03, 0.045, 0.045};
-        StdDraw.filledPolygon(shadow1d10x, shadow1d10y);
-        StdDraw.setPenColor(StdDraw.GREEN_SHADOW);
-        double[] shadow2d10x = {0.5355, 0.56025, 0.585, 0.5292649731};
-        double[] shadow2d10y = {0.045, 0.045, 0.13, 0.07};
-        StdDraw.filledPolygon(shadow2d10x, shadow2d10y);
-        double[] shadow3d10x = {0.6345, 0.60975, 0.585, 0.6407350269};
-        double[] shadow3d10y = {0.045, 0.045, 0.13, 0.07};
-        StdDraw.filledPolygon(shadow3d10x, shadow3d10y);
+        drawD8();
+        // d10
+        drawD10();
         //d12
-        StdDraw.setPenColor(StdDraw.BOOK_LIGHT_BLUE);
-        StdDraw.filledSquare(0.73, 0.07, 0.06);
+        drawD12();
         //d20
-        purple_dice();
+        drawD20();
         StdDraw.setPenColor(StdDraw.WHITE);
     }
+
     /***********************************************************
-     * METHOD: purple_dice()                                   *
-     * DESCRIPTION: draws the d20 dice                         *
+     * METHOD: text()                                          *
+     * DESCRIPTION: displays the text of the dice              *
      * PARAMETERS: none                                        *
      * RETURN VALUE: none                                      *
      **********************************************************/
-    public void purple_dice(){
+    public void text() {
+        Font font = new Font("Righteous", Font.BOLD, 16);
+        StdDraw.setFont(font);
+        StdDraw.setPenColor(Color.white);
+        StdDraw.text(0.1077, 0.15, "d4");
+        StdDraw.text(0.27, 0.15, "d6");
+        StdDraw.text(0.43, 0.15, "d8");
+        StdDraw.text(0.585, 0.15, "d10");
+        StdDraw.text(0.73, 0.15, "d12");
+        StdDraw.text(0.90, 0.15, "d20");
+    }
+
+
+    /**********************************************************
+     * METHOD: rollD20()                                       *
+     * DESCRIPTION: roll a d20 die                             *
+     * PARAMETERS: none                                        *
+     * RETURN VALUE: the d20 rolled value                      *
+     **********************************************************/
+    private int rollD20() {
+        int d20 = (int) (Math.random() * 20) + 1;
+        return d20;
+    }
+
+    /**********************************************************
+     * METHOD: drawD20()                                       *
+     * DESCRIPTION: draw a d20 die                             *
+     * PARAMETERS: none                                        *
+     * RETURN VALUE: none                                      *
+     **********************************************************/
+    private void drawD20(){
         StdDraw.setPenColor(StdDraw.DICE_PURPLE);
         double[] d20x = {0.9, 0.8472649731, 0.8472649731, 0.9, 0.9527350269, 0.9527350269};
         double[] d20y = {0.01, 0.041, 0.086, 0.13, 0.086, 0.041};
@@ -163,38 +160,6 @@ public class DnDParty {
         double[] shadow8d20x = {0.8472649731, 0.9, 0.9527350269};
         double[] shadow8d20y = {0.086, 0.13, 0.086};
         StdDraw.filledPolygon(shadow8d20x, shadow8d20y);
-
-
-    }
-
-    /***********************************************************
-     * METHOD: text()                                          *
-     * DESCRIPTION: displays the text of the dice              *
-     * PARAMETERS: none                                        *
-     * RETURN VALUE: none                                      *
-     **********************************************************/
-    public void text() {
-        Font font = new Font("Righteous", Font.BOLD, 16);
-        StdDraw.setFont(font);
-        StdDraw.setPenColor(Color.white);
-        StdDraw.text(0.1077, 0.15, "d4");
-        StdDraw.text(0.27, 0.15, "d6");
-        StdDraw.text(0.43, 0.15, "d8");
-        StdDraw.text(0.585, 0.15, "d10");
-        StdDraw.text(0.73, 0.15, "d12");
-        StdDraw.text(0.90, 0.15, "d20");
-    }
-
-
-    /***********************************************************
-     * METHOD: rollD20()                                       *
-     * DESCRIPTION: roll a d20 die                             *
-     * PARAMETERS: none                                        *
-     * RETURN VALUE: the d20 rolled value                      *
-     **********************************************************/
-    private int rollD20() {
-        int d20 = (int) (Math.random() * 20) + 1;
-        return d20;
     }
 
     /**********************************************************
@@ -209,6 +174,38 @@ public class DnDParty {
     }
 
     /**********************************************************
+     * METHOD: drawD12()                                       *
+     * DESCRIPTION: draw a d12 die                             *
+     * PARAMETERS: none                                        *
+     * RETURN VALUE: none                                      *
+     **********************************************************/
+    private void drawD12(){
+        StdDraw.setPenColor(StdDraw.BOOK_BLUE);
+        double d12x[] = {0.7871, 0.7653, 0.73, 0.6947, 0.6729, 0.6729, 0.6947, 0.73, 0.7653, 0.7871};
+        double d12y[] = {0.0885, 0.1185, 0.13, 0.1185, 0.0885, 0.0515, 0.0215, 0.01, 0.0215, 0.0515};
+        StdDraw.filledPolygon(d12x, d12y);
+        StdDraw.setPenColor(StdDraw.BOOK_LIGHT_BLUE);
+        double pentd12x[] = {0.73, 0.6967130219, 0.7094275162, 0.7505724838, 0.7632869781};
+        double pentd12y[] = {0.105, 0.0808155948, 0.0416844052, 0.0416844052, 0.0808155948};
+        StdDraw.filledPolygon(pentd12x, pentd12y);
+        StdDraw.setPenColor(StdDraw.BLUE_DARK);
+        double shadow1d12x[] = {0.6947, 0.7094275162, 0.7505724838, 0.7653, 0.73,};
+        double shadow1d12y[] = {0.0215, 0.0416844052, 0.0416844052, 0.0215, 0.01};
+        StdDraw.filledPolygon(shadow1d12x, shadow1d12y);
+        StdDraw.setPenColor(StdDraw.BLUE_MID);
+        double shadow2d12x[] = {0.6729, 0.6947, 0.73, 0.7653, 0.7871, 0.7632869781, 0.73, 0.6967130219};
+        double shadow2d12y[] = {0.0885, 0.1185, 0.13, 0.1185, 0.0885, 0.0808155948, 0.105, 0.0808155948};
+        StdDraw.filledPolygon(shadow2d12x, shadow2d12y);
+        StdDraw.setPenColor(StdDraw.BLUE_SHADE);
+        double shadow3d12x[] = {0.6947, 0.6729, 0.6729, 0.6967130219, 0.7094275162};
+        double shadow3d12y[] = {0.0215, 0.0515, 0.0885, 0.0808155948, 0.0416844052};
+        StdDraw.filledPolygon(shadow3d12x, shadow3d12y);
+        double shadow4d12x[] = {0.7653, 0.7871, 0.7871, 0.7632869781, 0.7505724838};
+        double shadow4d12y[] = {0.0215, 0.0515, 0.0885, 0.0808155948, 0.0416844052};
+        StdDraw.filledPolygon(shadow4d12x, shadow4d12y);
+    }
+
+    /**********************************************************
      * METHOD: rollD10()                                       *
      * DESCRIPTION: roll a d10 die                             *
      * PARAMETERS: none                                        *
@@ -217,6 +214,31 @@ public class DnDParty {
     private int rollD10() {
         int d10 = (int) (Math.random() * 10) + 1;
         return d10;
+    }
+
+    /**********************************************************
+     * METHOD: drawD10()                                       *
+     * DESCRIPTION: draw a d10 die                             *
+     * PARAMETERS: none                                        *
+     * RETURN VALUE: none                                      *
+     **********************************************************/
+    private void drawD10(){
+        //d10
+        StdDraw.setPenColor(StdDraw.DICE_GREEN);
+        double[] d10x = {0.585, 0.5355, 0.5292649731, 0.585, 0.6407350269, 0.6345};
+        double[] d10y = {0.01, 0.045, 0.07, 0.13, 0.07, 0.045};
+        StdDraw.filledPolygon(d10x, d10y);
+        StdDraw.setPenColor(StdDraw.GREEN);
+        double[] shadow1d10x = {0.585, 0.5355, 0.56025, 0.585, 0.60975, 0.6345};
+        double[] shadow1d10y = {0.01, 0.045, 0.045, 0.03, 0.045, 0.045};
+        StdDraw.filledPolygon(shadow1d10x, shadow1d10y);
+        StdDraw.setPenColor(StdDraw.GREEN_SHADOW);
+        double[] shadow2d10x = {0.5355, 0.56025, 0.585, 0.5292649731};
+        double[] shadow2d10y = {0.045, 0.045, 0.13, 0.07};
+        StdDraw.filledPolygon(shadow2d10x, shadow2d10y);
+        double[] shadow3d10x = {0.6345, 0.60975, 0.585, 0.6407350269};
+        double[] shadow3d10y = {0.045, 0.045, 0.13, 0.07};
+        StdDraw.filledPolygon(shadow3d10x, shadow3d10y);
     }
 
     /**********************************************************
@@ -231,6 +253,30 @@ public class DnDParty {
     }
 
     /**********************************************************
+     * METHOD: drawD8()                                        *
+     * DESCRIPTION: draw a d8  die                             *
+     * PARAMETERS: none                                        *
+     * RETURN VALUE: none                                      *
+     **********************************************************/
+    private void drawD8(){
+        StdDraw.setPenColor(StdDraw.ORANGE);
+        double[] d8x = {0.43, 0.3722649731, 0.3742649731, 0.43, 0.4857350269, 0.4877350269};
+        double[] d8y = {0.01, 0.035, 0.0945, 0.13, 0.0945, 0.035};
+        StdDraw.filledPolygon(d8x, d8y);
+        StdDraw.setPenColor(StdDraw.DEEP_ORANGE);
+        double[] shadow1d8x = {0.43, 0.3722649731, 0.4877350269};
+        double[] shadow1d8y = {0.01, 0.035, 0.035};
+        StdDraw.filledPolygon(shadow1d8x, shadow1d8y);
+        StdDraw.setPenColor(StdDraw.ORANGE_SHADOW);
+        double[] shadow2d8x = {0.3722649731, 0.3742649731, 0.43};
+        double[] shadow2d8y = {0.035, 0.0945, 0.13};
+        StdDraw.filledPolygon(shadow2d8x, shadow2d8y);
+        double[] shadow3d8x = {0.43, 0.4857350269, 0.4877350269};
+        double[] shadow3d8y = {0.13, 0.0945, 0.035};
+        StdDraw.filledPolygon(shadow3d8x, shadow3d8y);
+    }
+
+    /**********************************************************
      * METHOD: rollD6()                                        *
      * DESCRIPTION: roll a d6 die                              *
      * PARAMETERS: none                                        *
@@ -239,6 +285,17 @@ public class DnDParty {
     private int rollD6() {
         int d6 = (int) (Math.random() * 6) + 1;
         return d6;
+    }
+
+    /**********************************************************
+     * METHOD: drawD6()                                        *
+     * DESCRIPTION: draw a d6 die                              *
+     * PARAMETERS: none                                        *
+     * RETURN VALUE: none                                      *
+     **********************************************************/
+    private void drawD6(){
+        StdDraw.setPenColor(StdDraw.PRINCETON_ORANGE);
+        StdDraw.filledSquare(0.27, 0.065, 0.05);
     }
 
     /**********************************************************
@@ -252,6 +309,18 @@ public class DnDParty {
         return d4;
     }
 
+    /**********************************************************
+     * METHOD: drawD4()                                        *
+     * DESCRIPTION: draw a d4 die                              *
+     * PARAMETERS: none                                        *
+     * RETURN VALUE: none                                      *
+     **********************************************************/
+    private void drawD4(){
+        StdDraw.setPenColor(StdDraw.RED);
+        double[] d4x = {0.04419147039, 0.1077, 0.1712085296};
+        double[] d4y = {0.015, 0.125, 0.015};
+        StdDraw.filledPolygon(d4x, d4y);
+    }
     //constructor
     public DnDParty() {
         this.party = new ArrayList<Character>();
@@ -298,7 +367,6 @@ public class DnDParty {
         Action trollA = new Action(biteTr, claw);
 
 
-
         Character c1 = new Character("Barbarian", "Dragon Born", 1, 14, 14, 15, barbarian, barbarianA, drinkPotion, 0, 0,
                 "Flintstrike Rasbor", "Hunting, Combat Training, and Playing Poker", "General of the Army for the Kingdom Witchitieer", "Loyal to his unit and not afraid to get some blood on his hands.");
         Character c2 = new Character("Cleric", "Halfling", 1, 10, 10, 12, cleric, clericA, healParty, 0, 0,
@@ -308,7 +376,7 @@ public class DnDParty {
         Character c4 = new Character("Wizard", "Elf", 1, 6, 6, 11, wizard, wizardA, drinkPotion, 0, 0,
                 "Venira Duskhold", "Star reading, practicing her magic, and knife throwing" , "A princess of the kingdom Lothlórien", "Gorgeous, Kind Hearted, and Intelligent. Helpful around camp gathering supplies.");
         Character e1 = new Character("Imp", "Imp", 0, 10, 10, 13, imp, impA, drinkPotion, 0, 0, "", "", "", "");
-        Character e2 = new Character("Troll", "Troll", 0, 70, 84, 15, troll, trollA , drinkPotion, 0, 0, "", "", "", "");
+        Character e2 = new Character("Troll", "Troll", 0, 70, 70, 15, troll, trollA , drinkPotion, 0, 0, "", "", "", "");
         this.party.add(c1);
         this.party.add(c2);
         this.party.add(c3);
@@ -324,34 +392,23 @@ public class DnDParty {
      * PARAMETERS: none                                       *
      * RETURN VALUE: none                                     *
      *********************************************************/
-    public void meet_party() {
+    public void meet_party() throws InterruptedException {
         int mem = 0; // Current member index
         double set_xl = 0.55; // Label X-coordinate
         double set_xv = 0.70; // Value X-coordinate
-        var mousePressed = StdDraw.isMousePressed();
         StdDraw.picture(0.50 , 0.50,"C:/Users/chloe/OneDrive/Desktop/DND photo/DND Forest Background.jpg", 1.0 , 1.0  );
+        StdDraw.enableDoubleBuffering();
         while (mem < this.party.size()) {
-            StdDraw.enableDoubleBuffering();
-            // Clear the canvas for each member
-//            StdDraw.filledSquare(1.0, 1.0, 1.0); // Clear the canvas
-            StdDraw.picture(0.50 , 0.50,"C:/Users/chloe/OneDrive/Desktop/DND photo/DND Forest Background.jpg", 1.0 , 1.0  );
+            // Clear and set the background for each member
+            StdDraw.picture(0.50, 0.50, "C:/Users/chloe/OneDrive/Desktop/DND photo/DND Forest Background.jpg", 1.0, 1.0);
             StdDraw.setPenColor(Color.WHITE);
             StdDraw.filledSquare(0.80, 0.50, 0.28);
 
-            StdDraw.setPenColor(StdDraw.BLACK);
-            System.out.println("Displaying member " + (mem + 1));
-            System.out.println(this.party.get(mem).getName());
-            System.out.println(this.party.get(mem).getType());
-            System.out.println(this.party.get(mem).getRace());
-            System.out.println(this.party.get(mem).getProfession());
-            System.out.print("\n");
-
-            double y = 0.70; // Reset y for each member
+            double y = 0.70; // Reset y-coordinate for details
             Font font3 = new Font("Aptos", Font.BOLD, 13);
             StdDraw.setFont(font3);
-
             // Create details for the current member
-            String[][] memeber = {
+            String[][] member = {
                     {"Name: ", this.party.get(mem).getName()},
                     {"Class: ", this.party.get(mem).getType()},
                     {"Race: ", this.party.get(mem).getRace()},
@@ -359,32 +416,49 @@ public class DnDParty {
                     {"Profession:", splitString(party.get(mem).getProfession())},
                     {"Personality:", splitString(party.get(mem).getPersonality())}
             };
+            StdDraw.setPenColor(StdDraw.BLACK);
+            System.out.println("Displaying member " + (mem + 1));
+            System.out.println(this.party.get(mem).getName());
+            System.out.println(this.party.get(mem).getType());
+            System.out.println(this.party.get(mem).getRace());
+            System.out.println(this.party.get(mem).getProfession());
+            if(!(mem ==3)) {
+                System.out.println("Press SpaceBar to see the next member...");
+            }
+            System.out.print("\n");
 
 
-            // Draw each detail on the canvas
-            for (String[] strings : memeber) {
+            // Draw each detail
+            for (String[] strings : member) {
                 String label = strings[0];
                 String[] value = strings[1].split("\n");
-                    StdDraw.textLeft(set_xl, y, label);
-                    for (String line : value) {
-                        drawCharLeft(this.party.get(mem));
-                        StdDraw.textLeft(set_xv, y, line);
-                        y -= 0.05; // Move to the next line
-                    }
-
+                StdDraw.textLeft(set_xl, y, label);
+                for (String line : value) {
+                    StdDraw.setPenColor(StdDraw.BLACK);
+                    StdDraw.textLeft(set_xv, y, line);
+                    y -= 0.05;
+                }
             }
-            StdDraw.show(); // Update canvas to show the drawing
-            StdDraw.pause(2500);
 
-//            // Wait for the user to press a key to continue
-            System.out.println("Right click to see the next member...");
+            // Draw character portrait or additional details
+            drawCharLeft(this.party.get(mem));
 
+            // Update canvas
+            StdDraw.show();
 
+            if (mem < this.party.size() - 1) {
+                while (!StdDraw.isKeyPressed(32)) {
+                    Thread.sleep(10); // Small delay to avoid CPU overuse
+                }
 
-//
-            mem++;
+                // Wait for the spacebar to be released to prevent multiple advances
+                while (StdDraw.isKeyPressed(32)) {
+                    Thread.sleep(10);
+                }
+            }
+
+            mem++; // Proceed to the next member
         }
-
     }
     /**********************************************************
      * METHOD: splitString()                                  *
@@ -424,12 +498,18 @@ public class DnDParty {
         } else if (left.getType().equals("Barbarian") && left.getImage() == 1){
             StdDraw.picture(0.23,0.53, "C:/Users/chloe/OneDrive/Desktop/DND photo/Barbarian_Breath_Weapon.png", 0.6, 0.6);
         }
-    }
+        else if(left.getType().equals("Cleric") && left.getImage() == 0){
+            StdDraw.picture(0.23, 0.53,"C:/Users/chloe/OneDrive/Desktop/DND photo/Cleric_Guiding_Bolt.png", 0.5, 0.5 );
+        }
 
+    }
 
     private void drawCharRight(Character right){
         if(right.getType().equals("Imp")){
             StdDraw.picture(0.77,0.5, "C:/Users/chloe/OneDrive/Desktop/DND photo/Imp.png", 0.4, 0.4);
+        }
+        else if(right.getType().equals("Troll")){
+            StdDraw.picture(0.78, 0.48, "C:/Users/chloe/OneDrive/Desktop/DND photo/Troll.png", 0.5, 0.5 );
         }
     }
     /*********************************************************
@@ -485,7 +565,8 @@ public class DnDParty {
         double set_xl = 0.55; // Label X-coordinate
         double set_xv = 0.70;
         StdDraw.clear();
-        StdDraw.picture(0.50 , 0.50,"C:/Users/chloe/OneDrive/Desktop/DND photo/DND Forest Background.jpg", 1.0 , 1.0 );
+        StdDraw.picture(0.50, 0.50, "C:/Users/chloe/OneDrive/Desktop/DND photo/DND Forest Background.jpg", 1.0, 1.0);
+        StdDraw.show();
         System.out.println("1) Barbarian 2) Cleric 3) Rogue 4) Wizard");
         System.out.print("What character do you want to see more information about? => ");
         int select = scr.nextInt();
@@ -503,7 +584,7 @@ public class DnDParty {
             details += "\tBonus Action:  " + this.party.get(index).getBonusAction().getAttack1().getWeapon() + "\n";
             System.out.println(details);
             // StdDraw
-            StdDraw.picture(0.50 , 0.50,"C:/Users/chloe/OneDrive/Desktop/DND photo/DND Forest Background.jpg", 1.0 , 1.0 );
+            //StdDraw.picture(0.50 , 0.50,"C:/Users/chloe/OneDrive/Desktop/DND photo/DND Forest Background.jpg", 1.0 , 1.0 );
             StdDraw.setPenColor(Color.WHITE);
             StdDraw.filledSquare(0.80, 0.53, 0.265);
 
@@ -526,11 +607,10 @@ public class DnDParty {
             for (String[] strings : memeber) {
                 String label = strings[0];
                 String[] value = strings[1].split("\n");
-
                 StdDraw.textLeft(set_xl, y, label);
                 for (String line : value) {
-                    drawCharLeft(this.party.get(index));
                     StdDraw.textLeft(set_xv, y, line);
+                    drawCharLeft(this.party.get(index));
                     y -= 0.05; // Move to the next line
                 }
             }
@@ -629,10 +709,7 @@ public class DnDParty {
                     // add text to the other dice
                     rand = d4_random;
                     // d4
-                    StdDraw.setPenColor(StdDraw.RED);
-                    double[] d4x = {0.04419147039 , 0.1077  , 0.1712085296 };
-                    double[] d4y = {0.015 , 0.125  , 0.015  };
-                    StdDraw.filledPolygon(d4x, d4y);
+                    drawD4();
                     StdDraw.setPenColor(StdDraw.BLACK);
                     StdDraw.text(0.1077, 0.06, String.valueOf(rand));
                     x_postion  = 0.1077;
@@ -641,8 +718,7 @@ public class DnDParty {
                 case 6:
                     rand = d6_random;
                     //d6
-                    StdDraw.setPenColor(StdDraw.PRINCETON_ORANGE);
-                    StdDraw.filledSquare(0.27, 0.065, 0.05);
+                    drawD6();
                     StdDraw.setPenColor(StdDraw.BLACK);
                     StdDraw.text(0.27, 0.064, String.valueOf(rand));
                     x_postion  = 0.27;
@@ -651,21 +727,7 @@ public class DnDParty {
                 case 8:
                     rand = d8_random;
                     //d8
-                    StdDraw.setPenColor(StdDraw.ORANGE);
-                    double[] d8x = {0.43, 0.3722649731, 0.3742649731, 0.43, 0.4857350269, 0.4877350269};
-                    double[] d8y = {0.01, 0.035, 0.0945, 0.13, 0.0945, 0.035};
-                    StdDraw.filledPolygon(d8x, d8y);
-                    StdDraw.setPenColor(StdDraw.DEEP_ORANGE);
-                    double[] shadow1d8x = {0.43, 0.3722649731, 0.4877350269};
-                    double[] shadow1d8y = {0.01, 0.035, 0.035};
-                    StdDraw.filledPolygon(shadow1d8x, shadow1d8y);
-                    StdDraw.setPenColor(StdDraw.ORANGE_SHADOW);
-                    double[] shadow2d8x = {0.3722649731, 0.3742649731, 0.43};
-                    double[] shadow2d8y = {0.035, 0.0945, 0.13};
-                    StdDraw.filledPolygon(shadow2d8x, shadow2d8y);
-                    double[] shadow3d8x = {0.43, 0.4857350269, 0.4877350269};
-                    double[] shadow3d8y = {0.13, 0.0945, 0.035};
-                    StdDraw.filledPolygon(shadow3d8x, shadow3d8y);
+                    drawD8();
                     StdDraw.setPenColor(StdDraw.BLACK);
                     StdDraw.text(0.43, 0.065, String.valueOf(rand));
                     x_postion = 0.43;
@@ -676,21 +738,7 @@ public class DnDParty {
                     rand = d10_random;
                     StdDraw.setPenColor(Color.WHITE);
                     //d10
-                    StdDraw.setPenColor(StdDraw.DICE_GREEN);
-                    double[] d10x = {0.585, 0.5355, 0.5292649731, 0.585, 0.6407350269, 0.6345};
-                    double[] d10y = {0.01, 0.045, 0.07, 0.13, 0.07, 0.045};
-                    StdDraw.filledPolygon(d10x, d10y);
-                    StdDraw.setPenColor(StdDraw.GREEN);
-                    double[] shadow1d10x = {0.585, 0.5355, 0.56025, 0.585, 0.60975, 0.6345};
-                    double[] shadow1d10y = {0.01, 0.045, 0.045, 0.03, 0.045, 0.045};
-                    StdDraw.filledPolygon(shadow1d10x, shadow1d10y);
-                    StdDraw.setPenColor(StdDraw.GREEN_SHADOW);
-                    double[] shadow2d10x = {0.5355, 0.56025, 0.585, 0.5292649731};
-                    double[] shadow2d10y = {0.045, 0.045, 0.13, 0.07};
-                    StdDraw.filledPolygon(shadow2d10x, shadow2d10y);
-                    double[] shadow3d10x = {0.6345, 0.60975, 0.585, 0.6407350269};
-                    double[] shadow3d10y = {0.045, 0.045, 0.13, 0.07};
-                    StdDraw.filledPolygon(shadow3d10x, shadow3d10y);
+                    drawD10();
                     StdDraw.setPenColor(StdDraw.BLACK);
                     StdDraw.text(0.585, 0.055, String.valueOf(rand));
                     x_postion = 0.585;
@@ -700,8 +748,7 @@ public class DnDParty {
                 case 12:
                     rand = d12_random;
                     //d12
-                    StdDraw.setPenColor(StdDraw.BOOK_LIGHT_BLUE);
-                    StdDraw.filledSquare(0.73, 0.07, 0.06);
+                    drawD12();
                     StdDraw.setPenColor(StdDraw.BLACK);
                     StdDraw.text(0.73, 0.061, String.valueOf(rand));
                     x_postion = 0.73;
@@ -712,7 +759,7 @@ public class DnDParty {
                     rand = d20_random;
                     //d20
                     StdDraw.setPenColor(StdDraw.PURPLE);
-                    purple_dice();
+                    drawD20();
                     StdDraw.setPenColor(StdDraw.BLACK);
                     StdDraw.text(0.90, 0.060, String.valueOf(rand));
                     break;
@@ -737,39 +784,6 @@ public class DnDParty {
         StdDraw.pause(2000);
 
     }
-    /**********************************************************
-     * METHOD: players_turn()                                 *
-     * DESCRIPTION: displays which character's turn it is     *
-     * party member                                           *
-     * PARAMETERS: int select                                 *
-     * RETURN VALUE: none                                     *
-     *********************************************************/
-    public void players_turn(int select){
-        StdDraw.setPenColor(StdDraw.WHITE);
-        StdDraw.setPenRadius(0.01);
-        double x_char = 0.255;
-        double x_enemy = 0.80;
-        Font font2 = new Font("Righteous", Font.BOLD, 16);
-        StdDraw.setFont(font2);
-//        StdDraw.text(x_char, 0.865, left.getType());
-        StdDraw.setFont(font2);
-        StdDraw.setPenRadius(0.05);
-        double travel = 0.00;
-        while (travel < 0.40) {
-            StdDraw.enableDoubleBuffering();
-            StdDraw.clear();
-            background();
-            //hp_bar(this.party.get(select), this.enemies.get(0) );
-            StdDraw.text(-0.01+travel, 0.865, "It's the " + this.party.get(select).getType()+ "'s turn");
-            if (Math.abs(travel - 0.50) < 0.01) {
-                StdDraw.pause(50);
-            }
-            StdDraw.show();
-            StdDraw.pause(20);
-            travel += 0.02;
-        }
-    }
-
 
     /**********************************************************
      * METHOD: combat()                                       *
