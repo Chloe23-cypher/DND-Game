@@ -1,19 +1,17 @@
 import java.awt.*;
+import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Scanner;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.*;
-import javax.sound.midi.*;
+//Audio packages
+import javax.sound.sampled.*;
+
 public class DnDParty {
     private ArrayList<Character> party;
     private ArrayList<Character> enemies;
     int accomplishment = 1;
 //    DnDParty minimusic = new DnDParty();
     Scanner scan = new Scanner(System.in);
-    public void interfaceLoop()
-    {
+    public void interfaceLoop() throws InterruptedException {
         Scanner scan = new Scanner(System.in);
         while(accomplishment !=2){
             System.out.print("What do you want to do? --> ");
@@ -26,6 +24,7 @@ public class DnDParty {
 
             }
             else if(input.equals("I")){
+                this.inventory();
 
             }
             else if(input.equals("E")){
@@ -38,8 +37,8 @@ public class DnDParty {
                 else if (accomplishment == 0){
                     System.out.println("Best of Luck on your Quest!");
                     this.encounter1();
-                    this.levelUp();
                 }
+                this.levelUp();
 
             }
             else if(input.equals("?")){
@@ -72,7 +71,13 @@ public class DnDParty {
      * RETURN VALUE: none                                      *
      **********************************************************/
     public void background() {
-        StdDraw.picture(0.50, 0.5, "/C:/Users/chloe/OneDrive/Desktop/DND photo/DND background1.jpg", 1.00, 1.0);
+        if(accomplishment == 0) {
+            StdDraw.picture(0.50, 0.50, "/C:/Users/chloe/OneDrive/Desktop/DND photo/DND background1.jpg", 1.00, 1.0);
+        }
+
+        else if(accomplishment == 1){
+            StdDraw.picture(0.50, 0.50, "C:/Users/chloe/OneDrive/Desktop/DND photo/DND Mountain Background.jpg", 1.00, 1.0);
+        }
         StdDraw.setPenColor(StdDraw.LIGHT_GRAY);
         StdDraw.filledRectangle(0.5, 0, 0.5, 0.18);
         text();
@@ -181,27 +186,27 @@ public class DnDParty {
      **********************************************************/
     private void drawD12(){
         StdDraw.setPenColor(StdDraw.BOOK_BLUE);
-        double d12x[] = {0.7871, 0.7653, 0.73, 0.6947, 0.6729, 0.6729, 0.6947, 0.73, 0.7653, 0.7871};
-        double d12y[] = {0.0885, 0.1185, 0.13, 0.1185, 0.0885, 0.0515, 0.0215, 0.01, 0.0215, 0.0515};
+        double[] d12x = {0.7871, 0.7653, 0.73, 0.6947, 0.6729, 0.6729, 0.6947, 0.73, 0.7653, 0.7871};
+        double[] d12y = {0.0885, 0.1185, 0.13, 0.1185, 0.0885, 0.0515, 0.0215, 0.01, 0.0215, 0.0515};
         StdDraw.filledPolygon(d12x, d12y);
         StdDraw.setPenColor(StdDraw.BOOK_LIGHT_BLUE);
-        double pentd12x[] = {0.73, 0.6967130219, 0.7094275162, 0.7505724838, 0.7632869781};
-        double pentd12y[] = {0.105, 0.0808155948, 0.0416844052, 0.0416844052, 0.0808155948};
+        double[] pentd12x = {0.73, 0.6967130219, 0.7094275162, 0.7505724838, 0.7632869781};
+        double[] pentd12y = {0.105, 0.0808155948, 0.0416844052, 0.0416844052, 0.0808155948};
         StdDraw.filledPolygon(pentd12x, pentd12y);
         StdDraw.setPenColor(StdDraw.BLUE_DARK);
-        double shadow1d12x[] = {0.6947, 0.7094275162, 0.7505724838, 0.7653, 0.73,};
-        double shadow1d12y[] = {0.0215, 0.0416844052, 0.0416844052, 0.0215, 0.01};
+        double[] shadow1d12x = {0.6947, 0.7094275162, 0.7505724838, 0.7653, 0.73,};
+        double[] shadow1d12y = {0.0215, 0.0416844052, 0.0416844052, 0.0215, 0.01};
         StdDraw.filledPolygon(shadow1d12x, shadow1d12y);
         StdDraw.setPenColor(StdDraw.BLUE_MID);
-        double shadow2d12x[] = {0.6729, 0.6947, 0.73, 0.7653, 0.7871, 0.7632869781, 0.73, 0.6967130219};
-        double shadow2d12y[] = {0.0885, 0.1185, 0.13, 0.1185, 0.0885, 0.0808155948, 0.105, 0.0808155948};
+        double[] shadow2d12x = {0.6729, 0.6947, 0.73, 0.7653, 0.7871, 0.7632869781, 0.73, 0.6967130219};
+        double[] shadow2d12y = {0.0885, 0.1185, 0.13, 0.1185, 0.0885, 0.0808155948, 0.105, 0.0808155948};
         StdDraw.filledPolygon(shadow2d12x, shadow2d12y);
         StdDraw.setPenColor(StdDraw.BLUE_SHADE);
-        double shadow3d12x[] = {0.6947, 0.6729, 0.6729, 0.6967130219, 0.7094275162};
-        double shadow3d12y[] = {0.0215, 0.0515, 0.0885, 0.0808155948, 0.0416844052};
+        double[] shadow3d12x = {0.6947, 0.6729, 0.6729, 0.6967130219, 0.7094275162};
+        double[] shadow3d12y = {0.0215, 0.0515, 0.0885, 0.0808155948, 0.0416844052};
         StdDraw.filledPolygon(shadow3d12x, shadow3d12y);
-        double shadow4d12x[] = {0.7653, 0.7871, 0.7871, 0.7632869781, 0.7505724838};
-        double shadow4d12y[] = {0.0215, 0.0515, 0.0885, 0.0808155948, 0.0416844052};
+        double[] shadow4d12x = {0.7653, 0.7871, 0.7871, 0.7632869781, 0.7505724838};
+        double[] shadow4d12y = {0.0215, 0.0515, 0.0885, 0.0808155948, 0.0416844052};
         StdDraw.filledPolygon(shadow4d12x, shadow4d12y);
     }
 
@@ -396,7 +401,12 @@ public class DnDParty {
         int mem = 0; // Current member index
         double set_xl = 0.55; // Label X-coordinate
         double set_xv = 0.70; // Value X-coordinate
+        //Background music
+        playEncounterMusic("C:/Users/chloe/OneDrive/Desktop/DND photo/forest_audio-139004.wav");
+        //Background photo
         StdDraw.picture(0.50 , 0.50,"C:/Users/chloe/OneDrive/Desktop/DND photo/DND Forest Background.jpg", 1.0 , 1.0  );
+        System.out.println("Let's introduce you to your party members!" + "\n");
+        StdDraw.pause(1750);
         StdDraw.enableDoubleBuffering();
         while (mem < this.party.size()) {
             // Clear and set the background for each member
@@ -459,6 +469,9 @@ public class DnDParty {
 
             mem++; // Proceed to the next member
         }
+        // Stop background music
+        StdDraw.pause(3500);
+        stopEncounterMusic();
     }
     /**********************************************************
      * METHOD: splitString()                                  *
@@ -484,12 +497,22 @@ public class DnDParty {
             start = end;
         }
         return result.toString().trim();
+
     }
+    /*************************************************************
+     * METHOD: group_photo()                                     *
+     * DESCRIPTION: draws all the party members  in the forest   *
+     * party member                                              *
+     * PARAMETERS: none                                          *
+     * RETURN VALUE: none                                        *
+     ************************************************************/
+     public void group_photo(){
+
+     }
     /*************************************************************
      * METHOD: drawCharLeft()                                    *
      * DESCRIPTION: draws the character on the left of the screen*
-     * party member                                              *
-     * PARAMETERS: current                                       *
+     * PARAMETERS: Character left                                *
      * RETURN VALUE: none                                        *
      ************************************************************/
     private void drawCharLeft(Character left){
@@ -503,13 +526,35 @@ public class DnDParty {
         }
 
     }
+    /*************************************************************
+     * METHOD: drawCharRight()                                   *
+     * DESCRIPTION: draws the character on the right of the      *
+     * screen                                                    *
+     * PARAMETERS: Character right                               *
+     * RETURN VALUE: none                                        *
+     ************************************************************/
+    private void drawCharRight(Character right) {
+        switch (right.getType()) {
+            case "Imp":
+                StdDraw.picture(0.77, 0.5, "C:/Users/chloe/OneDrive/Desktop/DND photo/Imp.png", 0.4, 0.4);
+                break;
+            case "Troll":
+                StdDraw.picture(0.78, 0.48, "C:/Users/chloe/OneDrive/Desktop/DND photo/Troll.png", 0.5, 0.5);
+                break;
 
-    private void drawCharRight(Character right){
-        if(right.getType().equals("Imp")){
-            StdDraw.picture(0.77,0.5, "C:/Users/chloe/OneDrive/Desktop/DND photo/Imp.png", 0.4, 0.4);
-        }
-        else if(right.getType().equals("Troll")){
-            StdDraw.picture(0.78, 0.48, "C:/Users/chloe/OneDrive/Desktop/DND photo/Troll.png", 0.5, 0.5 );
+            case "Barbarian":
+                if (right.getImage() == 0) {
+                    StdDraw.picture(0.77, 0.53, "C:/Users/chloe/OneDrive/Desktop/DND photo/Flipped_Barbarian_Greataxe.png", 0.6, 0.6);
+                } else if (right.getImage() == 1) {
+                    StdDraw.picture(0.77, 0.53, "C:/Users/chloe/OneDrive/Desktop/DND photo/Flipped_Barbarian_BreathFire.png", 0.6, 0.6);
+                }
+                break;
+
+            case "Cleric":
+                if (right.getImage() == 0) {
+                    StdDraw.picture(0.77, 0.53, "C:/Users/chloe/OneDrive/Desktop/DND photo/Flipped_Cleric_GuidingBolt.png", 0.5, 0.5);
+                }
+                break;
         }
     }
     /*********************************************************
@@ -620,6 +665,18 @@ public class DnDParty {
             System.out.println("Invalid choice. Please try again.");
         }
     }
+    int potions = 2;
+    /**********************************************************
+     * METHOD: inventory()                                    *
+     * DESCRIPTION: displays the Character's inventory        *
+     * party member                                           *
+     * PARAMETERS: none                                       *
+     * RETURN VALUE: none                                     *
+     *********************************************************/
+    public void inventory(){
+
+
+    }
 
     /**********************************************************
      * METHOD: hp_bar()                                       *
@@ -644,7 +701,13 @@ public class DnDParty {
         StdDraw.filledRectangle(x_enemy, y, width, height);
         Font font2 = new Font("Righteous", Font.BOLD, 18);
         StdDraw.setFont(font2);
-        StdDraw.setPenColor(StdDraw.WHITE);
+        if(accomplishment == 1){
+            StdDraw.setPenColor(StdDraw.BLACK);
+
+        }
+        else{
+            StdDraw.setPenColor(StdDraw.WHITE);
+        }
         StdDraw.text(x_char, 0.84, left.getType());
         StdDraw.text(x_enemy,0.84, right.getType());
 
@@ -692,7 +755,6 @@ public class DnDParty {
         int times = (int)(Math.random() *(5-1 +1) + 1 );
         text();
         StdDraw.setPenColor(StdDraw.WHITE);
-
         for(int i = 0; i<times; i++){
             StdDraw.enableDoubleBuffering();
             this.background();
@@ -784,6 +846,98 @@ public class DnDParty {
         StdDraw.pause(2000);
 
     }
+    /**********************************************************
+     * METHOD: Rolling_DiceLevelUP()                          *
+     * DESCRIPTION: displays the Character's HP               *
+     * party member                                           *
+     * PARAMETERS:                                            *
+     * RETURN VALUE: none                                     *
+     *********************************************************/
+    public void Rolling_DiceLevelUP(int level_roll, int dice){
+        int times = 3;
+        text();
+        StdDraw.setPenColor(StdDraw.WHITE);
+        for(int i = 0; i<times; i++){
+            StdDraw.enableDoubleBuffering();
+            StdDraw.picture(0.50, 0.50, "C:/Users/chloe/OneDrive/Desktop/DND photo/DND Forest Background.jpg", 1.0, 1.0);
+            StdDraw.setPenColor(StdDraw.LIGHT_GRAY);
+            StdDraw.filledRectangle(0.5, 0, 0.5, 0.18);
+            text();
+            //d4
+            drawD4();
+            //d6
+            drawD6();
+            //d8
+            drawD8();
+            // d10
+            drawD10();
+            //d12
+            drawD12();
+            //d20
+            drawD20();
+
+            int d4_random = (int)(Math.random() *(4-1 +1) + 1 );
+            int d6_random = (int)(Math.random() *(6-1 +1) + 1 );
+            int d8_random = (int)(Math.random() *(8-1 +1) + 1 );
+            int d10_random = (int)(Math.random() *(10-1 +1) + 1 );
+            int d12_random = (int)(Math.random() *(12-1 +1) + 1 );
+            int d20_random = (int)(Math.random() *(20-1 +1) + 1 );
+            int rand = 0;
+            switch (dice){
+                case 4:
+                    // add text to the other dice
+                    rand = d4_random;
+                    // d4
+                    drawD4();
+                    StdDraw.setPenColor(StdDraw.BLACK);
+                    StdDraw.text(0.1077, 0.06, String.valueOf(rand));
+                    x_postion  = 0.1077;
+                    y_postion = 0.06;
+                    break;
+                case 6:
+                    rand = d6_random;
+                    //d6
+                    drawD6();
+                    StdDraw.setPenColor(StdDraw.BLACK);
+                    StdDraw.text(0.27, 0.064, String.valueOf(rand));
+                    x_postion  = 0.27;
+                    y_postion = 0.064;
+                    break;
+                case 8:
+                    rand = d8_random;
+                    //d8
+                    drawD8();
+                    StdDraw.setPenColor(StdDraw.BLACK);
+                    StdDraw.text(0.43, 0.065, String.valueOf(rand));
+                    x_postion = 0.43;
+                    y_postion = 0.065;
+                    break;
+                case 10:
+                    rand = d10_random;
+                    StdDraw.setPenColor(Color.WHITE);
+                    //d10
+                    drawD10();
+                    StdDraw.setPenColor(StdDraw.BLACK);
+                    StdDraw.text(0.585, 0.055, String.valueOf(rand));
+                    x_postion = 0.585;
+                    y_postion = 0.055;
+                    break;
+                case 12:
+                    rand = d12_random;
+                    //d12
+                    drawD12();
+                    StdDraw.setPenColor(StdDraw.BLACK);
+                    StdDraw.text(0.73, 0.061, String.valueOf(rand));
+                    x_postion = 0.73;
+                    y_postion = 0.061;
+                    break;
+            }
+            StdDraw.show();
+            StdDraw.pause(900);
+
+        }
+    }
+
 
     /**********************************************************
      * METHOD: combat()                                       *
@@ -963,6 +1117,35 @@ public class DnDParty {
         }
 
     }
+    private Clip clip;
+    /***********************************************************
+     * METHOD: playEncounterMusic()                            *
+     * DESCRIPTION: plays background music                     *
+     * PARAMETERS: String filePath                             *
+     * RETURN VALUE: none                                      *
+     **********************************************************/
+    public void playEncounterMusic(String filePath) {
+        try {
+            AudioInputStream audioStream = AudioSystem.getAudioInputStream(new File(filePath));
+            clip = AudioSystem.getClip();
+            clip.open(audioStream);
+            clip.loop(Clip.LOOP_CONTINUOUSLY); // Loop indefinitely
+            clip.start();
+        } catch (Exception e) {
+            System.out.println("Error playing music: " + e.getMessage());
+        }
+    }
+    /***********************************************************
+     * METHOD: stopEncounterMusic()                            *
+     * DESCRIPTION: plays background music                     *
+     * PARAMETERS: none                                        *
+     * RETURN VALUE: none                                      *
+     **********************************************************/
+    public void stopEncounterMusic() {
+        if (clip != null && clip.isRunning()) {
+            clip.stop();
+        }
+    }
 
     private int death_count = 0;
     /***********************************************************
@@ -1021,8 +1204,13 @@ public class DnDParty {
         int proficiency = 2;
         // modifier will be different have to add a parameter (modifier and HP change with level)
         // for loop within a for loop (number of imps fought)
+        StdDraw.clear();
         System.out.println("The party is walking through the forest when they come across an abandon castle.");
         System.out.println("Curious they enter and come in combat with an Imp!\n");
+        StdDraw.picture(0.50, 0.5, "/C:/Users/chloe/OneDrive/Desktop/DND photo/DND background1.jpg", 1.00, 1.0);
+        StdDraw.show();
+        playEncounterMusic("C:/Users/chloe/OneDrive/Desktop/DND photo/imp_encounter-149571.wav");
+        StdDraw.pause(2000);
         for (int i = 3; i > 0; i--) {
             if (this.enemies.get(imp).getHP() <= 0) {
                 this.enemies.get(imp).healSetHP(10);
@@ -1083,44 +1271,58 @@ public class DnDParty {
                 }
             }
         }
+        // Stop background music
         System.out.println("The party defeated all the imps! Well done!");
-        System.exit(0);
+        StdDraw.pause(2000);
+        stopEncounterMusic();
         accomplishment++;
     }
-    /*********************************************************
+    /**********************************************************
      * METHOD: levelUp()                                      *
      * DESCRIPTION: increases the levels of all party members *
      * and rolls to increase their maximum hit points         *
      * PARAMETERS: none                                       *
      * RETURN VALUE: none                                     *
      *********************************************************/
-    public void levelUp() {
+    public void levelUp(){
         int hitDice;
+        StdDraw.clear();
+        // Make a function that has all the members drawn in the forest
+        StdDraw.picture(0.50 , 0.50,"C:/Users/chloe/OneDrive/Desktop/DND photo/DND Forest Background.jpg", 1.0 , 1.0  );
+        playEncounterMusic("C:/Users/chloe/OneDrive/Desktop/DND photo/forest_audio-139004.wav");
+        StdDraw.show();
         System.out.println("\nThe party is ready to level up!");
         for (int i = 0; i < this.party.size(); i++) {
             this.party.get(i).setLevel(this.party.get(i).getLevel() + 1);
             hitDice = this.party.get(i).getStats().getCONmod();
             if(this.party.get(i).getType().equals("Barbarian")){
                 hitDice += this.rollD12();
-                Rolling_Dice(hitDice,0,12);
+                Rolling_DiceLevelUP(hitDice,12);
             } else if (this.party.get(i).getType().equals("Cleric") || this.party.get(i).getType().equals("Rogue")){
                 hitDice += this.rollD8();
-                Rolling_Dice(hitDice,0,8);
+                Rolling_DiceLevelUP(hitDice,8);
+                StdDraw.pause(400);
             } else if (this.party.get(i).getType().equals("Wizard")){
                 hitDice += this.rollD6();
-                Rolling_Dice(hitDice,0,6);
+                Rolling_DiceLevelUP(hitDice,6);
             }
             if (this.party.get(i).getHP() <= 0){
                 System.out.println("The " + this.party.get(i).getType() + " has been revived!");
             }
             this.party.get(i).setMaxHP(hitDice);
             this.party.get(i).healSetHP(this.party.get(i).getMaxHP());
-            System.out.println("The " + this.party.get(i).getType() + " has increased to level " + this.party.get(i).getLevel() + " and has a new hit point maximum of " + this.party.get(i).getMaxHP());
+            System.out.println("The " + this.party.get(i).getType() + " has increased to level " + this.party.get(i).getLevel() + "\n"+" and has a new hit point maximum of " + this.party.get(i).getMaxHP());
         }
+        StdDraw.clear();
+        // Make a function that has all the members drawn in the forest
+        StdDraw.picture(0.50 , 0.50,"C:/Users/chloe/OneDrive/Desktop/DND photo/DND Forest Background.jpg", 1.0 , 1.0  );
+        StdDraw.show();
+        StdDraw.pause(2000);
+        stopEncounterMusic();
     }
 
     int troll = 1;
-    /*********************************************************
+    /**********************************************************
      * METHOD: encounter2()                                   *
      * DESCRIPTION: runs through the party's encounter with a *
      * troll.                                                 *
@@ -1129,9 +1331,14 @@ public class DnDParty {
      *********************************************************/
     public void encounter2(){
         // for loop within a for loop (number of imps fought)
+        StdDraw.clear();
         System.out.println("The party finds their way out of the castle and into the wilderness behind it.");
         System.out.println("While on their walk, they come across a large mountain cave.");
         System.out.println("The enter in search of treasure, but instead encounter a Troll!\n");
+        StdDraw.picture(0.50, 0.50, "C:/Users/chloe/OneDrive/Desktop/DND photo/DND Mountain Background.jpg", 1.00, 1.0);
+        StdDraw.show();
+        StdDraw.pause(2000);
+        playEncounterMusic("C:/Users/chloe/OneDrive/Desktop/DND photo/troll_music-127812.wav");
         while (this.enemies.get(troll).getHP() != 0) {
             for (int j = 0; j < this.party.size(); j++) {
                 if (this.party.get(j).getHP() > 0) {
@@ -1161,6 +1368,7 @@ public class DnDParty {
         }
         System.out.println("The party defeated the Troll! Good job!");
         System.out.println("There were " + death_count + " deaths");
+        stopEncounterMusic();
     }
 
 
@@ -1168,3 +1376,5 @@ public class DnDParty {
 
 
 
+
+//System.exit(0);
