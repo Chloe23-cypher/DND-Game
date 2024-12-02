@@ -1,6 +1,7 @@
 import java.awt.*;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.Scanner;
 //Audio packages
 import javax.sound.sampled.*;
@@ -8,7 +9,7 @@ import javax.sound.sampled.*;
 public class DnDParty {
     private ArrayList<Character> party;
     private ArrayList<Character> enemies;
-    int accomplishment = 1;
+    int accomplishment = 0;
 //    DnDParty minimusic = new DnDParty();
     Scanner scan = new Scanner(System.in);
     public void interfaceLoop() throws InterruptedException {
@@ -404,7 +405,7 @@ public class DnDParty {
         //Background music
         playEncounterMusic("C:/Users/chloe/OneDrive/Desktop/DND photo/forest_audio-139004.wav");
         //Background photo
-        StdDraw.picture(0.50 , 0.50,"C:/Users/chloe/OneDrive/Desktop/DND photo/DND Forest Background.jpg", 1.0 , 1.0  );
+        StdDraw.picture(0.50 , 0.50,"C:/Users/chloe/OneDrive/Desktop/DND photo/DND Forest Background.jpg", 1.0 , 1.0 );
         System.out.println("Let's introduce you to your party members!" + "\n");
         StdDraw.pause(1750);
         StdDraw.enableDoubleBuffering();
@@ -507,22 +508,90 @@ public class DnDParty {
      * RETURN VALUE: none                                        *
      ************************************************************/
      public void group_photo(){
+         StdDraw.picture(0.50 , 0.50,"C:/Users/chloe/OneDrive/Desktop/DND photo/DND Forest Background.jpg", 1.0 , 1.0 );
+         //Characters
+         StdDraw.picture(0.25, 0.80, "C:/Users/chloe/OneDrive/Desktop/DND photo/Barbarian_Greataxe.png", 0.6, 0.6);
+         StdDraw.picture(0.23, 0.31 ,"C:/Users/chloe/OneDrive/Desktop/DND photo/Cleric_Guiding_Bolt.png", 0.5, 0.5);
+         StdDraw.picture(0.75, 0.77 , "C:/Users/chloe/OneDrive/Desktop/DND photo/Rogue_Sneak_Attack.png", 0.52, 0.52);
+         StdDraw.picture(0.77, 0.33,"C:/Users/chloe/OneDrive/Desktop/DND photo/Wizard_IceKnife.png", 0.55, 0.55);
+         StdDraw.show();
 
      }
+    /*************************************************************
+     * METHOD: group_level()                                     *
+     * DESCRIPTION: draws all the party members  in the forest   *
+     * party member                                              *
+     * PARAMETERS: none                                          *
+     * RETURN VALUE: none                                        *
+     ************************************************************/
+    public void group_level(){
+        StdDraw.picture(0.50 , 0.50,"C:/Users/chloe/OneDrive/Desktop/DND photo/DND Forest Background.jpg", 1.0 , 1.0 );
+        //Characters
+        StdDraw.picture(0.25, 0.79, "C:/Users/chloe/OneDrive/Desktop/DND photo/Barbarian_Greataxe.png", 0.43, 0.43);
+        StdDraw.picture(0.23, 0.40 ,"C:/Users/chloe/OneDrive/Desktop/DND photo/Cleric_Guiding_Bolt.png", 0.35, 0.35);
+        StdDraw.picture(0.75, 0.77 , "C:/Users/chloe/OneDrive/Desktop/DND photo/Rogue_Sneak_Attack.png", 0.37, 0.37);
+        StdDraw.picture(0.77, 0.43,"C:/Users/chloe/OneDrive/Desktop/DND photo/Wizard_IceKnife.png", 0.40, 0.40);
+        // Rolling
+        StdDraw.setPenColor(StdDraw.LIGHT_GRAY);
+        StdDraw.filledRectangle(0.5, 0, 0.5, 0.18);
+        text();
+        //d4
+        drawD4();
+        //d6
+        drawD6();
+        //d8
+        drawD8();
+        // d10
+        drawD10();
+        //d12
+        drawD12();
+        //d20
+        drawD20();
+        StdDraw.show();
+
+    }
     /*************************************************************
      * METHOD: drawCharLeft()                                    *
      * DESCRIPTION: draws the character on the left of the screen*
      * PARAMETERS: Character left                                *
      * RETURN VALUE: none                                        *
      ************************************************************/
-    private void drawCharLeft(Character left){
-        if (left.getType().equals("Barbarian") && left.getImage() == 0){
-            StdDraw.picture(0.23,0.53, "C:/Users/chloe/OneDrive/Desktop/DND photo/Barbarian_Greataxe.png", 0.6, 0.6);
-        } else if (left.getType().equals("Barbarian") && left.getImage() == 1){
-            StdDraw.picture(0.23,0.53, "C:/Users/chloe/OneDrive/Desktop/DND photo/Barbarian_Breath_Weapon.png", 0.6, 0.6);
-        }
-        else if(left.getType().equals("Cleric") && left.getImage() == 0){
-            StdDraw.picture(0.23, 0.53,"C:/Users/chloe/OneDrive/Desktop/DND photo/Cleric_Guiding_Bolt.png", 0.5, 0.5 );
+    private void drawCharLeft(Character left) {
+        switch (left.getType()) {
+            case "Barbarian":
+                if (left.getImage() == 0) {
+                    StdDraw.picture(0.23, 0.53, "C:/Users/chloe/OneDrive/Desktop/DND photo/Barbarian_Greataxe.png", 0.6, 0.6);
+                } else if (left.getImage() == 1) {
+                    StdDraw.picture(0.23, 0.53, "C:/Users/chloe/OneDrive/Desktop/DND photo/Barbarian_Breath_Weapon.png", 0.6, 0.6);
+                }
+                break;
+
+            case "Cleric":
+                if (left.getImage() == 0) {
+                    StdDraw.picture(0.23, 0.53, "C:/Users/chloe/OneDrive/Desktop/DND photo/Cleric_Guiding_Bolt.png", 0.5, 0.5);
+                }
+                else if (left.getImage() == 1){
+                    StdDraw.picture(0.23, 0.53 ,"C:/Users/chloe/OneDrive/Desktop/DND photo/Cleric_Mace.png", 0.5, 0.5);
+                }
+                break;
+            case "Rogue":
+                if(left.getImage() == 0){
+                    StdDraw.picture(0.25, 0.53, "C:/Users/chloe/OneDrive/Desktop/DND photo/Rogue_Rapier.png",0.52, 0.52);
+                }
+                else if(left.getImage() == 1){
+                    StdDraw.picture(0.25, 0.53 , "C:/Users/chloe/OneDrive/Desktop/DND photo/Rogue_Sneak_Attack.png", 0.52, 0.52);
+                }
+                break;
+            case "Wizard":
+                if(left.getImage() == 0){
+                    StdDraw.picture(0.25, 0.53, "C:/Users/chloe/OneDrive/Desktop/DND photo/Wizard_Witch_Bolt.png", 0.55, 0.55);
+                }
+                else if(left.getImage() == 1){
+                    StdDraw.picture(0.28, 0.53,"C:/Users/chloe/OneDrive/Desktop/DND photo/Wizard_IceKnife.png", 0.55, 0.55);
+
+                }
+                break;
+
         }
 
     }
@@ -554,6 +623,27 @@ public class DnDParty {
                 if (right.getImage() == 0) {
                     StdDraw.picture(0.77, 0.53, "C:/Users/chloe/OneDrive/Desktop/DND photo/Flipped_Cleric_GuidingBolt.png", 0.5, 0.5);
                 }
+                else if (right.getImage() == 1){
+                    StdDraw.picture(0.77, 0.53 ,"C:/Users/chloe/OneDrive/Desktop/DND photo/Flipped_Cleric_Mace.png", 0.5, 0.5);
+                }
+                break;
+            case "Rogue":
+                if(right.getImage() == 0){
+                    StdDraw.picture(0.76, 0.53, "C:/Users/chloe/OneDrive/Desktop/DND photo/Flipped_Rogue_Rapier.png",0.52, 0.52);
+                }
+                else if(right.getImage() ==1){
+                    StdDraw.picture(0.77, 0.53,"C:/Users/chloe/OneDrive/Desktop/DND photo/Flipped_Rogue_SneakAttack.png", 0.52, 0.52);
+
+                }
+                break;
+            case "Wizard":
+                if(right.getImage() == 0){
+                    StdDraw.picture(0.77, 0.53,"C:/Users/chloe/OneDrive/Desktop/DND photo/Flipped_Wizard_WitchBolt.png");
+                }
+                else if(right.getImage() == 1){
+                    StdDraw.picture(0.74, 0.53,"C:/Users/chloe/OneDrive/Desktop/DND photo/Flipped_Wizard_IceKnife.png", 0.55, 0.55);
+
+                }
                 break;
         }
     }
@@ -564,6 +654,9 @@ public class DnDParty {
      * RETURN VALUE: none                                     *
      *********************************************************/
     public void printStats () {
+        StdDraw.clear();
+        group_photo();
+        StdDraw.show();
         System.out.printf("%-12s %-16s %-14s %-14s %-15s", "\t", "Barbarian", "Cleric", "Rogue", "Wizard");
         System.out.print("\n");
         System.out.print("Strength:           ");
@@ -665,7 +758,9 @@ public class DnDParty {
             System.out.println("Invalid choice. Please try again.");
         }
     }
-    int potions = 2;
+    int bar_potions = 2;
+    int rog_potions = 2;
+    int wiz_potions = 2;
     /**********************************************************
      * METHOD: inventory()                                    *
      * DESCRIPTION: displays the Character's inventory        *
@@ -674,7 +769,34 @@ public class DnDParty {
      * RETURN VALUE: none                                     *
      *********************************************************/
     public void inventory(){
-
+        StdDraw.clear();
+        group_photo();
+        StdDraw.show();
+        int dash = 45;
+        for(int d = 0; d < dash; d++){
+            System.out.print("-");
+        }
+        System.out.println();
+        System.out.printf("%-20s %-11s %-12s", "| Characters |", "Item" , "|  Amount  |");
+        System.out.println();
+        for(int d = 0; d < dash; d++){
+            System.out.print("-");
+        }
+        System.out.println();
+        for(int i = 0; i< this.party.size(); i++){
+            if(i == 1) {
+                System.out.printf("%-1s %-10s %-17s", "|" ,this.party.get(i).getType(), "| Healing Word      | ");
+                System.out.print("infinity |");
+                System.out.println();
+            }
+            System.out.printf("%-1s %-10s %-17s", "|" ,this.party.get(i).getType(), "| Potion of Healing | ");
+            System.out.print("  x"+ bar_potions+  "     |");
+            System.out.println();
+        }
+        for(int d = 0; d < dash; d++){
+            System.out.print("-");
+        }
+        System.out.println();
 
     }
 
@@ -752,7 +874,7 @@ public class DnDParty {
      * RETURN VALUE: none                                     *
      *********************************************************/
     public void Rolling_Dice(int roll, int damage_roll, int dice){
-        int times = (int)(Math.random() *(5-1 +1) + 1 );
+        int times = (int)(Math.random() *(4-1 +1) + 1 );
         text();
         StdDraw.setPenColor(StdDraw.WHITE);
         for(int i = 0; i<times; i++){
@@ -859,22 +981,7 @@ public class DnDParty {
         StdDraw.setPenColor(StdDraw.WHITE);
         for(int i = 0; i<times; i++){
             StdDraw.enableDoubleBuffering();
-            StdDraw.picture(0.50, 0.50, "C:/Users/chloe/OneDrive/Desktop/DND photo/DND Forest Background.jpg", 1.0, 1.0);
-            StdDraw.setPenColor(StdDraw.LIGHT_GRAY);
-            StdDraw.filledRectangle(0.5, 0, 0.5, 0.18);
-            text();
-            //d4
-            drawD4();
-            //d6
-            drawD6();
-            //d8
-            drawD8();
-            // d10
-            drawD10();
-            //d12
-            drawD12();
-            //d20
-            drawD20();
+            group_level();
 
             int d4_random = (int)(Math.random() *(4-1 +1) + 1 );
             int d6_random = (int)(Math.random() *(6-1 +1) + 1 );
@@ -1103,6 +1210,22 @@ public class DnDParty {
             System.out.println("The " + giver.getType() + " will drink a Potion of Healing. Roll for how much HP is restored.");
             Rolling_Dice(rollD20(), HP,4);
             System.out.println("The " + giver.getType() + " regained " + HP + " hit points");
+            switch (giver.getType()) {
+                case "Barbarian" -> {
+                    bar_potions--;
+                    System.out.println("You have " + bar_potions + " potion(s) left");
+
+                }
+                case "Rogue" -> {
+                    rog_potions--;
+                    System.out.println("You have " + rog_potions + " potion(s) left");
+                }
+                case "Wizard" -> {
+                    wiz_potions--;
+                    System.out.println("You have " + wiz_potions + " potion(s) left");
+                }
+            }
+
         } else if(giver == receiver && giver == this.party.get(1)){
             System.out.println("The Cleric will healed itself and regained " + HP + " hit points");
         } else if(giver != receiver){
@@ -1236,7 +1359,18 @@ public class DnDParty {
                                     int heal = scan.nextInt();
                                     this.healBA(this.party.get(j), this.party.get(heal - 1));
                                 } else {
-                                    this.healBA(this.party.get(j), this.party.get(j));
+                                    if(bar_potions!= 0 && this.party.get(j).getType().equals("Barbarian")){
+                                        this.healBA(this.party.get(j), this.party.get(j));
+                                    }
+                                    else if(rog_potions != 0 && this.party.get(j).getType().equals("Rogue")){
+                                        this.healBA(this.party.get(j), this.party.get(j));
+                                    }
+                                    else if(wiz_potions !=0 && this.party.get(j).getType().equals("Wizard")){
+                                        this.healBA(this.party.get(j), this.party.get(j));
+                                    }
+                                    else{
+                                        System.out.println("Sorry you don't have any potions left");
+                                    }
                                 }
                             }
 
@@ -1258,7 +1392,18 @@ public class DnDParty {
                                     int heal = scan.nextInt();
                                     this.healBA(this.party.get(j), this.party.get(heal - 1));
                                 } else {
-                                    this.healBA(this.party.get(j), this.party.get(j));
+                                    if(bar_potions!= 0 && this.party.get(j).getType().equals("Barbarian")){
+                                        this.healBA(this.party.get(j), this.party.get(j));
+                                    }
+                                    else if(rog_potions != 0 && this.party.get(j).getType().equals("Rogue")){
+                                        this.healBA(this.party.get(j), this.party.get(j));
+                                    }
+                                    else if(wiz_potions !=0 && this.party.get(j).getType().equals("Wizard")){
+                                        this.healBA(this.party.get(j), this.party.get(j));
+                                    }
+                                    else{
+                                        System.out.println("Sorry you don't have any potions left");
+                                    }
                                 }
                             }
                             System.out.println("The " + this.party.get(j).getType() + "'s turn is over.\n");
@@ -1272,10 +1417,15 @@ public class DnDParty {
             }
         }
         // Stop background music
-        System.out.println("The party defeated all the imps! Well done!");
         StdDraw.pause(2000);
         stopEncounterMusic();
+        System.out.println("The party defeated all the imps! Well done!");
+        bar_potions = 2;
+        rog_potions = 2;
+        wiz_potions = 2;
+        System.out.println("Members' inventory has been restocked ");
         accomplishment++;
+
     }
     /**********************************************************
      * METHOD: levelUp()                                      *
@@ -1288,7 +1438,8 @@ public class DnDParty {
         int hitDice;
         StdDraw.clear();
         // Make a function that has all the members drawn in the forest
-        StdDraw.picture(0.50 , 0.50,"C:/Users/chloe/OneDrive/Desktop/DND photo/DND Forest Background.jpg", 1.0 , 1.0  );
+        StdDraw.enableDoubleBuffering();
+        group_level();
         playEncounterMusic("C:/Users/chloe/OneDrive/Desktop/DND photo/forest_audio-139004.wav");
         StdDraw.show();
         System.out.println("\nThe party is ready to level up!");
@@ -1315,7 +1466,7 @@ public class DnDParty {
         }
         StdDraw.clear();
         // Make a function that has all the members drawn in the forest
-        StdDraw.picture(0.50 , 0.50,"C:/Users/chloe/OneDrive/Desktop/DND photo/DND Forest Background.jpg", 1.0 , 1.0  );
+        group_level();
         StdDraw.show();
         StdDraw.pause(2000);
         stopEncounterMusic();
@@ -1355,7 +1506,18 @@ public class DnDParty {
                                 int heal = scan.nextInt();
                                 this.healBA(this.party.get(j), this.party.get(heal - 1));
                             } else {
-                                this.healBA(this.party.get(j), this.party.get(j));
+                                if(bar_potions!= 0 && this.party.get(j).getType().equals("Barbarian")){
+                                    this.healBA(this.party.get(j), this.party.get(j));
+                                }
+                                else if(rog_potions != 0 && this.party.get(j).getType().equals("Rogue")){
+                                    this.healBA(this.party.get(j), this.party.get(j));
+                                }
+                                else if(wiz_potions !=0 && this.party.get(j).getType().equals("Wizard")){
+                                    this.healBA(this.party.get(j), this.party.get(j));
+                                }
+                                else{
+                                    System.out.println("Sorry you don't have any potions left");
+                                }
                             }
                         }
                         System.out.println("The " + this.party.get(j).getType() + "'s turn is over.");
@@ -1369,6 +1531,9 @@ public class DnDParty {
         System.out.println("The party defeated the Troll! Good job!");
         System.out.println("There were " + death_count + " deaths");
         stopEncounterMusic();
+        bar_potions = 2;
+        rog_potions = 2;
+        wiz_potions = 2;
     }
 
 
