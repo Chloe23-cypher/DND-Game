@@ -1,50 +1,85 @@
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Scanner;
-import java.awt.event.KeyEvent;
-import javax.sound.midi.*;
+import javax.sound.sampled.*;
+import java.io.File;
 public class DnDParty {
     private ArrayList<Character> party;
     private ArrayList<Character> enemies;
-    int accomplishment = 0;
-//    DnDParty minimusic = new DnDParty();
     Scanner scan = new Scanner(System.in);
-    public void interfaceLoop()
-    {
-        Scanner scan = new Scanner(System.in);
-        while(accomplishment !=2){
-            System.out.print("What do you want to do? --> ");
-            String input = scan.nextLine();
-            if(input.equals("S")){
-                this.printStats();
-            }
-            else if(input.equals("D")){
-                this.displayCharacter();
 
-            }
-            else if(input.equals("I")){
-
-            }
-            else if(input.equals("E")){
-                if(accomplishment == 1){
-                    System.out.println("It seems like you ready for you next Quest...");
-                    System.out.println("Best of Luck you're going to need it");
-
-                }
-                else {
-                    System.out.println("Best of Luck on your Quest!");
-                }
-                this.encounter1();
-                this.levelUp();
-            }
-            else if(input.equals("?")){
-                this.displayMenu();
-            }
+    private Clip clip;
+     /***********************************************************
+     * METHOD: playEncounterMusic()                            *
+     * DESCRIPTION: plays background music                     *
+     * PARAMETERS: String filePath                             *
+     * RETURN VALUE: none                                      *
+     **********************************************************/
+    public void playEncounterMusic(String filePath) {
+        try {
+            AudioInputStream audioStream = AudioSystem.getAudioInputStream(new File(filePath));
+            clip = AudioSystem.getClip();
+            clip.open(audioStream);
+            clip.loop(Clip.LOOP_CONTINUOUSLY); // Loop indefinitely
+            clip.start();
+        } catch (Exception e) {
+            System.out.println("Error playing music: " + e.getMessage());
+        }
+    }
+    /***********************************************************
+     * METHOD: stopEncounterMusic()                            *
+     * DESCRIPTION: plays background music                     *
+     * PARAMETERS: none                                        *
+     * RETURN VALUE: none                                      *
+     **********************************************************/
+    public void stopEncounterMusic() {
+        if (clip != null && clip.isRunning()) {
+            clip.stop();
         }
     }
 
-    /**********************************************************
+    int accomplishment = 0;
+     /*********************************************************
+     * METHOD: interfaceLoop()                                *
+     * DESCRIPTION: controls execution of the menu            *
+     * PARAMETERS: none                                       *
+     * RETURN VALUE: none                                     *
+     *********************************************************/
+     public void interfaceLoop() throws InterruptedException {
+         Scanner scan = new Scanner(System.in);
+         while(accomplishment !=3){
+             System.out.print("What do you want to do? => ");
+             String input = scan.nextLine();
+             if(input.equals("S")){
+                 this.printStats();
+             }
+             else if(input.equals("D")){
+                 this.displayCharacter();
+             }
+             else if(input.equals("I")){
+                 this.inventory();
+             }
+             else if(input.equals("E")){
+                 if(accomplishment == 2){
+                     System.out.println("It seems like you ready for you next Quest...");
+                     System.out.println("Best of Luck you're going to need it");
+                     this.encounter2();
+
+                 }
+                 else if (accomplishment == 1){
+                     System.out.println("Best of Luck on your Quest!");
+                     this.encounter1();
+                 }
+                 this.levelUp();
+
+             }
+             else if(input.equals("?")){
+                 this.displayMenu();
+             }
+         }
+     }
+
+     /*********************************************************
      * METHOD: displayMenu()                                  *
      * DESCRIPTION: displays the menu commands                *
      * PARAMETERS: none                                       *
@@ -61,44 +96,50 @@ public class DnDParty {
     }
 
     //Background
-    /**********************************************************
+     /**********************************************************
      * METHOD: background()                                    *
      * DESCRIPTION: draws the background                       *
      * PARAMETERS: none                                        *
      * RETURN VALUE: none                                      *
      **********************************************************/
-    public void background() {
-        StdDraw.picture(0.50, 0.5, "/C:/Users/chloe/OneDrive/Desktop/DND photo/DND background1.jpg", 1.00, 1.0);
-        //StdDraw.show();
+    public void background(){
+        if(accomplishment == 0) {
+            StdDraw.picture(0.50, 0.50, "C:/Users/bella/Downloads/DnDbackground/forestbg.jpg", 1.00, 1.0);
+        } else if(accomplishment == 1){
+            StdDraw.picture(0.50, 0.50, "C:/Users/bella/Downloads/DnDbackground/encounter1bg.png", 1.00, 1.0);
+        } else if(accomplishment == 2){
+            StdDraw.picture(0.50, 0.50, "C:/Users/bella/Downloads/DnDbackground/encounter2bg.png", 1.00, 1.0);
+        }
+        StdDraw.show();
         StdDraw.setPenColor(StdDraw.LIGHT_GRAY);
-        StdDraw.filledRectangle(0.5, 0, 0.5, 0.14);
-        //d4
+        StdDraw.filledRectangle(0.5, 0, 0.5, 0.18);
+        this.text();
         this.drawD4();
-        //d6
         this.drawD6();
-        //d8
         this.drawD8();
-        //d10
         this.drawD10();
-        //d12
         this.drawD12();
-        //d20
         this.drawD20();
         StdDraw.setPenColor(StdDraw.WHITE);
     }
 
-    /***********************************************************
+     /**********************************************************
      * METHOD: text()                                          *
      * DESCRIPTION: displays the text of the dice              *
      * PARAMETERS: none                                        *
      * RETURN VALUE: none                                      *
      **********************************************************/
-     public void text() {
-        StdDraw.text(0.1077, 0.06, "d4");
-        StdDraw.text(0.27, 0.065, "d6");
-        StdDraw.text(0.43, 0.065, "d8");
-        StdDraw.text(0.585, 0.055, "d10");
-     }
+    public void text() {
+        Font font = new Font("Righteous", Font.BOLD, 16);
+        StdDraw.setFont(font);
+        StdDraw.setPenColor(Color.white);
+        StdDraw.text(0.1077, 0.15, "d4");
+        StdDraw.text(0.27, 0.15, "d6");
+        StdDraw.text(0.43, 0.15, "d8");
+        StdDraw.text(0.585, 0.15, "d10");
+        StdDraw.text(0.73, 0.15, "d12");
+        StdDraw.text(0.90, 0.15, "d20");
+    }
 
     /**********************************************************
      * METHOD: rollD20()                                       *
@@ -170,8 +211,29 @@ public class DnDParty {
      * RETURN VALUE: none                                      *
      **********************************************************/
     private void drawD12(){
+        StdDraw.setPenColor(StdDraw.BOOK_BLUE);
+        double d12x[] = {0.7871, 0.7653, 0.73, 0.6947, 0.6729, 0.6729, 0.6947, 0.73, 0.7653, 0.7871};
+        double d12y[] = {0.0885, 0.1185, 0.13, 0.1185, 0.0885, 0.0515, 0.0215, 0.01, 0.0215, 0.0515};
+        StdDraw.filledPolygon(d12x, d12y);
         StdDraw.setPenColor(StdDraw.BOOK_LIGHT_BLUE);
-        StdDraw.filledSquare(0.73, 0.07, 0.06);
+        double pentd12x[] = {0.73, 0.6967130219, 0.7094275162, 0.7505724838, 0.7632869781};
+        double pentd12y[] = {0.105, 0.0808155948, 0.0416844052, 0.0416844052, 0.0808155948};
+        StdDraw.filledPolygon(pentd12x, pentd12y);
+        StdDraw.setPenColor(StdDraw.BLUE_DARK);
+        double shadow1d12x[] = {0.6947, 0.7094275162, 0.7505724838, 0.7653, 0.73,};
+        double shadow1d12y[] = {0.0215, 0.0416844052, 0.0416844052, 0.0215, 0.01};
+        StdDraw.filledPolygon(shadow1d12x, shadow1d12y);
+        StdDraw.setPenColor(StdDraw.BLUE_MID);
+        double shadow2d12x[] = {0.6729, 0.6947, 0.73, 0.7653, 0.7871, 0.7632869781, 0.73, 0.6967130219};
+        double shadow2d12y[] = {0.0885, 0.1185, 0.13, 0.1185, 0.0885, 0.0808155948, 0.105, 0.0808155948};
+        StdDraw.filledPolygon(shadow2d12x, shadow2d12y);
+        StdDraw.setPenColor(StdDraw.BLUE_SHADE);
+        double shadow3d12x[] = {0.6947, 0.6729, 0.6729, 0.6967130219, 0.7094275162};
+        double shadow3d12y[] = {0.0215, 0.0515, 0.0885, 0.0808155948, 0.0416844052};
+        StdDraw.filledPolygon(shadow3d12x, shadow3d12y);
+        double shadow4d12x[] = {0.7653, 0.7871, 0.7871, 0.7632869781, 0.7505724838};
+        double shadow4d12y[] = {0.0215, 0.0515, 0.0885, 0.0808155948, 0.0416844052};
+        StdDraw.filledPolygon(shadow4d12x, shadow4d12y);
     }
 
     /**********************************************************
@@ -220,9 +282,9 @@ public class DnDParty {
         return d8;
     }
 
-     /**********************************************************
+    /**********************************************************
      * METHOD: drawD8()                                        *
-     * DESCRIPTION: draw a d8  die                             *
+     * DESCRIPTION: draw a d8 die                              *
      * PARAMETERS: none                                        *
      * RETURN VALUE: none                                      *
      **********************************************************/
@@ -266,7 +328,7 @@ public class DnDParty {
         StdDraw.filledSquare(0.27, 0.065, 0.05);
     }
 
-    /**********************************************************
+     /**********************************************************
      * METHOD: rollD4()                                        *
      * DESCRIPTION: roll a d4 die                              *
      * PARAMETERS: none                                        *
@@ -290,17 +352,11 @@ public class DnDParty {
         StdDraw.filledPolygon(d4x, d4y);
     }
 
-    //constructor
+
+    ///////////////////////////////////////////////////////////////////   constructor ////////////////////////////////////////////////////////////////////////////////////
     public DnDParty() {
         this.party = new ArrayList<Character>();
         this.enemies = new ArrayList<Character>();
-        System.out.println("Menu commands:");
-        System.out.println("\tS – Check Party Members' Stats");
-        System.out.println("\tD – Detailed information about a character ");
-        System.out.println("\tI – Character's Inventory");
-        System.out.println("\tE – Start Encounter");
-        System.out.println("\t? – Display this menu");
-        System.out.print("\n");
 
         Stats barbarian = new Stats(17, 13, 14, 8, 12, 11);
         Stats cleric = new Stats(12, 10, 14, 10, 15, 13);
@@ -308,6 +364,8 @@ public class DnDParty {
         Stats wizard = new Stats(8, 14, 10, 15, 14, 13);
         Stats imp = new Stats(6, 17, 13, 11, 12, 14);
         Stats troll = new Stats(18, 13, 20, 7, 9, 7);
+        Stats gnoll = new Stats(14, 12, 11, 6, 10, 7);
+        Stats orc = new Stats(16, 12, 16, 7, 11, 10);
 
         //Actions
         Attack greataxe = new Attack("Greataxe Melee Attack", "N", 5, 0, "1d12");
@@ -318,7 +376,12 @@ public class DnDParty {
         Attack sneak = new Attack("Sneak Attack", "N", 8, 0, "1d8 + 1d6");
         Attack witch = new Attack("Witch Bolt", "N", 4, 0, "1d12");
         Attack ice = new Attack("Ice Knife", "Y", 4, 12, "1d10");
-        Attack sting = new Attack("Sting", "Y", 5, 11, "1d4 + 3");
+        Attack sting = new Attack("Sting", "Y", 5, 11, "1d4");
+        Attack biteTr = new Attack("Bite", "N", 7, 0, "1d6");
+        Attack claw = new Attack("Claw", "N", 7, 0, "2d6 + 4");
+        Attack spear = new Attack("Spear", "N", 4, 0, "1d6");
+        Attack biteGn = new Attack("Bite", "N", 4, 0, "1d4");
+        Attack javelin = new Attack("Javelin", "N", 5, 0, "1d6");
 
         //Bonus actions
         Attack potion = new Attack("Potion of Healing", "N", 0, 0, "2d4 + 2");
@@ -331,37 +394,241 @@ public class DnDParty {
         Action healParty = new Action(heal, heal);
         Action drinkPotion = new Action(potion, potion);
         Action impA = new Action(sting, sting);
+        Action trollA = new Action(biteTr, claw);
+        Action gnollA = new Action(spear, biteGn);
+        Action orcA = new Action(greataxe, javelin);
 
 
 
-        Character c1 = new Character("Barbarian", "Dragon Born", 1, 14, 14, 15, barbarian, barbarianA, drinkPotion,
-        "Flintstrike Rasbor", "Hunting, Combat Training, and Playing Poker", "General of the Army for the Kingdom Witchitieer", "Loyal to his unit and not afraid to get some blood on his hands.");
-        Character c2 = new Character("Cleric", "Halfling", 1, 10, 10, 12, cleric, clericA, healParty,
-        "Anzira Heartbrige", "Pulling pranks, praying in the meadows, and playing the harp.", "A healer at the Medbay", "Joyful and Humorous. Enjoying making her party members laugh with a joke. Fierce in combat." );
-        Character c3 = new Character("Rogue", "Gnome", 1, 9, 9, 13, rogue, rogueA, drinkPotion,
-        "Brixton Shadowcloak", "Reading, sharpening his rapier, and exploring the terrain.", "An assassin", "Reserved, Quiet, and Stealthy. If promoted tells spooky stories around the fire.");
-        Character c4 = new Character("Wizard", "Elf", 1, 6, 6, 11, wizard, wizardA, drinkPotion,
-        "Venira Duskhold", "Star reading, practicing her magic, and knife throwing" , "A princess of the kingdom Lothlórien", "Gorgeous, Kind Hearted, and Intelligent. Helpful around camp gathering supplies.");
-        Character e1 = new Character("Imp", "Imp", 1, 10, 10, 13, imp, impA, drinkPotion, "", "", "", "");
+        Character c1 = new Character("Barbarian", "Dragon Born", 1, 14, 14, 15, barbarian, barbarianA, drinkPotion, 0, 0,
+                "Flintstrike Rasbor", "Hunting, Combat Training, and Playing Poker", "General of the Army for the Kingdom Witchitieer", "Loyal to his unit and not afraid to get some blood on his hands.");
+        Character c2 = new Character("Cleric", "Halfling", 1, 10, 10, 12, cleric, clericA, healParty, 0, 0,
+                "Anzira Heartbrige", "Pulling pranks, praying in the meadows, and playing the harp.", "A healer at the Medbay", "Joyful and Humorous. Enjoys making her party members laugh with a joke. Fierce in combat." );
+        Character c3 = new Character("Rogue", "Gnome", 1, 9, 9, 13, rogue, rogueA, drinkPotion, 0, 0,
+                "Brixton Shadowcloak", "Reading, sharpening his rapier, and exploring the terrain.", "An assassin", "Reserved, Quiet, and Stealthy. If prompted, tells spooky stories around the fire.");
+        Character c4 = new Character("Wizard", "Elf", 1, 6, 6, 11, wizard, wizardA, drinkPotion, 0, 0,
+                "Venira Duskhold", "Star reading, practicing her magic, and knife throwing" , "A princess of the kingdom Lothlórien", "Gorgeous, Kind Hearted, and Intelligent. Helpful around camp gathering supplies.");
+        Character e1 = new Character("Imp", "Imp", 0, 10, 10, 13, imp, impA, drinkPotion, 0, 0, "", "", "", "");
+        Character e2 = new Character("Troll", "Troll", 0, 70, 70, 15, troll, trollA, drinkPotion, 0, 0, "", "", "", "");
+        Character e3 = new Character("Gnoll", "Gnoll", 0, 22, 22, 15, gnoll, gnollA, drinkPotion, 0, 0, "", "", "", "");
+        Character e4 = new Character("Orc", "Orc", 0, 15, 15, 13, orc, orcA, drinkPotion, 0, 0, "", "", "", "");
 
         this.party.add(c1);
         this.party.add(c2);
         this.party.add(c3);
         this.party.add(c4);
         this.enemies.add(e1);
+        this.enemies.add(e2);
+        this.enemies.add(e3);
+        this.enemies.add(e4);
     }
-    
-    /************************************************************
-     * METHOD: drawCharLeft()                                    *
+
+    /*********************************************************
+     * METHOD: meet_party()                                   *
+     * DESCRIPTION: displays the party members on the canvas  *
+     * PARAMETERS: none                                       *
+     * RETURN VALUE: none                                     *
+     *********************************************************/
+    public void meet_party() throws InterruptedException {
+        int mem = 0; // Current member index
+        double set_xl = 0.55; // Label X-coordinate
+        double set_xv = 0.70; // Value X-coordinate
+        //Background music
+        this.playEncounterMusic("C:/Users/bella/Downloads/DnDbackground/forest_bgm.wav");
+        //Background photo
+        StdDraw.picture(0.50 , 0.50,"C:/Users/bella/Downloads/DnDbackground/forestbg.jpg", 1.0 , 1.0  );
+        System.out.println("Let's introduce you to your party members!" + "\n");
+        StdDraw.pause(1750);
+        StdDraw.enableDoubleBuffering();
+        while (mem < this.party.size()) {
+            // Clear and set the background for each member
+            StdDraw.picture(0.50 , 0.50,"C:/Users/bella/Downloads/DnDbackground/forestbg.jpg", 1.0 , 1.0  );
+            StdDraw.setPenColor(Color.WHITE);
+            StdDraw.filledSquare(0.80, 0.50, 0.28);
+
+            double y = 0.70; // Reset y-coordinate for details
+            Font font3 = new Font("Aptos", Font.BOLD, 13);
+            StdDraw.setFont(font3);
+            // Create details for the current member
+            String[][] member = {
+                    {"Name: ", this.party.get(mem).getName()},
+                    {"Class: ", this.party.get(mem).getType()},
+                    {"Race: ", this.party.get(mem).getRace()},
+                    {"Hobbies:", splitString(party.get(mem).getHobbies())},
+                    {"Profession:", splitString(party.get(mem).getProfession())},
+                    {"Personality:", splitString(party.get(mem).getPersonality())}
+            };
+            StdDraw.setPenColor(StdDraw.BLACK);
+            System.out.println("Displaying member " + (mem + 1));
+            System.out.println(this.party.get(mem).getName());
+            System.out.println(this.party.get(mem).getType());
+            System.out.println(this.party.get(mem).getRace());
+            System.out.println(this.party.get(mem).getProfession());
+            if(!(mem ==3)) {
+                System.out.println("Press SpaceBar to see the next member...");
+            }
+            System.out.print("\n");
+            // Draw each detail
+            for (String[] strings : member) {
+                String label = strings[0];
+                String[] value = strings[1].split("\n");
+                StdDraw.textLeft(set_xl, y, label);
+                for (String line : value) {
+                    StdDraw.setPenColor(StdDraw.BLACK);
+                    StdDraw.textLeft(set_xv, y, line);
+                    y -= 0.05;
+                }
+            }
+            // Draw character portrait or additional details
+            this.meetDrawing(this.party.get(mem));
+            // Update canvas
+            StdDraw.show();
+            if (mem < this.party.size() - 1) {
+                while (!StdDraw.isKeyPressed(32)) {
+                    Thread.sleep(10); // Small delay to avoid CPU overuse
+                }
+                // Wait for the spacebar to be released to prevent multiple advances
+                while (StdDraw.isKeyPressed(32)) {
+                    Thread.sleep(10);
+                }
+            }
+            mem++; // Proceed to the next member
+        }
+        // Stop background music
+        StdDraw.pause(3500);
+        this.stopEncounterMusic();
+        accomplishment++;
+    }
+
+     /************************************************************
+     * METHOD: meetDrawing()                                     *
      * DESCRIPTION: draws the character on the left of the screen*
-     * PARAMETERS: Character left                                *
+     * when meeting them for the first time                      *
+     * PARAMETERS: current                                       *
      * RETURN VALUE: none                                        *
      ************************************************************/
-    private void drawCharLeft(Character left){
-        if (left.getType().equals("Barbarian") && left.getImage() == 0){
-            StdDraw.picture(0.25,0.45, "C:/Users/bella/Downloads/DnDbackground/Barbarian_Greataxe.png", 0.6, 0.6);
-        } else if (left.getType().equals("Barbarian") && left.getImage() == 1){
-            StdDraw.picture(0.25,0.45, "C:/Users/bella/Downloads/DnDbackground/Barbarian_Breath_Weapon.png", 0.6, 0.6);
+    private void meetDrawing(Character chosen){
+        if (chosen.getType().equals("Barbarian")){
+            StdDraw.picture(0.24,0.5, "C:/Users/bella/Downloads/DnDbackground/Barbarian_Greataxe.png", 0.55, 0.55);
+        } else if (chosen.getType().equals("Cleric") && chosen.getImage() == 0){
+            StdDraw.picture(0.24,0.5, "C:/Users/bella/Downloads/DnDbackground/Cleric_Guiding_Bolt.png", 0.5, 0.5);
+        } else if (chosen.getType().equals("Rogue")){
+            StdDraw.picture(0.27, 0.5, "C:/Users/bella/Downloads/DnDbackground/Rogue_Rapier.png", 0.5, 0.5);
+        } else if (chosen.getType().equals("Wizard")){
+            StdDraw.picture(0.24,0.5, "C:/Users/bella/Downloads/DnDbackground/Wizard_Witch_Bolt.png", 0.55, 0.55);
+        }
+    }
+
+     /*************************************************************
+     * METHOD: group_photo()                                     *
+     * DESCRIPTION: draws all the party members  in the forest   *
+     * party member                                              *
+     * PARAMETERS: none                                          *
+     * RETURN VALUE: none                                        *
+     ************************************************************/
+    public void group_photo(){
+        StdDraw.picture(0.50 , 0.50,"C:/Users/bella/Downloads/DnDbackground/forestbg.jpg", 1.0 , 1.0 );
+        //Characters
+        StdDraw.picture(0.25, 0.80, "C:/Users/bella/Downloads/DnDbackground/Barbarian_Greataxe.png", 0.6, 0.6);
+        StdDraw.picture(0.23, 0.31 ,"C:/Users/bella/Downloads/DnDbackground/Cleric_Guiding_Bolt.png", 0.5, 0.5);
+        StdDraw.picture(0.75, 0.77 , "C:/Users/bella/Downloads/DnDbackground/Rogue_Sneak_Attack.png", 0.52, 0.52);
+        StdDraw.picture(0.77, 0.33,"C:/Users/bella/Downloads/DnDbackground/Wizard_Ice_Knife.png", 0.55, 0.55);
+        StdDraw.show();
+
+    }
+
+     /**********************************************************
+     * METHOD: splitString()                                  *
+     * DESCRIPTION: splits the String of the hobbies,         *
+     * profession, and personality of the members             *
+     * PARAMETERS: String str                                 *
+     * RETURN VALUE: result.toString().trim()                 *
+     *********************************************************/
+    private String splitString(String str) {
+        StringBuilder result = new StringBuilder();
+        int start = 0;
+        int periodIndex = 0;
+        int end = 0;
+        while (start < str.length()) {
+            end = Math.min(start + 30, str.length());
+            periodIndex = str.lastIndexOf(" ", end);
+
+            if (periodIndex > start && end < str.length()) {
+                end = periodIndex + 1;
+            }
+            result.append(str, start, end).append("\n");
+            start = end;
+        }
+        return result.toString().trim();
+    }
+
+    int bar_potions = 2;
+    int rog_potions = 2;
+    int wiz_potions = 2;
+    /**********************************************************
+     * METHOD: inventory()                                    *
+     * DESCRIPTION: displays the Character's inventory        *
+     * party member                                           *
+     * PARAMETERS: none                                       *
+     * RETURN VALUE: none                                     *
+     *********************************************************/
+    public void inventory(){
+        StdDraw.clear();
+        this.group_photo();
+        StdDraw.show();
+        int dash = 45;
+        for(int d = 0; d < dash; d++){
+            System.out.print("-");
+        }
+        System.out.println();
+        System.out.printf("%-20s %-11s %-12s", "| Characters |", "Item" , "|  Amount  |");
+        System.out.println();
+        for(int d = 0; d < dash; d++){
+            System.out.print("-");
+        }
+        System.out.println();
+        for(int i = 0; i< this.party.size(); i++){
+            if(i == 1) {
+                System.out.printf("%-1s %-10s %-17s", "|" ,this.party.get(i).getType(), "| Healing Word      | ");
+                System.out.print("infinity |");
+                System.out.println();
+            } else {
+                System.out.printf("%-1s %-10s %-17s", "|" ,this.party.get(i).getType(), "| Potion of Healing | ");
+                System.out.print("  x"+ bar_potions+  "     |");
+                System.out.println();
+            }
+        }
+        for(int d = 0; d < dash; d++){
+            System.out.print("-");
+        }
+        System.out.println();
+    }
+
+
+     /************************************************************
+     * METHOD: drawCharLeft()                                    *
+     * DESCRIPTION: draws the character on the left of the screen*
+     * party member                                              *
+     * PARAMETERS: current                                       *
+     * RETURN VALUE: none                                        *
+     ************************************************************/
+    private void drawCharLeft(Character left) {
+        if (left.getType().equals("Barbarian") && left.getImage() == 0) {
+            StdDraw.picture(0.25, 0.48, "C:/Users/bella/Downloads/DnDbackground/Barbarian_Greataxe.png", 0.6, 0.6);
+        } else if (left.getType().equals("Barbarian") && left.getImage() == 1) {
+            StdDraw.picture(0.25, 0.48, "C:/Users/bella/Downloads/DnDbackground/Barbarian_Breath_Weapon.png", 0.6, 0.6);
+        } else if (left.getType().equals("Cleric") && left.getImage() == 0) {
+            StdDraw.picture(0.25, 0.43, "C:/Users/bella/Downloads/DnDbackground/Cleric_Guiding_Bolt.png", 0.5, 0.5);
+        } else if (left.getType().equals("Cleric") && left.getImage() == 1) {
+            StdDraw.picture(0.25, 0.43, "C:/Users/bella/Downloads/DnDbackground/Cleric_Mace.png", 0.5, 0.5);
+        } else if (left.getType().equals("Rogue") && left.getImage() == 0) {
+            StdDraw.picture(0.27, 0.46, "C:/Users/bella/Downloads/DnDbackground/Rogue_Rapier.png", 0.55, 0.55);
+        } else if (left.getType().equals("Rogue") && left.getImage() == 1){
+            StdDraw.picture(0.27, 0.46, "C:/Users/bella/Downloads/DnDbackground/Rogue_Sneak_Attack.png", 0.55, 0.55);
+        } else if (left.getType().equals("Wizard") && left.getImage() == 0){
+            StdDraw.picture(0.28,0.46, "C:/Users/bella/Downloads/DnDbackground/Wizard_Witch_Bolt.png", 0.55, 0.55);
+        } else if (left.getType().equals("Wizard") && left.getImage() == 1){
+            StdDraw.picture(0.28,0.46, "C:/Users/bella/Downloads/DnDbackground/Wizard_Ice_Knife.png", 0.55, 0.55);
         }
     }
 
@@ -374,13 +641,14 @@ public class DnDParty {
     private void drawCharRight(Character right){
         if(right.getType().equals("Imp")){
             StdDraw.picture(0.77,0.5, "C:/Users/bella/Downloads/DnDbackground/Imp.png", 0.4, 0.4);
+        } else if (right.getType().equals("Troll")){
+            StdDraw.picture(0.785,0.46, "C:/Users/bella/Downloads/DnDbackground/Troll.png", 0.55, 0.55);
         }
     }
 
-    /**********************************************************
+     /*********************************************************
      * METHOD: hp_bar()                                       *
-     * DESCRIPTION: displays the Character's HP               *
-     * party member                                           *
+     * DESCRIPTION: displays the Characters' HP               *
      * PARAMETERS: current                                    *
      * RETURN VALUE: none                                     *
      *********************************************************/
@@ -388,6 +656,8 @@ public class DnDParty {
         StdDraw.enableDoubleBuffering();
 //        StdDraw.clear();
         this.background();
+        this.drawCharLeft(left);
+        this.drawCharRight(right);
         StdDraw.setPenRadius(0.01);
         StdDraw.setPenColor(StdDraw.BOOK_RED);
         double x_char = 0.255;
@@ -431,20 +701,21 @@ public class DnDParty {
         attack = left;
         defense = right;
     }
+
     private Character attack;
     private Character defense;
     private double x_postion = 0.0;
     private double y_postion = 0;
-    /**********************************************************
+     /*********************************************************
      * METHOD: Rolling_Dice()                                 *
-     * DESCRIPTION: displays the Character's HP               *
-     * party member                                           *
+     * DESCRIPTION: shows rolling dice for actions and bonus  *
+     * actions                                                *
      * PARAMETERS:                                            *
      * RETURN VALUE: none                                     *
      *********************************************************/
     public void Rolling_Dice(int roll, int damage_roll, int dice){
-        int times = (int)(Math.random() *(6-1 +1) + 1 );
-        text();
+        int times = (int)(Math.random() *(6-1 +1) + 1);
+        //this.text();
         StdDraw.setPenColor(StdDraw.WHITE);
 
         for(int i = 0; i<times; i++){
@@ -464,35 +735,25 @@ public class DnDParty {
                     rand = d4_random;
                     // d4
                     this.drawD4();
-                    StdDraw.setPenColor(StdDraw.BLACK);
+                    StdDraw.setPenColor(StdDraw.WHITE);
                     StdDraw.text(0.1077, 0.06, String.valueOf(rand));
                     x_postion  = 0.1077;
                     y_postion = 0.06;
                     break;
                 case 6:
                     rand = d6_random;
-                    StdDraw.text(0.1077, 0.06, "d4");
-                    StdDraw.text(0.43, 0.065, "d8");
-                    StdDraw.text(0.585, 0.055, "d10");
-                    StdDraw.text(0.73, 0.061, "d12");
-                    StdDraw.text(0.90, 0.060, "d20");
                     //d6
                     this.drawD6();
-                    StdDraw.setPenColor(StdDraw.BLACK);
+                    StdDraw.setPenColor(StdDraw.WHITE);
                     StdDraw.text(0.27, 0.064, String.valueOf(rand));
                     x_postion  = 0.27;
                     y_postion = 0.064;
                     break;
                 case 8:
                     rand = d8_random;
-                    StdDraw.text(0.1077, 0.06, "d4");
-                    StdDraw.text(0.27, 0.065, "d6");
-                    StdDraw.text(0.585, 0.055, "d10");
-                    StdDraw.text(0.73, 0.061, "d12");
-                    StdDraw.text(0.90, 0.060, "d20");
                     //d8
                     this.drawD8();
-                    StdDraw.setPenColor(StdDraw.BLACK);
+                    StdDraw.setPenColor(StdDraw.WHITE);
                     StdDraw.text(0.43, 0.065, String.valueOf(rand));
                     x_postion = 0.43;
                     y_postion = 0.065;
@@ -500,14 +761,9 @@ public class DnDParty {
                     break;
                 case 10:
                     rand = d10_random;
-                    StdDraw.text(0.1077, 0.06, "d4");
-                    StdDraw.text(0.27, 0.065, "d6");
-                    StdDraw.text(0.43, 0.065, "d8");
-                    StdDraw.text(0.73, 0.061, "d12");
-                    StdDraw.text(0.90, 0.060, "d20");
                     //d10
                     this.drawD10();
-                    StdDraw.setPenColor(StdDraw.BLACK);
+                    StdDraw.setPenColor(StdDraw.WHITE);
                     StdDraw.text(0.585, 0.055, String.valueOf(rand));
                     x_postion = 0.585;
                     y_postion = 0.055;
@@ -515,14 +771,9 @@ public class DnDParty {
                     break;
                 case 12:
                     rand = d12_random;
-                    StdDraw.text(0.1077, 0.06, "d4");
-                    StdDraw.text(0.27, 0.065, "d6");
-                    StdDraw.text(0.43, 0.065, "d8");
-                    StdDraw.text(0.585, 0.055, "d10");
-                    StdDraw.text(0.90, 0.060, "d20");
                     //d12
                     this.drawD12();
-                    StdDraw.setPenColor(StdDraw.BLACK);
+                    StdDraw.setPenColor(StdDraw.WHITE);
                     StdDraw.text(0.73, 0.061, String.valueOf(rand));
                     x_postion = 0.73;
                     y_postion = 0.061;
@@ -532,131 +783,33 @@ public class DnDParty {
                     rand = d20_random;
                     //d20
                     this.drawD20();
-                    StdDraw.setPenColor(StdDraw.BLACK);
+                    StdDraw.setPenColor(StdDraw.WHITE);
                     StdDraw.text(0.90, 0.060, String.valueOf(rand));
                     break;
-
             }
             StdDraw.show();
-            StdDraw.pause(500);
-
+            StdDraw.pause(250);
         }
         StdDraw.clear();
         this.background();
         hp_bar(attack,defense);
-        StdDraw.setPenColor(StdDraw.BLACK);
+        StdDraw.setPenColor(StdDraw.WHITE);
         if(damage_roll != 0 ) {
             StdDraw.text(x_postion, y_postion, String.valueOf(damage_roll));
-
         }
         else{
             StdDraw.text(0.90, 0.060, String.valueOf(roll));
         }
         StdDraw.show();
         StdDraw.pause(2000);
-
-    }
-    /**********************************************************
-     * METHOD: players_turn()                                 *
-     * DESCRIPTION: displays which character's turn it is     *
-     * party member                                           *
-     * PARAMETERS: int select                                 *
-     * RETURN VALUE: none                                     *
-     *********************************************************/
-    public void players_turn(int select){
-        StdDraw.setPenColor(StdDraw.WHITE);
-        StdDraw.setPenRadius(0.01);
-        double x_char = 0.255;
-        double x_enemy = 0.80;
-        Font font2 = new Font("Righteous", Font.BOLD, 16);
-        StdDraw.setFont(font2);
-//        StdDraw.text(x_char, 0.865, left.getType());
-        StdDraw.setFont(font2);
-        StdDraw.setPenRadius(0.05);
-        double travel = 0.00;
-        while (travel < 0.40) {
-            StdDraw.enableDoubleBuffering();
-            StdDraw.clear();
-            background();
-            //hp_bar(this.party.get(select), this.enemies.get(0) );
-            StdDraw.text(-0.01+travel, 0.865, "It's the " + this.party.get(select).getType()+ "'s turn");
-            if (Math.abs(travel - 0.50) < 0.01) {
-                StdDraw.pause(50);
-            }
-            StdDraw.show();
-            StdDraw.pause(20);
-            travel += 0.02;
-        }
     }
 
     /**********************************************************
-     * METHOD: meet_party()                                   *
-     * DESCRIPTION: displays the party members                *
-     * party member                                           *
-     * PARAMETERS: none                                       *
-     * RETURN VALUE: none                                     *
+     * METHOD: spliteString()                                 *
+     * DESCRIPTION: formats input string                      *
+     * PARAMETERS: String str                                 *
+     * RETURN VALUE: formatted String                         *
      *********************************************************/
-    public void meet_party() {
-        int mem = 0; // Current member index
-        double set_xl = 0.55; // Label X-coordinate
-        double set_xv = 0.70; // Value X-coordinate
-        StdDraw.picture(0.50 , 0.50,"C:/Users/chloe/OneDrive/Desktop/DND photo/DND Forest Background.jpg", 1.0 , 1.0  );
-        while (mem < this.party.size()) {
-            StdDraw.enableDoubleBuffering();
-            // Clear the canvas for each member
-//            StdDraw.filledSquare(1.0, 1.0, 1.0); // Clear the canvas
-            StdDraw.picture(0.50 , 0.50,"C:/Users/chloe/OneDrive/Desktop/DND photo/DND Forest Background.jpg", 1.0 , 1.0  );
-            StdDraw.setPenColor(Color.WHITE);
-            StdDraw.filledSquare(0.80, 0.58, 0.28);
-
-            StdDraw.setPenColor(StdDraw.BLACK);
-            System.out.println("Displaying member " + (mem + 1));
-            System.out.println(this.party.get(mem).getName());
-            System.out.println(this.party.get(mem).getType());
-            System.out.println(this.party.get(mem).getProfession());
-            System.out.print("\n");
-
-
-            double y = 0.80; // Reset y for each member
-            Font font3 = new Font("Aptos", Font.BOLD, 13);
-            StdDraw.setFont(font3);
-
-            // Create details for the current member
-            String[][] memeber = {
-                    {"Name: ", this.party.get(mem).getName()},
-                    {"Type: ", this.party.get(mem).getType()},
-                    {"Hobbies:", spliteString(party.get(mem).getHobbies())},
-                    {"Profession:", spliteString(party.get(mem).getProfession())},
-                    {"Personality:", spliteString(party.get(mem).getPersonality())}
-            };
-
-
-            // Draw each detail on the canvas
-            for (String[] strings : memeber) {
-                String label = strings[0];
-                String[] value = strings[1].split("\n");
-
-                StdDraw.textLeft(set_xl, y, label);
-                for (String line : value) {
-                    StdDraw.textLeft(set_xv, y, line);
-                    y -= 0.05; // Move to the next line
-                }
-            }
-
-            StdDraw.show(); // Update canvas to show the drawing
-            StdDraw.pause(3000);
-
-//            // Wait for the user to press a key to continue
-//            System.out.println("Press any key to see the next member...");
-//            while (!StdDraw.hasNextKeyTyped()) {
-//                StdDraw.pause(100); // Pause briefly to avoid busy-waiting
-//            }
-            // Consume the keypress and move to the next member
-            //StdDraw.nextKeyTyped();
-            mem++;
-        }
-
-    }
     private String spliteString(String str) {
         StringBuilder result = new StringBuilder();
         int start = 0;
@@ -678,9 +831,9 @@ public class DnDParty {
     /**********************************************************
      * METHOD: combat()                                       *
      * DESCRIPTION: runs through one round of combat for an   *
-     * action or bonus action                                 *
-     * PARAMETERS: the target of the attack                   *
-     * RETURN VALUE: none                                     *
+     * action                                                 *
+     * PARAMETERS: the attacker and target of the attack      *
+     * RETURN VALUE: damage dealt to the enemy                *
      *********************************************************/
     public int combat(Character attacker, Character target){
         int damage = 0;
@@ -723,11 +876,11 @@ public class DnDParty {
         int choice = scan.nextInt();
         System.out.println();
         if (choice == 1){
-            attacker.setImage(1);
+            attacker.setImage(0);
             System.out.println("The " + attacker.getType() + " will attack using " + attacker.getAction().getAttack1().getWeapon());
             System.out.println("Roll to hit.");
             int attackRoll = this.rollD20();
-            Rolling_Dice(attackRoll, 0,20);
+            Rolling_Dice(attackRoll, 0, 20);
             int attackBonus = attacker.getAction().getAttack1().getAttackBonus();
             int attackTotal = attackRoll + attackBonus;
             System.out.println("The " + attacker.getType() + " rolled a " + attackRoll + " with an attack bonus of " + attackBonus + " to total " + attackTotal + ".");
@@ -803,7 +956,7 @@ public class DnDParty {
             } else if (attacker.getAction().getAttack2().getUseDC().equals("N")){
                 System.out.println("Roll to hit.");
                 int attackRoll = this.rollD20();
-                Rolling_Dice(attackRoll,0,20);
+                Rolling_Dice(attackRoll, 0, 20);
                 int attackBonus = attacker.getAction().getAttack2().getAttackBonus();
                 int attackTotal = attackRoll + attackBonus;
                 System.out.println("The " + attacker.getType() + " rolled a " + attackRoll + " with an attack bonus of " + attackBonus + " to total " + attackTotal + ".");
@@ -818,52 +971,58 @@ public class DnDParty {
             }
         }
         else{
-            System.out.println("Invalid choose!");
+            System.out.println("Invalid choice!");
             System.out.println("What Action would you like to take?");
             System.out.print("(choose 1 or 2) " + attacker.getAction().getAttack1().getWeapon() + "\t" + attacker.getAction().getAttack2().getWeapon() + " => ");
             choice = scan.nextInt();
-
         }
         return damage;
     }
 
-    private void healBA(Character giver, Character receiver){
-        int HP = 0;
-        if(giver.getBonusAction().getAttack1().getDamage().equals("2d4 + 2") || giver.getBonusAction().getAttack2().getDamage().equals("2d4 + 2")){
-            HP = this.rollD4() + this.rollD4() + 2;
-            Rolling_Dice(rollD20() ,HP, 4);
-        } else if(giver.getBonusAction().getAttack1().getDamage().equals("1d4 + 2") || giver.getBonusAction().getAttack2().getDamage().equals("1d4 + 2")){
-            HP = this.rollD4() + 2;
-        }
-        if(giver == receiver && giver != this.party.get(1)){
-            System.out.println("The " + giver.getType() + " will drink a Potion of Healing. Roll for how much HP is restored.");
-            Rolling_Dice(rollD20(), HP,4);
-            System.out.println("The " + giver.getType() + " regained " + HP + " hit points");
-        } else if(giver == receiver && giver == this.party.get(1)){
-            System.out.println("The Cleric will healed itself and regained " + HP + " hit points");
-        } else if(giver != receiver){
-            System.out.println("The " + giver.getType() + " healed the " + receiver.getType() + " to regain " + HP + " hit points");
-        }
-        receiver.healSetHP(HP);
-        this.hp_bar(giver, receiver);
-        if(receiver.getHP() == receiver.getMaxHP()){
-            System.out.println("The " + receiver.getType() + "'s HP has been fully restored.");
-        } else {
-            System.out.println("The " + receiver.getType() + "'s HP has been restored to " + receiver.getHP());
-        }
-
-    }
+     /*********************************************************
+     * METHOD: healBA()                                       *
+     * DESCRIPTION: uses a bonus action to heal a party member*
+     * PARAMETERS: the person healing and the person being    *
+     * healed.                                                *
+     * RETURN VALUE: none                                     *
+     *********************************************************/
+     private void healBA(Character giver, Character receiver){
+         int HP = 0;
+         if(giver.getBonusAction().getAttack1().getDamage().equals("2d4 + 2") || giver.getBonusAction().getAttack2().getDamage().equals("2d4 + 2")){
+             HP = this.rollD4() + this.rollD4() + 2;
+             this.Rolling_Dice(0, HP, 4);
+         } else if(giver.getBonusAction().getAttack1().getDamage().equals("1d4 + 2") || giver.getBonusAction().getAttack2().getDamage().equals("1d4 + 2")){
+             HP = this.rollD4() + 2;
+             this.Rolling_Dice(0, HP, 4);
+         }
+         if(giver == receiver && giver != this.party.get(1)){
+             System.out.println("The " + giver.getType() + " will drink a Potion of Healing. Roll for how much HP is restored.");
+             System.out.println("The " + giver.getType() + " regained " + HP + " hit points");
+         } else if(giver == receiver && giver == this.party.get(1)){
+             System.out.println("The Cleric will healed itself and regained " + HP + " hit points");
+         } else if(giver != receiver){
+             System.out.println("The " + giver.getType() + " healed the " + receiver.getType() + " to regain " + HP + " hit points");
+         }
+         receiver.healSetHP(HP);
+         this.hp_bar(giver, receiver);
+         if(receiver.getHP() == receiver.getMaxHP()){
+             System.out.println("The " + receiver.getType() + "'s HP has been fully restored.");
+         } else {
+             System.out.println("The " + receiver.getType() + "'s HP has been restored to " + receiver.getHP());
+         }
+     }
 
     private int death_count = 0;
-    /**********************************************************
-     * METHOD: soloAttack()                                    *
+     /**********************************************************
+     * METHOD: enemyAttack()                                   *
      * DESCRIPTION: randomly select a single party member that *
      * gets attacked by an enemy                               *
      * PARAMETERS: none                                        *
-     * RETURN VALUE: a number of the party index to be attacked*
+     * RETURN VALUE: none                                      *
      **********************************************************/
-    private void enemyAttack() {
-        System.out.println("Now it's the imp's turn.");
+    private void enemyAttack(int enemyIndex) {
+        int damageRoll = 0;
+        System.out.println("Now it's the " + this.enemies.get(enemyIndex).getType() + "'s turn.");
         int select = 5;
         while(select == 5) {
             int index = (int) (Math.random() * this.party.size());
@@ -871,30 +1030,51 @@ public class DnDParty {
                 select = index;
             }
         }
-        System.out.println("The imp attempts to attack the " + this.party.get(select).getType() + ".");
-        this.hp_bar(this.party.get(select), this.enemies.get(0));
+        if (this.enemies.get(enemyIndex).getAction().getAttack1().getDamage().equals("1d6") || this.enemies.get(enemyIndex).getAction().getAttack2().getDamage().equals("1d6")){
+            damageRoll = this.rollD6();
+            if (this.enemies.get(enemyIndex).getType().equals("Troll")){
+                damageRoll += 4;
+            } else if(this.enemies.get(enemyIndex).getType().equals("Gnoll")){
+                damageRoll += 2;
+            } else if(this.enemies.get(enemyIndex).getType().equals("Orc")){
+                damageRoll += 3;
+            }
+        } else if(this.enemies.get(enemyIndex).getAction().getAttack1().getDamage().equals("1d4") || this.enemies.get(enemyIndex).getAction().getAttack2().getDamage().equals("1d4")){
+            damageRoll = this.rollD4();
+            if (this.enemies.get(enemyIndex).getType().equals("Imp")){
+                damageRoll += 3;
+            } else if (this.enemies.get(enemyIndex).getType().equals("Gnoll")){
+                damageRoll += 2;
+            }
+        } else if (this.enemies.get(enemyIndex).getAction().getAttack1().getDamage().equals("1d12") || this.enemies.get(enemyIndex).getAction().getAttack2().getDamage().equals("1d12")){
+            damageRoll = this.rollD12() + 3;
+        } else if (this.enemies.get(enemyIndex).getAction().getAttack1().getDamage().equals("2d6 + 4") || this.enemies.get(enemyIndex).getAction().getAttack2().getDamage().equals("2d6 + 4")){
+            damageRoll = this.rollD6() + this.rollD6() + 4;
+        }
+        System.out.println("The " + this.enemies.get(enemyIndex).getType() + " attempts to attack the " + this.party.get(select).getType() + ".");
+        this.hp_bar(this.party.get(select), this.enemies.get(enemyIndex));
         int attackRoll_enemy = this.rollD20();
-        Rolling_Dice(attackRoll_enemy, 0, 20);
-        if ((attackRoll_enemy) >= this.party.get(select).getAC()) {
-            System.out.println("The imp rolled a " + attackRoll_enemy + " and now it rolls for damage it deals! ");
-            int damageRoll = this.rollD12();
-            Rolling_Dice(attackRoll_enemy ,damageRoll,12);
-            System.out.println("The imp dealt " + damageRoll + " damage!");
+        int totalAttack = attackRoll_enemy + this.enemies.get(enemyIndex).getAction().getAttack1().getAttackBonus();
+        System.out.println("The " + this.enemies.get(enemyIndex).getType() + " rolled a " + attackRoll_enemy + " with an attack bonus of " + this.enemies.get(enemyIndex).getAction().getAttack1().getAttackBonus() + " to equal " + totalAttack);
+        if ((totalAttack) >= this.party.get(select).getAC()) {
+            System.out.println("Now it rolls for damage it deals! ");
+            System.out.println("The " + this.enemies.get(enemyIndex).getType() + " dealt " + damageRoll + " damage!");
             this.party.get(select).damageSetHP(damageRoll);
-            this.hp_bar(this.party.get(select), this.enemies.get(0));
+            this.hp_bar(this.party.get(select), this.enemies.get(enemyIndex));
             System.out.println("The " + this.party.get(select).getType() + " now has " + this.party.get(select).getHP() + " hit points left.");
+            this.hp_bar(this.party.get(select), this.enemies.get(enemyIndex));
             if (this.party.get(select).getHP() == 0) {
                 System.out.println("The " + this.party.get(select).getType() + " died! Oh no!");
                 death_count += 1;
             }
         }
         else{
-            System.out.print("The imp missed its attack");
+            System.out.print("The " + this.enemies.get(enemyIndex).getType() + " missed its attack");
             System.out.print("\n");
         }
     }
 
-    /*********************************************************
+     /*********************************************************
      * METHOD: printStats()                                   *
      * DESCRIPTION: displays members stats                    *
      * PARAMETERS: none                                       *
@@ -935,10 +1115,11 @@ public class DnDParty {
         System.out.print("\n");
 
     }
-    /*********************************************************
+
+     /*********************************************************
      * METHOD: displayCharacter()                             *
-     * DESCRIPTION: displays addition information on the      *
-     * party member                                           *
+     * DESCRIPTION: displays additional information on party  *
+     * members                                                *
      * PARAMETERS: none                                       *
      * RETURN VALUE: none                                     *
      *********************************************************/
@@ -966,10 +1147,31 @@ public class DnDParty {
         }
     }
 
+
+     /*********************************************************
+     * METHOD: checkTurn()                                    *
+     * DESCRIPTION: checks that all party members have gone in*
+     * a round of combat                                      *
+     * PARAMETERS: none                                       *
+     * RETURN VALUE: index for the party member that goes next*
+     *********************************************************/
+    private int checkTurn(int j){
+        if(j == 0 && ((this.party.get(j).getTurn() > this.party.get(1).getTurn()) && (this.party.get(j).getTurn() > this.party.get(2).getTurn()) && (this.party.get(j).getTurn() > this.party.get(3).getTurn()))){
+            j += 1;
+        }
+        if(j == 1 && ((this.party.get(j).getTurn() > this.party.get(2).getTurn()) && (this.party.get(j).getTurn() > this.party.get(3).getTurn()))){
+            j += 1;
+        }
+        if(j == 2 && (this.party.get(j).getTurn() > this.party.get(3).getTurn())){
+            j += 1;
+        }
+        return j;
+    }
+
+    int imp = 0;
      /*********************************************************
      * METHOD: encounter1()                                   *
-     * DESCRIPTION: runs through the party's encounter with an*
-     * imp.                                                   *
+     * DESCRIPTION: the party's encounter with an imp         *
      * PARAMETERS: none                                       *
      * RETURN VALUE: none                                     *
      *********************************************************/
@@ -977,30 +1179,35 @@ public class DnDParty {
         int proficiency = 2;
         // modifier will be different have to add a parameter (modifier and HP change with level)
         // for loop within a for loop (number of imps fought)
-        System.out.println("The party is walking through the forest when they come across an abandon castle.");
+        System.out.println("The party is walking through the forest when they come across an abandoned castle.");
+        this.background();
         System.out.println("Curious they enter and come in combat with an Imp!\n");
+        this.playEncounterMusic("C:/Users/bella/Downloads/DnDbackground/encounter1_bgm.wav");
+        StdDraw.pause(2000);
         for (int i = 3; i > 0; i--) {
-            if (this.enemies.get(0).getHP() <= 0) {
-                this.enemies.get(0).healSetHP(10);
+            if (this.enemies.get(imp).getHP() <= 0) {
+                this.enemies.get(imp).healSetHP(10);
             }
-            while (this.enemies.get(0).getHP() != 0) {
+            while (this.enemies.get(imp).getHP() != 0) {
                 for (int j = 0; j < this.party.size(); j++) {
-                    //this.players_turn(j);
+
+                    j = this.checkTurn(j);
                     if (this.party.get(j).getHP() > 0) {
-                        this.hp_bar(this.party.get(j), this.enemies.get(0));
-                        int damageRoll = this.combat(this.party.get(j), this.enemies.get(0));
-                        this.enemies.get(0).damageSetHP(damageRoll);
-                        this.hp_bar(this.party.get(j), this.enemies.get(0));
-                        System.out.println("The imp has " + this.enemies.get(0).getHP() + " hit points left." + "\n");
-                        if (this.enemies.get(0).getHP() == 0) {
+                        this.hp_bar(this.party.get(j), this.enemies.get(imp));
+                        int damageRoll = this.combat(this.party.get(j), this.enemies.get(imp));
+                        this.enemies.get(imp).damageSetHP(damageRoll);
+                        this.hp_bar(this.party.get(j), this.enemies.get(imp));
+                        System.out.println("The imp has " + this.enemies.get(imp).getHP() + " hit points left." + "\n");
+                        if (this.enemies.get(imp).getHP() == 0) {
                             System.out.println("You killed the imp! Good job!");
                             //Ask the user if they would like to see the states of the characters before continue on
                             // If a character died count the deaths and print them out
                             // System.out.println("There were " + death_count + " deaths");
                             if (i == 3) {
-                                System.out.println("But, wait you though there was only one?!?!");
+                                System.out.println("But, wait you thought there was only one?!?!");
                                 System.out.println("Two more imps appear!" + "\n");
                             }
+                            this.party.get(j).setTurn(1);
                             j = 5;
                         }
                         else{
@@ -1009,36 +1216,59 @@ public class DnDParty {
                             if (bonus.equalsIgnoreCase("Y")) {
                                 if(this.party.get(j).getType().equals("Cleric")){
                                     System.out.println("Which party member do you want to heal?");
-                                    System.out.print("( 1) Barbarian, 2) Cleric, 3) Rogue, 4) Wizard ) => ");
+                                    System.out.print("Barbarian 1., Cleric 2., Rogue 3., Wizard 4. ) => ");
                                     int heal = scan.nextInt();
                                     this.healBA(this.party.get(j), this.party.get(heal - 1));
                                 } else {
-                                    this.healBA(this.party.get(j), this.party.get(j));
+                                    if(bar_potions!= 0 && this.party.get(j).getType().equals("Barbarian")){
+                                        this.healBA(this.party.get(j), this.party.get(j));
+                                    }
+                                    else if(rog_potions != 0 && this.party.get(j).getType().equals("Rogue")){
+                                        this.healBA(this.party.get(j), this.party.get(j));
+                                    }
+                                    else if(wiz_potions !=0 && this.party.get(j).getType().equals("Wizard")){
+                                        this.healBA(this.party.get(j), this.party.get(j));
+                                    }
+                                    else{
+                                        System.out.println("Sorry, the " + this.party.get(j).getType() + " doesn't have any potions left.");
+                                    }
                                 }
                             }
                             System.out.println("The " + this.party.get(j).getType() + "'s turn is over.\n");
-                            //players_turn(i);
-                            this.enemyAttack();
+                            //this.party.get(j).setTurn(1);
+                            this.enemyAttack(imp);
                             System.out.println();
                         }
                     }
                 }
             }
         }
+        // Stop background music
+        StdDraw.pause(2000);
+        stopEncounterMusic();
         System.out.println("The party defeated all the imps! Well done!");
-        //System.exit(0);
+        bar_potions = 2;
+        rog_potions = 2;
+        wiz_potions = 2;
+        System.out.println("Members' inventories have been restocked ");
         accomplishment++;
     }
-    
+
      /*********************************************************
      * METHOD: levelUp()                                      *
-     * DESCRIPTION: increases the levels of all party members *
-     * and rolls to increase their maximum hit points         *
-     * PARAMETERS: none                                       *
+     * DESCRIPTION: levels up party members and increases     *
+     * max hp                                                 *
+     * PARAMETERS: current                                    *
      * RETURN VALUE: none                                     *
      *********************************************************/
     public void levelUp() {
         int hitDice;
+        StdDraw.clear();
+        // Make a function that has all the members drawn in the forest
+        StdDraw.enableDoubleBuffering();
+        this.group_photo();
+        playEncounterMusic("C:/Users/bella/Download/DdDbackground/encounter2.wav");
+        StdDraw.show();
         System.out.println("\nThe party is ready to level up!");
         for (int i = 0; i < this.party.size(); i++) {
             this.party.get(i).setLevel(this.party.get(i).getLevel() + 1);
@@ -1057,21 +1287,32 @@ public class DnDParty {
             this.party.get(i).healSetHP(this.party.get(i).getMaxHP());
             System.out.println("The " + this.party.get(i).getType() + " has increased to level " + this.party.get(i).getLevel() + " and has a new hit point maximum of " + this.party.get(i).getMaxHP());
         }
+        StdDraw.clear();
+        // Make a function that has all the members drawn in the forest
+        this.group_photo();
+        StdDraw.show();
+        StdDraw.pause(2000);
+        stopEncounterMusic();
     }
 
     int troll = 1;
      /*********************************************************
      * METHOD: encounter2()                                   *
-     * DESCRIPTION: runs through the party's encounter with a *
-     * troll.                                                 *
+     * DESCRIPTION: the party's encounter with a troll        *
      * PARAMETERS: none                                       *
      * RETURN VALUE: none                                     *
      *********************************************************/
     public void encounter2(){
+        int proficiency = 2;
+        // modifier will be different have to add a parameter (modifier and HP change with level)
         // for loop within a for loop (number of imps fought)
         System.out.println("The party finds their way out of the castle and into the wilderness behind it.");
         System.out.println("While on their walk, they come across a large mountain cave.");
         System.out.println("The enter in search of treasure, but instead encounter a Troll!\n");
+        StdDraw.picture(0.50, 0.50, "C:/Users/bella/Downloads/DnDbackground/forestbg.jpg", 1.0, 1.0);
+        StdDraw.show();
+        StdDraw.pause(2000);
+        playEncounterMusic("C:/Users/bella/Downloads/DnDbackground/encounter2_bgm.wav");
             while (this.enemies.get(troll).getHP() != 0) {
                 for (int j = 0; j < this.party.size(); j++) {
                     if (this.party.get(j).getHP() > 0) {
@@ -1096,10 +1337,21 @@ public class DnDParty {
                                     int heal = scan.nextInt();
                                     this.healBA(this.party.get(j), this.party.get(heal - 1));
                                 } else {
-                                    this.healBA(this.party.get(j), this.party.get(j));
+                                    if(bar_potions!= 0 && this.party.get(j).getType().equals("Barbarian")){
+                                        this.healBA(this.party.get(j), this.party.get(j));
+                                    }
+                                    else if(rog_potions != 0 && this.party.get(j).getType().equals("Rogue")){
+                                        this.healBA(this.party.get(j), this.party.get(j));
+                                    }
+                                    else if(wiz_potions !=0 && this.party.get(j).getType().equals("Wizard")){
+                                        this.healBA(this.party.get(j), this.party.get(j));
+                                    }
+                                    else {
+                                        System.out.println("Sorry you don't have any potions left");
+                                    }
                                 }
                             }
-                            System.out.println("The " + this.party.get(j).getType() + "'s turn is over.");
+                            System.out.println("The " + this.party.get(j).getType() + "'s turn is over.\n");
                             System.out.println();
                         }
                     }
@@ -1109,8 +1361,13 @@ public class DnDParty {
                 }
             }
             System.out.println("The party defeated the Troll! Good job!");
+            System.out.println("There were " + death_count + " deaths");
+            this.stopEncounterMusic();
+            bar_potions = 2;
+            rog_potions = 2;
+            wiz_potions = 2;
+            System.exit(0);
     }
-
 
 }
 
