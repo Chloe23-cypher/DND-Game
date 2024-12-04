@@ -1,8 +1,3 @@
-//
-// Source code recreated from a .class file by IntelliJ IDEA
-// (powered by FernFlower decompiler)
-//
-
 public class Action {
     private Attack action1;
     private Attack action2;
@@ -12,11 +7,24 @@ public class Action {
         this.action2 = action2;
     }
 
-    public Attack getAttack1() {
-        return this.action1;
+     /************************************************************
+     * METHOD: getAttack1()                                      *
+     * DESCRIPTION: get the character's first Attack/weapon/spell*
+     * PARAMETERS: none                                          *
+     * RETURN VALUE: the character's first Attack/weapon/spell   *
+     ************************************************************/
+    public Attack getAttack1(){
+        return action1;
     }
 
+     /*************************************************************
+     * METHOD: getAttack2()                                       *
+     * DESCRIPTION: get the character's second Attack/weapon/spell*
+     * PARAMETERS: none                                           *
+     * RETURN VALUE: the character's second Attack/weapon/spell   *
+     *************************************************************/
     public Attack getAttack2() {
-        return this.action2;
+        return action2;
     }
+
 }
