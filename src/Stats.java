@@ -1,8 +1,5 @@
-//
-// Source code recreated from a .class file by IntelliJ IDEA
-// (powered by FernFlower decompiler)
-//
-
+//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
+// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Stats {
     private int STR;
     private int DEX;
@@ -20,61 +17,146 @@ public class Stats {
         this.CHA = CHA;
     }
 
+     /**********************************************************
+     * METHOD: getSTR()                                        *
+     * DESCRIPTION: get the character's strength ability score *
+     * PARAMETERS: none                                        *
+     * RETURN VALUE: the character's strength ability score    *
+     **********************************************************/
     public int getSTR() {
-        return this.STR;
+        return STR;
     }
 
+     /***********************************************************
+     * METHOD: getDEX()                                         *
+     * DESCRIPTION: get the character's dexterity ability score *
+     * PARAMETERS: none                                         *
+     * RETURN VALUE: the character's dexterity ability score    *
+     ***********************************************************/
     public int getDEX() {
-        return this.DEX;
+        return DEX;
     }
 
+     /**********************************************************
+     * METHOD: getCON()                                        *
+     * DESCRIPTION: get the character's constitution ability   *
+     * score                                                   *
+     * PARAMETERS: none                                        *
+     * RETURN VALUE: the character's constitution ability      *
+     * score                                                   *
+     **********************************************************/
     public int getCON() {
-        return this.CON;
+        return CON;
     }
 
+     /**************************************************************
+     * METHOD: getINT()                                            *
+     * DESCRIPTION: get the character's intelligence ability score *
+     * PARAMETERS: none                                            *
+     * RETURN VALUE: the character's intelligence ability score    *
+     **************************************************************/
     public int getINT() {
-        return this.INT;
+        return INT;
     }
 
+     /**********************************************************
+     * METHOD: getWIS()                                        *
+     * DESCRIPTION: get the character's wisdom ability score   *
+     * PARAMETERS: none                                        *
+     * RETURN VALUE: the character's wisdom ability score      *
+     **********************************************************/
     public int getWIS() {
-        return this.WIS;
+        return WIS;
     }
 
+     /**********************************************************
+     * METHOD: getCHA()                                        *
+     * DESCRIPTION: get the character's charisma ability score *
+     * PARAMETERS: none                                        *
+     * RETURN VALUE: the character's charisma ability score    *
+     **********************************************************/
     public int getCHA() {
-        return this.CHA;
+        return CHA;
     }
 
+     /**********************************************************
+     * METHOD: getSTRmod()                                     *
+     * DESCRIPTION: get the character's strength modifier      *
+     * PARAMETERS: none                                        *
+     * RETURN VALUE: the character's strength modifier         *
+     **********************************************************/
     public int getSTRmod() {
         int mod = (this.STR - 10) / 2;
         return mod;
     }
 
+     /**********************************************************
+     * METHOD: getDEXmod()                                     *
+     * DESCRIPTION: get the character's dexterity modifier     *
+     * PARAMETERS: none                                        *
+     * RETURN VALUE: the character's dexterity modifier        *
+     **********************************************************/
     public int getDEXmod() {
         int mod = (this.DEX - 10) / 2;
         return mod;
     }
 
+     /**************************************************************
+     * METHOD: getCONmod()                                         *
+     * DESCRIPTION: get the character's constitution ability score *
+     * PARAMETERS: none                                            *
+     * RETURN VALUE: the character's charisma ability score        *
+     **************************************************************/
     public int getCONmod() {
         int mod = (this.CON - 10) / 2;
         return mod;
     }
 
+     /**********************************************************
+     * METHOD: getINTmod()                                     *
+     * DESCRIPTION: get the character's intelligence modifier  *
+     * PARAMETERS: none                                        *
+     * RETURN VALUE: the character's intelligence modifier     *
+     **********************************************************/
     public int getINTmod() {
         int mod = (this.INT - 10) / 2;
         return mod;
     }
 
+     /**********************************************************
+     * METHOD: getWISmod()                                     *
+     * DESCRIPTION: get the character's wisdom modifier        *
+     * PARAMETERS: none                                        *
+     * RETURN VALUE: the character's wisdom modifier           *
+     **********************************************************/
     public int getWISmod() {
         int mod = (this.WIS - 10) / 2;
         return mod;
     }
 
+     /**********************************************************
+     * METHOD: getCHAmod()                                     *
+     * DESCRIPTION: get the character's charisma modifier      *
+     * PARAMETERS: none                                        *
+     * RETURN VALUE: the character's charisma modifier         *
+     **********************************************************/
     public int getCHAmod() {
         int mod = (this.CHA - 10) / 2;
         return mod;
     }
 
+     /**********************************************************
+     * METHOD: calcSign()                                      *
+     * DESCRIPTION: find the sign of the modifier              *
+     * PARAMETERS: none                                        *
+     * RETURN VALUE: the sign of the input modifier            *
+     **********************************************************/
     public String calcSign(int abilityScore) {
-        return abilityScore < 0 ? "" : "+";
+        if (abilityScore < 0) {
+            return "";
+        } else {
+            return "+";
+        }
     }
+
 }
