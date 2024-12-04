@@ -1,8 +1,3 @@
-//
-// Source code recreated from a .class file by IntelliJ IDEA
-// (powered by FernFlower decompiler)
-//
-
 public class Character {
     private String type;
     private String race;
@@ -13,15 +8,14 @@ public class Character {
     private Stats stats;
     private Action action;
     private Action bonusAction;
-    private int abilityScore;
-    private String sign;
+    private int turn;
+    private int image;
     private String name;
     private String hobbies;
     private String profession;
     private String personality;
-    private static int turn = 0;
 
-    public Character(String type, String race, int level, int hp, int maxHP, int ac, Stats stats, Action action, Action bonusAction, String name, String hobbies, String profession, String personality) {
+    public Character(String type, String race, int level, int hp, int maxHP, int ac, Stats stats, Action action, Action bonusAction, int turn, int image, String name, String hobbies, String profession, String personality) {
         this.type = type;
         this.race = race;
         this.level = level;
@@ -31,48 +25,118 @@ public class Character {
         this.stats = stats;
         this.action = action;
         this.bonusAction = bonusAction;
+        this.turn = turn;
+        this.image = image;
         this.name = name;
         this.hobbies = hobbies;
         this.profession = profession;
         this.personality = personality;
-        turn = turn;
     }
 
-    public String getType() {
-        return this.type;
+     /**********************************************************
+     * METHOD: getType()                                       *
+     * DESCRIPTION: get the character's class type             *
+     * PARAMETERS: none                                        *
+     * RETURN VALUE: the character's class type                *
+     **********************************************************/
+    public String getType(){
+        return type;
     }
 
-    public String getRace() {
-        return this.race;
+     /**********************************************************
+     * METHOD: getRace()                                       *
+     * DESCRIPTION: get the character's race                   *
+     * PARAMETERS: none                                        *
+     * RETURN VALUE: the character's race                      *
+     **********************************************************/
+    public String getRace(){
+        return race;
     }
 
-    public int getLevel() {
-        return this.level;
+     /**********************************************************
+     * METHOD: getLevel()                                      *
+     * DESCRIPTION: get the character's strength level         *
+     * PARAMETERS: none                                        *
+     * RETURN VALUE: the character's level                     *
+     **********************************************************/
+    public int getLevel(){
+        return level;
     }
 
-    public int getHP() {
-        return this.hp;
+     /**********************************************************
+     * METHOD: getHP()                                         *
+     * DESCRIPTION: get the character's hit points             *
+     * PARAMETERS: none                                        *
+     * RETURN VALUE: the character's hit points                *
+     **********************************************************/
+     public int getHP(){
+         return hp;
+     }
+
+     /**********************************************************
+     * METHOD: getMaxHP()                                      *
+     * DESCRIPTION: get the character's maximum hit points     *
+     * PARAMETERS: none                                        *
+     * RETURN VALUE: the character's maximum hit points        *
+     **********************************************************/
+     public int getMaxHP(){
+         return maxHP;
+     }
+
+     /**********************************************************
+     * METHOD: getAC()                                         *
+     * DESCRIPTION: get the character's armor class            *
+     * PARAMETERS: none                                        *
+     * RETURN VALUE: the character's armor class               *
+     **********************************************************/
+    public int getAC(){
+        return ac;
     }
 
-    public int getMaxHP() {
-        return this.maxHP;
+     /**********************************************************
+     * METHOD: getStats()                                      *
+     * DESCRIPTION: get the character's stats                  *
+     * PARAMETERS: none                                        *
+     * RETURN VALUE: the character's stats                     *
+     **********************************************************/
+     public Stats getStats(){
+         return stats;
+     }
+
+     /**********************************************************
+     * METHOD: getAction()                                     *
+     * DESCRIPTION: get the character's action/attack          *
+     * PARAMETERS: none                                        *
+     * RETURN VALUE: the character's action/attack             *
+     **********************************************************/
+    public Action getAction(){
+        return action;
     }
 
-    public int getAC() {
-        return this.ac;
+     /**********************************************************
+     * METHOD: getBonusAction()                                *
+     * DESCRIPTION: get the character's bonus action           *
+     * PARAMETERS: none                                        *
+     * RETURN VALUE: the character's bonus action              *
+     **********************************************************/
+    public Action getBonusAction(){
+        return bonusAction;
     }
 
-    public Stats getStats() {
-        return this.stats;
+     /**********************************************************
+     * METHOD: getTurn()                                       *
+     * DESCRIPTION: get the character's bonus action           *
+     * PARAMETERS: none                                        *
+     * RETURN VALUE: the character's bonus action              *
+     **********************************************************/
+    public int getTurn(){
+        return this.turn;
     }
 
-    public Action getAction() {
-        return this.action;
+    public int getImage(){
+        return this.image;
     }
 
-    public Action getBonusAction() {
-        return this.bonusAction;
-    }
     public String getName() {
         return this.name;
     }
@@ -86,27 +150,75 @@ public class Character {
         return this.personality;
     }
 
-    public void setLevel(int level) {
+
+     /***********************************************************
+     * METHOD: setLevel()                                       *
+     * DESCRIPTION: set the party member's level                *
+     * PARAMETERS: none                                         *
+     * RETURN VALUE: the character's hit points                 *
+     ***********************************************************/
+    public void setLevel(int level){
         this.level = level;
     }
 
-    public void setMaxHP(int hp) {
-        this.hp = hp;
+     /***********************************************************
+     * METHOD: setMaxHP()                                       *
+     * DESCRIPTION: reset maximum hit points                    *
+     * PARAMETERS: none                                         *
+     * RETURN VALUE: the character's hit points                 *
+     ***********************************************************/
+    public void setMaxHP(int hp){
+        this.maxHP += hp;
     }
 
-    public void damageSetHP(int damage) {
-        this.hp -= damage;
-        if (this.hp < 0) {
+     /***********************************************************
+     * METHOD: setTurn()                                        *
+     * DESCRIPTION: increase the players' turn                  *
+     * PARAMETERS: none                                         *
+     * RETURN VALUE: none                                       *
+     ***********************************************************/
+    public void setTurn(int change){
+        this.turn += change;
+    }
+
+     /***********************************************************
+     * METHOD: setImage()                                       *
+     * DESCRIPTION: sets the image that is shown in the combat  *
+     * sequence.                                                *
+     * PARAMETERS: none                                         *
+     * RETURN VALUE: none                                       *
+     ***********************************************************/
+    public void setImage(int image){
+        this.image = image;
+    }
+
+     /**********************************************************
+     * METHOD: damageSetHP()                                   *
+     * DESCRIPTION: set the character's hit points after taking*
+     * damage.                                                 *
+     * PARAMETERS: none                                        *
+     * RETURN VALUE: the character's hit points                *
+     **********************************************************/
+    public void damageSetHP(int damage){
+        this.hp = hp - damage;
+        if (this.hp < 0){
             this.hp = 0;
         }
-
     }
 
-    public void healSetHP(int health) {
-        this.hp += health;
-        if (this.hp > this.maxHP) {
-            this.hp = this.maxHP;
+     /***********************************************************
+     * METHOD: healSetHP()                                      *
+     * DESCRIPTION: set the character's hit points after healing*
+     * PARAMETERS: none                                         *
+     * RETURN VALUE: the character's hit points                 *
+     ***********************************************************/
+    public void healSetHP(int health){
+        this.hp = hp + health;
+        if (this.hp > maxHP){
+            this.hp = maxHP;
         }
-
     }
+
+
+
 }
