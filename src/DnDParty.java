@@ -1294,7 +1294,7 @@ public class DnDParty {
         StdDraw.pause(2000);
         stopEncounterMusic();
     }
-
+    
     int troll = 1;
      /*********************************************************
      * METHOD: encounter2()                                   *
