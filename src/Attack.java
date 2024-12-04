@@ -1,8 +1,3 @@
-//
-// Source code recreated from a .class file by IntelliJ IDEA
-// (powered by FernFlower decompiler)
-//
-
 public class Attack {
     private String weapon;
     String useDC;
@@ -10,7 +5,8 @@ public class Attack {
     private int DC;
     private String damage;
 
-    public Attack(String weapon, String useDC, int attackBonus, int DC, String damage) {
+
+    public Attack(String weapon, String useDC, int attackBonus, int DC, String damage){
         this.weapon = weapon;
         this.useDC = useDC;
         this.attackBonus = attackBonus;
@@ -18,23 +14,54 @@ public class Attack {
         this.damage = damage;
     }
 
-    public String getWeapon() {
-        return this.weapon;
+     /**********************************************************
+     * METHOD: getWeapon()                                     *
+     * DESCRIPTION: get the name of the attack/spell           *
+     * PARAMETERS: none                                        *
+     * RETURN VALUE: the name of the attack/spell              *
+     **********************************************************/
+    public String getWeapon(){
+        return weapon;
     }
 
-    public String getUseDC() {
-        return this.useDC;
+     /**********************************************************
+     * METHOD: getUseDC()                                      *
+     * DESCRIPTION: get if the attack is a spell or weapon     *
+     * PARAMETERS: none                                        *
+     * RETURN VALUE: the character's class type                *
+     **********************************************************/
+    public String getUseDC(){
+        return useDC;
     }
 
-    public int getAttackBonus() {
-        return this.attackBonus;
+     /**********************************************************
+     * METHOD: getAttackBonus()                                *
+     * DESCRIPTION: get bonus added to attack rolls (to hit)   *
+     * PARAMETERS: none                                        *
+     * RETURN VALUE: the character's class type                *
+     **********************************************************/
+     public int getAttackBonus(){
+         return attackBonus;
+     }
+
+     /**********************************************************
+     * METHOD: getDC()                                         *
+     * DESCRIPTION: get the character's spell DC               *
+     * PARAMETERS: none                                        *
+     * RETURN VALUE: the character's class type                *
+     **********************************************************/
+    public int getDC(){
+        return DC;
     }
 
-    public int getDC() {
-        return this.DC;
+     /**********************************************************
+     * METHOD: getDamage()                                     *
+     * DESCRIPTION: get the damage done by the attack          *
+     * PARAMETERS: none                                        *
+     * RETURN VALUE: the damage done by the attack             *
+     **********************************************************/
+    public String getDamage(){
+        return damage;
     }
 
-    public String getDamage() {
-        return this.damage;
-    }
 }
