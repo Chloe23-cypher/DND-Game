@@ -1,5 +1,24 @@
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
+/******************************************************************
+*                         Party Members' Stats                    *
+*                                                                 *
+* PROGRAMMER:Chloe Barber and Bella Brownlee                      *
+* COURSE: CS201                                                   *
+* DATE: 12/05/2024                                                *
+* REQUIREMENT: Final Project                                      *
+*                                                                 *
+* DESCRIPTION:                                                    *
+* The following program creates the class Stats and adds fields   *
+* strength, dexterity, constitution, intelligence, wisdom, and    *
+* charisma. It also includes get methods for each ability score   *
+* and respective ability modifiers.                               *
+*                                                                 *
+* COPYRIGHT: This code is copyright (C) 2024 Chloe Barber, Bella  *
+* Brownlee, and Dean Zeller.                                      *
+*                                                                 *
+* CREDITS: This code was written in its entirety by Chloe Barber  *
+* and Bella Brownlee.                                             *
+******************************************************************/
+
 public class Stats {
     private int STR;
     private int DEX;
