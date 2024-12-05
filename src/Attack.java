@@ -1,3 +1,22 @@
+/******************************************************************
+*                       Party Members' Attacks                    *
+*                                                                 *
+* PROGRAMMER:Chloe Barber and Bella Brownlee                      *
+* COURSE: CS201                                                   *
+* DATE: 12/05/2024                                                *
+* REQUIREMENT: Final Project                                      *
+*                                                                 *
+* DESCRIPTION:                                                    *
+* The following program creates the class Attack and adds fields  *
+* for the attributes of the attacks. It also includes get methods *
+* for each field.                                                 *
+*                                                                 *
+* COPYRIGHT: This code is copyright (C) 2024 Chloe Barber, Bella  *
+* Brownlee, and Dean Zeller.                                      *
+*                                                                 *
+* CREDITS: This code was written in its entirety by Chloe Barber  *
+* and Bella Brownlee.                                             *
+******************************************************************/
 public class Attack {
     private String weapon;
     String useDC;
