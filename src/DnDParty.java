@@ -1,3 +1,26 @@
+/******************************************************************
+*               DND Game Legends of Steel and Spellfire           *
+*                                                                 *
+* PROGRAMMER:Chloe Barber and Bella Brownlee                      *
+* COURSE: CS201                                                   *
+* DATE: 12/05/2024                                                *
+* REQUIREMENT: Final Project                                      *
+*                                                                 *
+* DESCRIPTION:                                                    *
+* The following program  *
+*  adding a GUI utilizing StdDraw commands. Methods include       *
+*  animation of the CD and music box, text display, and image     *
+*  display.                                                       *
+*                                                                 *
+* COPYRIGHT: This code is copyright (C) 2024 Chloe Barber, Bella  *
+* Brownlee, and Dean Zeller.                                      *
+*                                                                 *
+* CREDITS: This code was written by Chloe Barber and Bella        *
+* Brownlee with the help of Zach Cox, StdDraw, pixilart, Pixabay  *
+* music, and AI.                                                  *
+*                                                                 *
+******************************************************************/
+
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Scanner;
