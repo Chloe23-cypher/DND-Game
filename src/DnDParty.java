@@ -1340,13 +1340,13 @@ public class DnDParty {
             if (this.party.get(select).getHP() == 0) {
                 System.out.println("The " + this.party.get(select).getType() + " died! Oh no!");
                 death_count += 1;
-                StdDraw.pause(100);
+                StdDraw.pause(200);
             }
         }
         else{
             System.out.print("The "+ enemy+ " missed its attack");
             System.out.print("\n");
-            StdDraw.pause(100);
+            StdDraw.pause(200);
         }
     }
     /***********************************************************
@@ -1383,7 +1383,9 @@ public class DnDParty {
         playEncounterMusic("C:/Users/chloe/OneDrive/Desktop/DND photo/imp_encounter-149571.wav");
         StdDraw.pause(1800);
         int nextTurn = 0;
-        for (int i = 3; i > 0; i--) {
+        int killedImps = 0;
+        int totalImps = 3;
+        while (killedImps < totalImps) {
             if (this.enemies.get(imp).getHP() <= 0) {
                 this.enemies.get(imp).healSetHP(10);
             }
@@ -1398,6 +1400,7 @@ public class DnDParty {
                         System.out.println("The imp has " + this.enemies.get(imp).getHP() + " hit points left." + "\n");
                         if (this.enemies.get(imp).getHP() == 0) {
                             System.out.println("You killed the imp! Good job!");
+                            killedImps++;
                             nextTurn = this.checkTurn(j);
                             System.out.println("There were " + death_count + " deaths");
                             System.out.print("Would you like to make a bonus action? (Y/N) => ");
@@ -1424,7 +1427,7 @@ public class DnDParty {
                                 }
                             }
 
-                            if (i == 3) {
+                            if (killedImps == 1 ) {
                                 System.out.print("\n");
                                 System.out.println("But, wait you though there was only one?!?!");
                                 System.out.println("Two more imps appear!" + "\n");
@@ -1467,7 +1470,7 @@ public class DnDParty {
             }
         }
         // Stop background music
-        StdDraw.pause(2000);
+        StdDraw.pause(1800);
         stopEncounterMusic();
         System.out.println("The party defeated all the imps! Well done!");
         bar_potions = 2;
