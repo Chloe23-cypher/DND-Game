@@ -36,7 +36,6 @@ public class Character {
         this.hobbies = hobbies;
         this.profession = profession;
         this.personality = personality;
-        turn = turn;
     }
 
     /***********************************************************

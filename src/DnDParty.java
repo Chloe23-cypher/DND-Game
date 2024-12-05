@@ -657,7 +657,7 @@ public class DnDParty {
                 break;
             case "Wizard":
                 if(right.getImage() == 0){
-                    StdDraw.picture(0.77, 0.46,"C:/Users/chloe/OneDrive/Desktop/DND photo/Flipped_Wizard_WitchBolt.png");
+                    StdDraw.picture(0.77, 0.46,"C:/Users/chloe/OneDrive/Desktop/DND photo/Flipped_Wizard_WitchBolt.png",0.55,0.55);
                 }
                 else if(right.getImage() == 1){
                     StdDraw.picture(0.72, 0.46,"C:/Users/chloe/OneDrive/Desktop/DND photo/Flipped_Wizard_IceKnife.png", 0.55, 0.55);
@@ -1340,12 +1340,29 @@ public class DnDParty {
             if (this.party.get(select).getHP() == 0) {
                 System.out.println("The " + this.party.get(select).getType() + " died! Oh no!");
                 death_count += 1;
+                StdDraw.pause(100);
             }
         }
         else{
             System.out.print("The "+ enemy+ " missed its attack");
             System.out.print("\n");
+            StdDraw.pause(100);
         }
+    }
+    /***********************************************************
+     * METHOD: checkTurn()                                     *
+     * DESCRIPTION: checks which party member's turn it is     *
+     * PARAMETERS: int charIndex                               *
+     * RETURN VALUE: nextTurn                                  *
+     **********************************************************/
+    private int checkTurn(int charIndex) {
+        int nextTurn;
+        if (this.party.get(charIndex).getType().equals("Wizard")) {
+            nextTurn = 0;
+        } else {
+            nextTurn = charIndex + 1;
+        }
+        return nextTurn;
     }
     int imp = 0;
     /***********************************************************
@@ -1364,14 +1381,15 @@ public class DnDParty {
         StdDraw.picture(0.50, 0.5, "/C:/Users/chloe/OneDrive/Desktop/DND photo/DND background1.jpg", 1.00, 1.0);
         StdDraw.show();
         playEncounterMusic("C:/Users/chloe/OneDrive/Desktop/DND photo/imp_encounter-149571.wav");
-        StdDraw.pause(2000);
+        StdDraw.pause(1800);
+        int nextTurn = 0;
         for (int i = 3; i > 0; i--) {
             if (this.enemies.get(imp).getHP() <= 0) {
                 this.enemies.get(imp).healSetHP(10);
             }
             while (this.enemies.get(imp).getHP() != 0) {
                 for (int j = 0; j < this.party.size(); j++) {
-                    //this.players_turn(j);
+                        j = nextTurn;
                     if (this.party.get(j).getHP() > 0) {
                         this.hp_bar(this.party.get(j), this.enemies.get(imp));
                         int damageRoll = this.combat(this.party.get(j), this.enemies.get(imp));
@@ -1380,6 +1398,7 @@ public class DnDParty {
                         System.out.println("The imp has " + this.enemies.get(imp).getHP() + " hit points left." + "\n");
                         if (this.enemies.get(imp).getHP() == 0) {
                             System.out.println("You killed the imp! Good job!");
+                            nextTurn = this.checkTurn(j);
                             System.out.println("There were " + death_count + " deaths");
                             System.out.print("Would you like to make a bonus action? (Y/N) => ");
                             String bonus = scan.next();
@@ -1410,10 +1429,11 @@ public class DnDParty {
                                 System.out.println("But, wait you though there was only one?!?!");
                                 System.out.println("Two more imps appear!" + "\n");
                             }
-                            j = 5;
+                            break;
                         }
 
                         else{
+                            nextTurn = this.checkTurn(j);
                             System.out.print("Would you like to make a bonus action? (Y/N) => ");
                             String bonus = scan.next();
                             if (bonus.equalsIgnoreCase("Y")) {
@@ -1438,7 +1458,6 @@ public class DnDParty {
                                 }
                             }
                             System.out.println("The " + this.party.get(j).getType() + "'s turn is over.\n");
-                            //players_turn(i);
                             this.enemyAttack(imp);
                             System.out.println();
                         }
@@ -1491,7 +1510,6 @@ public class DnDParty {
             if (this.party.get(i).getHP() <= 0){
                 System.out.println("The " + this.party.get(i).getType() + " has been revived!");
             }
-            // int max_hp = this.party.get(i).getMaxHP() + hitDice;
             this.party.get(i).setMaxHP(hitDice); // the Max HP is not setting the new value
             this.party.get(i).healSetHP(this.party.get(i).getMaxHP());
             System.out.println("The " + this.party.get(i).getType() + " has increased to level " + this.party.get(i).getLevel() + "\n"+" and has a new hit point maximum of " + this.party.get(i).getMaxHP());
@@ -1516,8 +1534,8 @@ public class DnDParty {
         // for loop within a for loop (number of imps fought)
         StdDraw.clear();
         System.out.println("The party finds their way out of the castle and into the wilderness behind it.");
-        System.out.println("While on their walk, they come across a large mountain cave.");
-        System.out.println("The enter in search of treasure, but instead encounter a Troll!\n");
+        System.out.println("While on their walk, they come across large mountains");
+        System.out.println("They search for treasure, but instead encounter a Troll!\n");
         StdDraw.picture(0.50, 0.50, "C:/Users/chloe/OneDrive/Desktop/DND photo/DND Mountain Background.jpg", 1.00, 1.0);
         StdDraw.show();
         StdDraw.pause(2000);
@@ -1568,6 +1586,7 @@ public class DnDParty {
         rog_potions = 2;
         wiz_potions = 2;
 
+        System.out.println("Thanks for coming on this adventure with us!");
         System.exit(0);
     }
 }
