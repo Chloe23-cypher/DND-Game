@@ -1,26 +1,3 @@
-/******************************************************************
-*               DND Game Legends of Steel and Spellfire           *
-*                                                                 *
-* PROGRAMMER:Chloe Barber and Bella Brownlee                      *
-* COURSE: CS201                                                   *
-* DATE: 12/05/2024                                                *
-* REQUIREMENT: Final Project                                      *
-*                                                                 *
-* DESCRIPTION:                                                    *
-* The following program  *
-*  adding a GUI utilizing StdDraw commands. Methods include       *
-*  animation of the CD and music box, text display, and image     *
-*  display.                                                       *
-*                                                                 *
-* COPYRIGHT: This code is copyright (C) 2024 Chloe Barber, Bella  *
-* Brownlee, and Dean Zeller.                                      *
-*                                                                 *
-* CREDITS: This code was written by Chloe Barber and Bella        *
-* Brownlee with the help of Zach Cox, StdDraw, pixilart, Pixabay  *
-* music, and AI.                                                  *
-*                                                                 *
-******************************************************************/
-
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -899,13 +876,13 @@ public class DnDParty {
             System.out.println("The " + attacker.getType() + " will attack using " + attacker.getAction().getAttack1().getWeapon());
             System.out.println("Roll to hit.");
             int attackRoll = this.rollD20();
-            Rolling_Dice(attackRoll, 0, 20);
+            this.Rolling_Dice(attackRoll, 0, 20);
             int attackBonus = attacker.getAction().getAttack1().getAttackBonus();
             int attackTotal = attackRoll + attackBonus;
             System.out.println("The " + attacker.getType() + " rolled a " + attackRoll + " with an attack bonus of " + attackBonus + " to total " + attackTotal + ".");
             if (attackTotal >= target.getAC()){
                 System.out.println("The attack hits! Now roll for damage.");
-                Rolling_Dice(attackRoll,damage,dice);
+                this.Rolling_Dice(attackRoll,damage,dice);
                 System.out.println("The " + attacker.getType() + " dealt " + damage + " damage.");
             } else if(attackTotal < target.getAC()){
                 damage = 0;
@@ -918,16 +895,17 @@ public class DnDParty {
                 if (attacker == this.party.get(0)){
                     System.out.println("This attack doesn't require a roll to hit, but the " + target.getType() + " has to roll a saving throw.");
                     System.out.println("The DC for this attack is " + attacker.getAction().getAttack2().getDC());
-                    int savingThrow = this.rollD20() + target.getStats().getDEXmod();
+                    int savingThrow = this.rollD20();
+                    int STtotal = savingThrow + target.getStats().getDEXmod();
                     if (savingThrow < attacker.getAction().getAttack2().getDC()){
-                        System.out.println("The " + target.getType() + " rolled a " + savingThrow + ", which does not beat the DC.");
+                        System.out.println("The " + target.getType() + " rolled a " + savingThrow + " plus its DEX mod " + target.getStats().getDEXmod() + " to total " + STtotal +  ", which does not beat the DC.");
                         System.out.println("Now roll for damage.");
-                        Rolling_Dice(savingThrow,damage, dice);
+                        this.Rolling_Dice(savingThrow,damage, dice);
                         System.out.println("The " + attacker.getType() + " dealt " + damage + " damage.");
                     } else if (savingThrow >= attacker.getAction().getAttack2().getDC()){
-                        System.out.println("The " + target.getType() + " rolled a " + savingThrow + ", so it succeeds the saving throw.");
+                        System.out.println("The " + target.getType() + " rolled a " + savingThrow + " plus its DEX mod " + target.getStats().getDEXmod() + " to total " + STtotal +  ", so it succeeds the saving throw and the damage is halved.");
                         System.out.println("Now roll for damage.");
-                        Rolling_Dice(savingThrow, damage, dice);
+                        this.Rolling_Dice(savingThrow, damage, dice);
                         damage = damage / 2;
                         System.out.println("The " + attacker.getType() + " dealt " + damage + " damage.");
                     }
@@ -936,39 +914,42 @@ public class DnDParty {
                     int attackRoll = this.rollD20();
                     int attackBonus = attacker.getAction().getAttack2().getAttackBonus();
                     int attackTotal = attackRoll + attackBonus;
-                    Rolling_Dice(attackTotal, 0, 20);
+                    this.Rolling_Dice(attackRoll, 0, 20);
                     System.out.println("The " + attacker.getType() + " rolled a " + attackRoll + " with an attack bonus of " + attackBonus + " to total " + attackTotal + ".");
                     if (attackTotal >= target.getAC()){
                         System.out.println("The attack hits! Now roll for damage.");
-                        Rolling_Dice(attackRoll, damage, dice);
+                        this.Rolling_Dice(attackRoll, damage, dice);
                         System.out.println("The " + attacker.getType() + " dealt " + damage + " damage.");
                         System.out.println("The " + attacker.getAction().getAttack2().getWeapon() + " exploded! Now the " + target.getType() + " must make a saving throw.");
                         System.out.println("The DC for this attack is " + attacker.getAction().getAttack2().getDC());
-                        int savingThrow = this.rollD20() + target.getStats().getDEXmod();
+                        int savingThrow = this.rollD20();
+                        int STtotal = savingThrow + target.getStats().getDEXmod();
                         if(savingThrow < attacker.getAction().getAttack2().getDC()){
-                            System.out.println("The " + target.getType() + " rolled a " + savingThrow + ", which does not beat the DC. Roll for additional damage.");
+                            this.Rolling_Dice(savingThrow, 0, 20);
+                            System.out.println("The " + target.getType() + " rolled a " + savingThrow + " plus its DEX mod " + target.getStats().getDEXmod() + " to total " + STtotal + ", which does not beat the DC. Roll for additional damage.");
                             int moreDamage = this.rollD6() + this.rollD6();
                             Rolling_Dice(savingThrow, moreDamage, 6);
                             damage += moreDamage;
                             System.out.println("The " + attacker.getType() + " dealt " + moreDamage + " damage, totalling " + damage + " damage.");
                         } else if(savingThrow >= attacker.getAction().getAttack2().getDC()){
-                            System.out.println("The " + target.getType() + " rolled a " + savingThrow + ", so it succeeds the saving throw and takes no additional damage.");
+                            System.out.println("The " + target.getType() + " rolled a " + savingThrow + " plus its DEX mod " + target.getStats().getDEXmod() + " to total " + STtotal +  ", so it succeeds the saving throw and takes no additional damage.");
                         }
                     } else if(attackTotal < target.getAC()){
                         damage = 0;
                         System.out.println("The " + attacker.getType() + " missed their attack.");
                         System.out.println("But look! The " + attacker.getAction().getAttack2().getWeapon() + " exploded! Now the " + target.getType() + " must make a saving throw.");
                         System.out.println("The DC for this attack is " + attacker.getAction().getAttack2().getDC());
-                        int savingThrow = this.rollD20() + target.getStats().getDEXmod();
-                        Rolling_Dice(savingThrow, 0, 20);
+                        int savingThrow = this.rollD20();
+                        int STtotal = savingThrow + target.getStats().getDEXmod();
+                        this.Rolling_Dice(savingThrow, 0, 20);
                         if(savingThrow < attacker.getAction().getAttack2().getDC()){
-                            System.out.println("The " + target.getType() + " rolled a " + savingThrow + ", which does not beat the DC. Roll damage.");
+                            System.out.println("The " + target.getType() + " rolled a " + savingThrow + " plus its DEX mod " + target.getStats().getDEXmod() + " to total " + STtotal +  ", which does not beat the DC. Roll damage.");
                             int moreDamage = this.rollD6() + this.rollD6();
-                            Rolling_Dice(savingThrow,moreDamage, 6);
+                            this.Rolling_Dice(savingThrow,moreDamage, 6);
                             damage += moreDamage;
                             System.out.println("The " + attacker.getType() + " dealt " + damage + " damage.");
                         } else if(savingThrow >= attacker.getAction().getAttack2().getDC()){
-                            System.out.println("The " + target.getType() + " rolled a " + savingThrow + ", so it succeeds the saving throw and takes no additional damage.");
+                            System.out.println("The " + target.getType() + " rolled a " + savingThrow + " plus its DEX mod " + target.getStats().getDEXmod() + " to total " + STtotal +  ", so it succeeds the saving throw and takes no additional damage.");
                         }
                     }
                 }
@@ -1007,19 +988,32 @@ public class DnDParty {
      *********************************************************/
      private void healBA(Character giver, Character receiver){
          int HP = 0;
-         this.hp_bar(giver, receiver);
+         hp_bar(giver, receiver);
          if(giver.getBonusAction().getAttack1().getDamage().equals("2d4 + 2") || giver.getBonusAction().getAttack2().getDamage().equals("2d4 + 2")){
              HP = this.rollD4() + this.rollD4() + 2;
-             this.Rolling_Dice(0, HP, 4);
          } else if(giver.getBonusAction().getAttack1().getDamage().equals("1d4 + 2") || giver.getBonusAction().getAttack2().getDamage().equals("1d4 + 2")){
              HP = this.rollD4() + 2;
-             this.Rolling_Dice(0, HP, 4);
          }
          if(giver == receiver && giver != this.party.get(1)){
              System.out.println("The " + giver.getType() + " will drink a Potion of Healing. Roll for how much HP is restored.");
+             Rolling_Dice(rollD20(), HP,4);
              System.out.println("The " + giver.getType() + " regained " + HP + " hit points");
+             switch (giver.getType()) {
+                 case "Barbarian" -> {
+                     bar_potions--;
+                     System.out.println("The Barbarian has " + bar_potions + " potion(s) left");
+                 }
+                 case "Rogue" -> {
+                     rog_potions--;
+                     System.out.println("The Rogue has " + rog_potions + " potion(s) left");
+                 }
+                 case "Wizard" -> {
+                     wiz_potions--;
+                     System.out.println("The wizard has " + wiz_potions + " potion(s) left");
+                 }
+             }
          } else if(giver == receiver && giver == this.party.get(1)){
-             System.out.println("The Cleric will heal themself and regain " + HP + " hit points");
+             System.out.println("The Cleric will healed herself and regained " + HP + " hit points");
          } else if(giver != receiver){
              System.out.println("The " + giver.getType() + " healed the " + receiver.getType() + " to regain " + HP + " hit points");
          }
@@ -1166,8 +1160,6 @@ public class DnDParty {
             details += "\tActions:       " + this.party.get(index).getAction().getAttack1().getWeapon() + " and " + this.party.get(index).getAction().getAttack2().getWeapon() + "\n";
             details += "\tBonus Action:  " + this.party.get(index).getBonusAction().getAttack1().getWeapon() + "\n";
             System.out.println(details);
-            // StdDraw
-            //StdDraw.picture(0.50 , 0.50,"C:/Users/chloe/OneDrive/Desktop/DND photo/DND Forest Background.jpg", 1.0 , 1.0 );
             StdDraw.setPenColor(Color.WHITE);
             StdDraw.filledSquare(0.80, 0.53, 0.265);
             StdDraw.setPenColor(StdDraw.BLACK);
@@ -1201,12 +1193,140 @@ public class DnDParty {
         }
     }
 
+     /************************************************************
+     * METHOD: group_level_photo()                               *
+     * DESCRIPTION: draws all the party members in the forest    *
+     * leveling up                                               *
+     * party member                                              *
+     * PARAMETERS: none                                          *
+     * RETURN VALUE: none                                        *
+     ************************************************************/
+    public void group_level_photo(){
+        StdDraw.picture(0.50 , 0.50,"C:/Users/bella/Downloads/DnDbackground/forestbg.jpg", 1.0 , 1.0 );
+        //Characters
+        StdDraw.picture(0.25, 0.79, "C:/Users/bella/Downloads/DnDbackground/Barbarian_Greataxe.png", 0.43, 0.43);
+        StdDraw.picture(0.23, 0.40 ,"C:/Users/bella/Downloads/DnDbackground/Cleric_Guiding_Bolt.png", 0.35, 0.35);
+        StdDraw.picture(0.75, 0.77 , "C:/Users/bella/Downloads/DnDbackground/Rogue_Sneak_Attack.png", 0.37, 0.37);
+        StdDraw.picture(0.77, 0.43,"C:/Users/bella/Downloads/DnDbackground/Wizard_Ice_Knife.png", 0.40, 0.40);
+        // Rolling
+        StdDraw.setPenColor(StdDraw.LIGHT_GRAY);
+        StdDraw.filledRectangle(0.5, 0, 0.5, 0.18);
+        text();
+        //d4
+        drawD4();
+        //d6
+        drawD6();
+        //d8
+        drawD8();
+        // d10
+        drawD10();
+        //d12
+        drawD12();
+        //d20
+        drawD20();
+        StdDraw.show();
+    }
+
+    /**********************************************************
+     * METHOD: Rolling_DiceLevelUP()                          *
+     * DESCRIPTION: rolls the dice to level up the characters *
+     * party member                                           *
+     * PARAMETERS: the value of the roll and the dice being   *
+     * rolled                                                 *
+     * RETURN VALUE: none                                     *
+     *********************************************************/
+    public void Rolling_DiceLevelUP(int level_roll, int dice){
+        int times = 3;
+        text();
+        StdDraw.setPenColor(StdDraw.WHITE);
+        for(int i = 0; i<times; i++){
+            StdDraw.enableDoubleBuffering();
+            group_level_photo();
+            int d4_random = (int)(Math.random() *(4-1 +1) + 1 );
+            int d6_random = (int)(Math.random() *(6-1 +1) + 1 );
+            int d8_random = (int)(Math.random() *(8-1 +1) + 1 );
+            int d10_random = (int)(Math.random() *(10-1 +1) + 1 );
+            int d12_random = (int)(Math.random() *(12-1 +1) + 1 );
+            int rand = 0;
+            switch (dice){
+                case 4:
+                    // add text to the other dice
+                    rand = d4_random;
+                    // d4
+                    drawD4();
+                    StdDraw.setPenColor(StdDraw.BLACK);
+                    StdDraw.text(0.1077, 0.06, String.valueOf(rand));
+                    x_position  = 0.1077;
+                    y_position = 0.06;
+                    break;
+                case 6:
+                    rand = d6_random;
+                    //d6
+                    drawD6();
+                    StdDraw.setPenColor(StdDraw.BLACK);
+                    StdDraw.text(0.27, 0.064, String.valueOf(rand));
+                    x_position  = 0.27;
+                    y_position = 0.064;
+                    break;
+                case 8:
+                    rand = d8_random;
+                    //d8
+                    drawD8();
+                    StdDraw.setPenColor(StdDraw.BLACK);
+                    StdDraw.text(0.43, 0.065, String.valueOf(rand));
+                    x_position = 0.43;
+                    y_position = 0.065;
+                    break;
+                case 10:
+                    rand = d10_random;
+                    StdDraw.setPenColor(Color.WHITE);
+                    //d10
+                    drawD10();
+                    StdDraw.setPenColor(StdDraw.BLACK);
+                    StdDraw.text(0.585, 0.055, String.valueOf(rand));
+                    x_position = 0.585;
+                    y_position = 0.055;
+                    break;
+                case 12:
+                    rand = d12_random;
+                    //d12
+                    drawD12();
+                    StdDraw.setPenColor(StdDraw.BLACK);
+                    StdDraw.text(0.73, 0.061, String.valueOf(rand));
+                    x_position = 0.73;
+                    y_position = 0.061;
+                    break;
+            }
+            StdDraw.show();
+            StdDraw.pause(450);
+
+        }
+        StdDraw.clear();
+        this.group_level_photo();
+        StdDraw.setPenColor(StdDraw.BLACK);
+        StdDraw.text(x_position, y_position, String.valueOf(level_roll));
+        StdDraw.show();
+        StdDraw.pause(2000);
+    }
+
+     /**********************************************************
+     * METHOD: checkTurn()                                     *
+     * DESCRIPTION: checks which party member's turn it is     *
+     * PARAMETERS: int charIndex                               *
+     * RETURN VALUE: nextTurn                                  *
+     **********************************************************/
     private int checkTurn(int charIndex){
-        int nextTurn;
-        if (this.party.get(charIndex).getType().equals("Wizard")){
-            nextTurn = 0;
-        } else {
-            nextTurn = charIndex + 1;
+        int alive = 0;
+        int nextTurn = 0;
+        while (alive == 0){
+            if (this.party.get(charIndex).getType().equals("Wizard")){
+                nextTurn = 0;
+            } else {
+                nextTurn = charIndex + 1;
+            }
+            if (this.party.get(nextTurn).getHP() != 0){
+                alive = 1;
+            }
         }
         return nextTurn;
     }
@@ -1225,58 +1345,80 @@ public class DnDParty {
          System.out.println("Curious they enter and come in combat with an Imp!\n");
          this.playEncounterMusic("C:/Users/bella/Downloads/DnDbackground/encounter1_bgm.wav");
          StdDraw.pause(2000);
+         int j = 0;
          int nextTurn = 0;
          for (int i = 3; i > 0; i--) {
              if (this.enemies.get(imp).getHP() <= 0) {
                  this.enemies.get(imp).healSetHP(10);
              }
              while (this.enemies.get(imp).getHP() != 0) {
-                 for (int j = 0; j < this.party.size(); j++) {
-                            j = nextTurn;
-                     if (this.party.get(j).getHP() > 0) {
-                         this.hp_bar(this.party.get(j), this.enemies.get(imp));
-                         int damageRoll = this.combat(this.party.get(j), this.enemies.get(imp));
-                         this.enemies.get(imp).damageSetHP(damageRoll);
-                         this.hp_bar(this.party.get(j), this.enemies.get(imp));
-                         System.out.println("The imp has " + this.enemies.get(imp).getHP() + " hit points left." + "\n");
-                         if (this.enemies.get(imp).getHP() == 0) {
-                             System.out.println("You killed the imp! Good job!");
-                             nextTurn = this.checkTurn(j);
-                             if (i == 3) {
-                                 System.out.println("But, wait you thought there was only one?!?!");
-                                 System.out.println("Two more imps appear!" + "\n");
-                             }
-                             break;
-                         }
-                         else{
-                             nextTurn = this.checkTurn(j);
-                             System.out.print("Would you like to make a bonus action? (Y/N) => ");
-                             String bonus = scan.next();
-                             if (bonus.equalsIgnoreCase("Y")) {
-                                 if(this.party.get(j).getType().equals("Cleric")){
-                                     System.out.println("Which party member do you want to heal?");
-                                     System.out.print("1) Barbarian, 2) Cleric, 3) Rogue, 4) Wizard => ");
-                                     int heal = scan.nextInt();
-                                     this.healBA(this.party.get(j), this.party.get(heal - 1));
-                                 } else {
-                                     if(bar_potions!= 0 && this.party.get(j).getType().equals("Barbarian")){
-                                         this.healBA(this.party.get(j), this.party.get(j));
-                                     }
-                                     else if(rog_potions != 0 && this.party.get(j).getType().equals("Rogue")){
-                                         this.healBA(this.party.get(j), this.party.get(j));
-                                     }
-                                     else if(wiz_potions !=0 && this.party.get(j).getType().equals("Wizard")){
-                                         this.healBA(this.party.get(j), this.party.get(j));
-                                     }
-                                     else{
-                                         System.out.println("Sorry, the " + this.party.get(j).getType() + " doesn't have any potions left.");
-                                     }
+                 j = nextTurn;
+                 if (this.party.get(j).getHP() > 0) {
+                     this.hp_bar(this.party.get(j), this.enemies.get(imp));
+                     int damageRoll = this.combat(this.party.get(j), this.enemies.get(imp));
+                     this.enemies.get(imp).damageSetHP(damageRoll);
+                     this.hp_bar(this.party.get(j), this.enemies.get(imp));
+                     System.out.println("The imp has " + this.enemies.get(imp).getHP() + " hit points left." + "\n");
+                     if (this.enemies.get(imp).getHP() == 0) {
+                         System.out.println("You killed the imp! Good job!");
+                         System.out.print("Would you like to make a bonus action? (Y/N) => ");
+                         String bonus = scan.next();
+                         if (bonus.equalsIgnoreCase("Y")) {
+                             if(this.party.get(j).getType().equals("Cleric")){
+                                 System.out.println("Which party member do you want to heal?");
+                                 System.out.print("1) Barbarian, 2) Cleric, 3) Rogue, 4) Wizard => ");
+                                 int heal = scan.nextInt();
+                                 this.healBA(this.party.get(j), this.party.get(heal - 1));
+                             } else {
+                                 if(bar_potions!= 0 && this.party.get(j).getType().equals("Barbarian")){
+                                     this.healBA(this.party.get(j), this.party.get(j));
+                                 }
+                                 else if(rog_potions != 0 && this.party.get(j).getType().equals("Rogue")){
+                                     this.healBA(this.party.get(j), this.party.get(j));
+                                 }
+                                 else if(wiz_potions !=0 && this.party.get(j).getType().equals("Wizard")){
+                                     this.healBA(this.party.get(j), this.party.get(j));
+                                 }
+                                 else{
+                                     System.out.println("Sorry, the " + this.party.get(j).getType() + " doesn't have any potions left.");
                                  }
                              }
-                             System.out.println("The " + this.party.get(j).getType() + "'s turn is over.\n");
-                             this.enemyAttack(imp);
-                             System.out.println();
                          }
+                         nextTurn = this.checkTurn(j);
+                         if (i == 3) {
+                             System.out.println("But, wait you thought there was only one?!?!");
+                             System.out.println("Two more imps appear!" + "\n");
+                         }
+                         break;
+                     }
+                     else{
+                         nextTurn = this.checkTurn(j);
+                         System.out.print("Would you like to make a bonus action? (Y/N) => ");
+                         String bonus = scan.next();
+                         if (bonus.equalsIgnoreCase("Y")) {
+                             if(this.party.get(j).getType().equals("Cleric")){
+                                 System.out.println("Which party member do you want to heal?");
+                                 System.out.print("1) Barbarian, 2) Cleric, 3) Rogue, 4) Wizard => ");
+                                 int heal = scan.nextInt();
+                                 this.healBA(this.party.get(j), this.party.get(heal - 1));
+                             } else {
+                                 if(bar_potions!= 0 && this.party.get(j).getType().equals("Barbarian")){
+                                     this.healBA(this.party.get(j), this.party.get(j));
+                                 }
+                                 else if(rog_potions != 0 && this.party.get(j).getType().equals("Rogue")){
+                                     this.healBA(this.party.get(j), this.party.get(j));
+                                 }
+                                 else if(wiz_potions !=0 && this.party.get(j).getType().equals("Wizard")){
+                                     this.healBA(this.party.get(j), this.party.get(j));
+                                 }
+                                 else{
+                                     System.out.println("Sorry, the " + this.party.get(j).getType() + " doesn't have any potions left.");
+                                 }
+                             }
+                         }
+                         System.out.println("The " + this.party.get(j).getType() + "'s turn is over.\n");
+                         this.enemyAttack(imp);
+                         System.out.println();
                      }
                  }
              }
@@ -1304,8 +1446,8 @@ public class DnDParty {
         StdDraw.clear();
         // Make a function that has all the members drawn in the forest
         StdDraw.enableDoubleBuffering();
-        this.group_photo();
-        playEncounterMusic("C:/Users/bella/Download/DdDbackground/encounter2.wav");
+        group_level_photo();
+        playEncounterMusic("C:/Users/bella/Downloads/DnDbackground/forest_bgm.wav");
         StdDraw.show();
         System.out.println("\nThe party is ready to level up!");
         for (int i = 0; i < this.party.size(); i++) {
@@ -1313,21 +1455,25 @@ public class DnDParty {
             hitDice = this.party.get(i).getStats().getCONmod();
             if(this.party.get(i).getType().equals("Barbarian")){
                 hitDice += this.rollD12();
+                Rolling_DiceLevelUP(hitDice,12);
             } else if (this.party.get(i).getType().equals("Cleric") || this.party.get(i).getType().equals("Rogue")){
                 hitDice += this.rollD8();
+                Rolling_DiceLevelUP(hitDice,8);
+                StdDraw.pause(400);
             } else if (this.party.get(i).getType().equals("Wizard")){
                 hitDice += this.rollD6();
+                Rolling_DiceLevelUP(hitDice,6);
             }
             if (this.party.get(i).getHP() <= 0){
                 System.out.println("The " + this.party.get(i).getType() + " has been revived!");
             }
-            this.party.get(i).setMaxHP(hitDice);
+            this.party.get(i).setMaxHP(hitDice); // the Max HP is not setting the new value
             this.party.get(i).healSetHP(this.party.get(i).getMaxHP());
-            System.out.println("The " + this.party.get(i).getType() + " has increased to level " + this.party.get(i).getLevel() + " and has a new hit point maximum of " + this.party.get(i).getMaxHP());
+            System.out.println("The " + this.party.get(i).getType() + " has increased to level " + this.party.get(i).getLevel() + "\n"+" and has a new hit point maximum of " + this.party.get(i).getMaxHP());
         }
         StdDraw.clear();
         // Make a function that has all the members drawn in the forest
-        this.group_photo();
+        group_level_photo();
         StdDraw.show();
         StdDraw.pause(2000);
         stopEncounterMusic();
@@ -1395,7 +1541,7 @@ public class DnDParty {
                 }
             }
             System.out.println("The party defeated the Troll! Good job!");
-            System.out.println("There were " + death_count + " deaths");
+            StdDraw.pause(2000);
             this.stopEncounterMusic();
             bar_potions = 2;
             rog_potions = 2;
