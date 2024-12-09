@@ -1,7 +1,26 @@
+/*******************************************************************
+ *               DND Game Legends of Steel and Spellfire           *
+ *                                                                 *
+ * PROGRAMMER:Chloe Barber and Bella Brownlee                      *
+ * COURSE: CS201                                                   *
+ * DATE: 12/05/2024                                                *
+ * REQUIREMENT: Final Project                                      *
+ *                                                                 *
+ * DESCRIPTION:                                                    *
+ * The following program has a interface loop and methods that     *
+ * runs a DND Campaign. Pixilart and StdDraw graphics are included *
+ * for visualization.                                              *
+ *                                                                 *
+ * COPYRIGHT: This code is copyright (C) 2024 Chloe Barber, Bella  *
+ * Brownlee, and Dean Zeller.                                      *
+ *                                                                 *
+ * CREDITS: This code was written with the help of Zach Cox,       *
+ * pixilart, Pixabay music, and AI.                                *
+ *                                                                 *
+ ******************************************************************/
 import java.awt.*;
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Objects;
 import java.util.Scanner;
 //Audio packages
 import javax.sound.sampled.*;
@@ -11,7 +30,6 @@ public class DnDParty {
     private ArrayList<Character> party;
     private ArrayList<Character> enemies;
     int accomplishment = 0;
-//    DnDParty minimusic = new DnDParty();
     Scanner scan = new Scanner(System.in);
     public void interfaceLoop() throws InterruptedException {
         Scanner scan = new Scanner(System.in);
@@ -40,6 +58,7 @@ public class DnDParty {
                     System.out.println("Best of Luck on your Quest!");
                     this.encounter1();
                 }
+                accomplishment++;
                 this.levelUp();
 
             }
@@ -328,7 +347,7 @@ public class DnDParty {
         double[] d4y = {0.015, 0.125, 0.015};
         StdDraw.filledPolygon(d4x, d4y);
     }
-    //constructor
+    ///////////////////////////////////////////////////////////////////   constructor ////////////////////////////////////////////////////////////////////////////////////
     public DnDParty() {
         this.party = new ArrayList<Character>();
         this.enemies = new ArrayList<Character>();
@@ -391,6 +410,7 @@ public class DnDParty {
         this.enemies.add(e1);
         this.enemies.add(e2);
     }
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     /**********************************************************
      * METHOD: meet_party()                                   *
@@ -1355,15 +1375,22 @@ public class DnDParty {
      * PARAMETERS: int charIndex                               *
      * RETURN VALUE: nextTurn                                  *
      **********************************************************/
-    private int checkTurn(int charIndex) {
-        int nextTurn;
-        if (this.party.get(charIndex).getType().equals("Wizard")) {
-            nextTurn = 0;
-        } else {
-            nextTurn = charIndex + 1;
+    private int checkTurn(int charIndex){
+        int alive = 0;
+        int nextTurn = 0;
+        while (alive == 0){
+            if (this.party.get(charIndex).getType().equals("Wizard")){
+                nextTurn = 0;
+            } else {
+                nextTurn = charIndex + 1;
+            }
+            if (this.party.get(nextTurn).getHP() != 0){
+                alive = 1;
+            }
         }
         return nextTurn;
     }
+
     int imp = 0;
     /***********************************************************
      * METHOD: encounter1()                                    *
@@ -1382,9 +1409,9 @@ public class DnDParty {
         StdDraw.show();
         playEncounterMusic("C:/Users/chloe/OneDrive/Desktop/DND photo/imp_encounter-149571.wav");
         StdDraw.pause(1800);
-        int nextTurn = 0;
         int killedImps = 0;
         int totalImps = 3;
+        int nextTurn = 0;
         while (killedImps < totalImps) {
             if (this.enemies.get(imp).getHP() <= 0) {
                 this.enemies.get(imp).healSetHP(10);
@@ -1401,7 +1428,6 @@ public class DnDParty {
                         if (this.enemies.get(imp).getHP() == 0) {
                             System.out.println("You killed the imp! Good job!");
                             killedImps++;
-                            nextTurn = this.checkTurn(j);
                             System.out.println("There were " + death_count + " deaths");
                             System.out.print("Would you like to make a bonus action? (Y/N) => ");
                             String bonus = scan.next();
@@ -1412,21 +1438,18 @@ public class DnDParty {
                                     int heal = scan.nextInt();
                                     this.healBA(this.party.get(j), this.party.get(heal - 1));
                                 } else {
-                                    if(bar_potions!= 0 && this.party.get(j).getType().equals("Barbarian")){
+                                    if (bar_potions != 0 && this.party.get(j).getType().equals("Barbarian")) {
                                         this.healBA(this.party.get(j), this.party.get(j));
-                                    }
-                                    else if(rog_potions != 0 && this.party.get(j).getType().equals("Rogue")){
+                                    } else if (rog_potions != 0 && this.party.get(j).getType().equals("Rogue")) {
                                         this.healBA(this.party.get(j), this.party.get(j));
-                                    }
-                                    else if(wiz_potions !=0 && this.party.get(j).getType().equals("Wizard")){
+                                    } else if (wiz_potions != 0 && this.party.get(j).getType().equals("Wizard")) {
                                         this.healBA(this.party.get(j), this.party.get(j));
-                                    }
-                                    else{
+                                    } else {
                                         System.out.println("Sorry the " + this.party.get(j).getType() + " does not have any potions left");
                                     }
                                 }
                             }
-
+                            nextTurn = this.checkTurn(j);
                             if (killedImps == 1 ) {
                                 System.out.print("\n");
                                 System.out.println("But, wait you though there was only one?!?!");
@@ -1456,7 +1479,7 @@ public class DnDParty {
                                         this.healBA(this.party.get(j), this.party.get(j));
                                     }
                                     else{
-                                        System.out.println("Sorry you don't have any potions left");
+                                        System.out.println("Sorry the " + this.party.get(j).getType() + " does not have any potions left");
                                     }
                                 }
                             }
@@ -1569,12 +1592,11 @@ public class DnDParty {
                                     this.healBA(this.party.get(j), this.party.get(j));
                                 }
                                 else{
-                                    System.out.println("Sorry you don't have any potions left");
+                                    System.out.println("Sorry the " + this.party.get(j).getType() + " does not have any potions left");
                                 }
                             }
                         }
                         System.out.println("The " + this.party.get(j).getType() + "'s turn is over.");
-                        System.out.println();
                 }
             }
             if(this.enemies.get(troll).getHP() != 0){

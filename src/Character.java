@@ -1,8 +1,22 @@
-//
-// Source code recreated from a .class file by IntelliJ IDEA
-// (powered by FernFlower decompiler)
-//
-
+/*******************************************************************
+ *                        DND Characters                           *
+ *                                                                 *
+ * PROGRAMMER:Chloe Barber and Bella Brownlee                      *
+ * COURSE: CS201                                                   *
+ * DATE: 12/05/2024                                                *
+ * REQUIREMENT: Final Project                                      *
+ *                                                                 *
+ * DESCRIPTION:                                                    *
+ * The following program has a constructor, get, and set methods   *
+ *  for the field attributes of the characters                     *
+ *                                                                 *
+ * COPYRIGHT: This code is copyright (C) 2024 Chloe Barber, Bella  *
+ * Brownlee, and Dean Zeller.                                      *
+ *                                                                 *
+ * CREDITS: This code was written in its entirety by Chloe Barber  *
+ *  and Bella Brownlee.                                            *
+ *                                                                 *
+ ******************************************************************/
 public class Character {
     private String type;
     private String race;
