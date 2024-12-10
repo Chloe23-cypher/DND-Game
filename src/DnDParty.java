@@ -29,7 +29,7 @@ import javax.sound.sampled.Clip;
 public class DnDParty {
     private ArrayList<Character> party;
     private ArrayList<Character> enemies;
-    int accomplishment = 0;
+    int accomplishment = 1;
     Scanner scan = new Scanner(System.in);
     public void interfaceLoop() throws InterruptedException {
         Scanner scan = new Scanner(System.in);
@@ -48,17 +48,17 @@ public class DnDParty {
 
             }
             else if(input.equals("E")){
-                if(accomplishment == 1){
+                if(accomplishment == 0){
+                    System.out.println("Best of Luck on your Quest!");
+                    this.encounter1();
+
+                }
+                else if (accomplishment == 1){
                     System.out.println("It seems like you ready for you next Quest...");
                     System.out.println("Best of Luck you're going to need it");
                     this.encounter2();
+                }
 
-                }
-                else if (accomplishment == 0){
-                    System.out.println("Best of Luck on your Quest!");
-                    this.encounter1();
-                }
-                accomplishment++;
                 this.levelUp();
 
             }
@@ -647,7 +647,7 @@ public class DnDParty {
                 StdDraw.picture(0.77, 0.5, "C:/Users/chloe/OneDrive/Desktop/DND photo/Imp.png", 0.4, 0.4);
                 break;
             case "Troll":
-                StdDraw.picture(0.78, 0.48, "C:/Users/chloe/OneDrive/Desktop/DND photo/Troll.png", 0.5, 0.5);
+                StdDraw.picture(0.78, 0.43, "C:/Users/chloe/OneDrive/Desktop/DND photo/Troll.png", 0.5, 0.5);
                 break;
 
             case "Barbarian":
@@ -1183,9 +1183,9 @@ public class DnDParty {
                 } else {
                     System.out.println("Roll to hit.");
                     int attackRoll = this.rollD20();
+                    Rolling_Dice(attackRoll, 0, 20);
                     int attackBonus = attacker.getAction().getAttack2().getAttackBonus();
                     int attackTotal = attackRoll + attackBonus;
-                    Rolling_Dice(attackTotal, 0, 20);
                     System.out.println("The " + attacker.getType() + " rolled a " + attackRoll + " with an attack bonus of " + attackBonus + " to total " + attackTotal + ".");
                     if (attackTotal >= target.getAC()){
                         System.out.println("The attack hits! Now roll for damage.");
@@ -1428,7 +1428,7 @@ public class DnDParty {
                         if (this.enemies.get(imp).getHP() == 0) {
                             System.out.println("You killed the imp! Good job!");
                             killedImps++;
-                            System.out.println("There were " + death_count + " deaths");
+                            System.out.println("There were " + death_count + " death(s)");
                             System.out.print("Would you like to make a bonus action? (Y/N) => ");
                             String bonus = scan.next();
                             if (bonus.equalsIgnoreCase("Y")) {
@@ -1448,6 +1448,7 @@ public class DnDParty {
                                         System.out.println("Sorry the " + this.party.get(j).getType() + " does not have any potions left");
                                     }
                                 }
+
                             }
                             nextTurn = this.checkTurn(j);
                             if (killedImps == 1 ) {
@@ -1574,11 +1575,15 @@ public class DnDParty {
                     this.enemies.get(troll).damageSetHP(damageRoll);
                     this.hp_bar(this.party.get(j), this.enemies.get(troll));
                     System.out.println("The Troll has " + this.enemies.get(troll).getHP() + " hit points left." + "\n");
+                    if (this.enemies.get(troll).getHP() == 0) {
+                        break;
+                    } else {
                         System.out.print("Would you like to make a bonus action? (Y/N) => ");
                         String bonus = scan.next();
                         if (bonus.equalsIgnoreCase("Y")) {
                             if(this.party.get(j).getType().equals("Cleric")){
-                                System.out.print("Which party member do you want to heal? ( 1) Barbarian. 2) Cleric, 3) Rogue, 4) Wizard ) => ");
+                                System.out.println("Which party member do you want to heal?");
+                                System.out.print("1) Barbarian, 2) Cleric, 3) Rogue, 4) Wizard => ");
                                 int heal = scan.nextInt();
                                 this.healBA(this.party.get(j), this.party.get(heal - 1));
                             } else {
@@ -1591,12 +1596,13 @@ public class DnDParty {
                                 else if(wiz_potions !=0 && this.party.get(j).getType().equals("Wizard")){
                                     this.healBA(this.party.get(j), this.party.get(j));
                                 }
-                                else{
+                                else {
                                     System.out.println("Sorry the " + this.party.get(j).getType() + " does not have any potions left");
                                 }
                             }
                         }
-                        System.out.println("The " + this.party.get(j).getType() + "'s turn is over.");
+                        System.out.println("The " + this.party.get(j).getType() + "'s turn is over.\n");
+                    }
                 }
             }
             if(this.enemies.get(troll).getHP() != 0){
@@ -1604,9 +1610,9 @@ public class DnDParty {
             }
         }
         StdDraw.pause(2000);
-        stopEncounterMusic();
         System.out.println("The party defeated the Troll! Good job!");
-        System.out.println("There were " + death_count + " deaths");
+        stopEncounterMusic();
+        System.out.println("There were " + death_count + " death(s)");
         bar_potions = 2;
         rog_potions = 2;
         wiz_potions = 2;
