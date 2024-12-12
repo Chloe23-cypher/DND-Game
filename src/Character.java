@@ -31,10 +31,10 @@ public class Character {
     private String hobbies;
     private String profession;
     private String personality;
-    private int turn;
     private int image;
 
-    public Character(String  type, String race, int level, int hp, int maxHP, int ac, Stats stats, Action action, Action bonusAction, int turn, int image, String name, String hobbies, String profession, String personality) {
+    public Character(String  type, String race, int level, int hp, int maxHP, int ac, Stats stats, Action action, Action bonusAction,
+        int image, String name, String hobbies, String profession, String personality) {
         this.type = type;
         this.race = race;
         this.level = level;
@@ -44,7 +44,6 @@ public class Character {
         this.stats = stats;
         this.action = action;
         this.bonusAction = bonusAction;
-        this.turn = turn;
         this.image = image;
         this.name = name;
         this.hobbies = hobbies;
@@ -143,28 +142,47 @@ public class Character {
     }
 
     /***********************************************************
-     * METHOD: getTurn()                                       *
-     * DESCRIPTION: get the character's bonus action           *
+     * METHOD: getImage()                                      *
+     * DESCRIPTION: get the character's image                  *
      * PARAMETERS: none                                        *
-     * RETURN VALUE: the character's bonus action              *
+     * RETURN VALUE: the character's image                     *
      **********************************************************/
-    public int getTurn(){
-        return this.turn;
-    }
-
     public int getImage(){
         return this.image;
     }
-
+    /***********************************************************
+     * METHOD: getName()                                       *
+     * DESCRIPTION: get the character's name                   *
+     * PARAMETERS: none                                        *
+     * RETURN VALUE: the character's name                      *
+     **********************************************************/
     public String getName() {
         return this.name;
     }
+    /***********************************************************
+     * METHOD: getHobbies()                                    *
+     * DESCRIPTION: get the character's hobbies                *
+     * PARAMETERS: none                                        *
+     * RETURN VALUE: the character's hobbies                   *
+     **********************************************************/
     public String getHobbies() {
         return this.hobbies;
     }
+    /***********************************************************
+     * METHOD: getProfession()                                 *
+     * DESCRIPTION: get the character's profession             *
+     * PARAMETERS: none                                        *
+     * RETURN VALUE: the character's profession                *
+     **********************************************************/
     public String getProfession() {
         return this.profession;
     }
+    /***********************************************************
+     * METHOD: getPersonality()                                *
+     * DESCRIPTION: get the character's personality            *
+     * PARAMETERS: none                                        *
+     * RETURN VALUE: the character's personality               *
+     **********************************************************/
     public String getPersonality() {
         return this.personality;
     }
@@ -190,15 +208,6 @@ public class Character {
         this.maxHP += hp;
     }
 
-    /************************************************************
-     * METHOD: setTurn()                                        *
-     * DESCRIPTION: increase the players' turn                  *
-     * PARAMETERS: none                                         *
-     * RETURN VALUE: none                                       *
-     ***********************************************************/
-    public void setTurn(int change){
-        this.turn += change;
-    }
 
     /************************************************************
      * METHOD: setImage()                                       *

@@ -29,7 +29,7 @@ import javax.sound.sampled.Clip;
 public class DnDParty {
     private ArrayList<Character> party;
     private ArrayList<Character> enemies;
-    int accomplishment = 1;
+    int accomplishment = 0;
     Scanner scan = new Scanner(System.in);
     public void interfaceLoop() throws InterruptedException {
         Scanner scan = new Scanner(System.in);
@@ -393,16 +393,16 @@ public class DnDParty {
         Action trollA = new Action(biteTr, claw);
 
 
-        Character c1 = new Character("Barbarian", "Dragon Born", 1, 14, 14, 15, barbarian, barbarianA, drinkPotion, 0, 0,
+        Character c1 = new Character("Barbarian", "Dragon Born", 1, 14, 14, 15, barbarian, barbarianA, drinkPotion, 0,
                 "Flintstrike Rasbor", "Hunting, Combat Training, and Playing Poker", "General of the army for the kingdom Witchitieer", "Loyal to his unit and not afraid to get some blood on his hands.");
-        Character c2 = new Character("Cleric", "Halfling", 1, 10, 10, 12, cleric, clericA, healParty, 0, 0,
+        Character c2 = new Character("Cleric", "Halfling", 1, 10, 10, 12, cleric, clericA, healParty, 0,
                 "Anzira Heartbrige", "Pulling pranks, praying in the meadows, and playing the harp.", "A healer at the Medbay", "Joyful and Humorous. Enjoying making her party members laugh with a joke. Fierce in combat." );
-        Character c3 = new Character("Rogue", "Gnome", 1, 9, 9, 13, rogue, rogueA, drinkPotion, 0, 0,
+        Character c3 = new Character("Rogue", "Gnome", 1, 9, 9, 13, rogue, rogueA, drinkPotion, 0,
                 "Brixton Shadowcloak", "Reading, sharpening his rapier, and exploring the terrain.", "An assassin", "Reserved, Quiet, and Stealthy. If prompted tells spooky stories around the fire.");
-        Character c4 = new Character("Wizard", "Elf", 1, 6, 6, 11, wizard, wizardA, drinkPotion, 0, 0,
+        Character c4 = new Character("Wizard", "Elf", 1, 6, 6, 11, wizard, wizardA, drinkPotion, 0,
                 "Venira Duskhold", "Star reading, practicing her magic, and knife throwing" , "A princess of the kingdom Lothlórien", "Gorgeous, Kind Hearted, and Intelligent. Helpful around camp gathering supplies.");
-        Character e1 = new Character("Imp", "Imp", 0, 10, 10, 13, imp, impA, drinkPotion, 0, 0, "", "", "", "");
-        Character e2 = new Character("Troll", "Troll", 0, 70, 70, 15, troll, trollA , drinkPotion, 0, 0, "", "", "", "");
+        Character e1 = new Character("Imp", "Imp", 0, 10, 10, 13, imp, impA, drinkPotion, 0,  "", "", "", "");
+        Character e2 = new Character("Troll", "Troll", 0, 70, 70, 15, troll, trollA , drinkPotion, 0,  "", "", "", "");
         this.party.add(c1);
         this.party.add(c2);
         this.party.add(c3);
@@ -459,7 +459,6 @@ public class DnDParty {
                 System.out.println("Press SpaceBar to see the next member...");
             }
             System.out.print("\n");
-
 
             // Draw each detail
             for (String[] strings : member) {
